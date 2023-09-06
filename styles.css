@@ -1,8 +1,21 @@
-/*
+.task_checkbox {
+    white-space: nowrap;
+    overflow-x: auto;
+}
+  
+.task_name {
+    display:inline-block;
+    margin-left: 20px; 
+}
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
+.subject_name {
+    white-space: nowrap;
+    overflow-x: auto;
+}
 
-If your plugin does not need CSS, delete this file.
+.subject_add {
+    all: initial;
 
-*/
+    display:inline-block;
+    
+}

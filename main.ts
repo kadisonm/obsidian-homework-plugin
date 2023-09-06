@@ -2,70 +2,55 @@ import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Set
 
 // Remember to rename these classes and interfaces!
 
-interface MyPluginSettings {
+interface HomeworkSettings {
 	mySetting: string;
 }
 
-const DEFAULT_SETTINGS: MyPluginSettings = {
+const DEFAULT_SETTINGS: HomeworkSettings = {
 	mySetting: 'default'
 }
 
-export default class MyPlugin extends Plugin {
-	settings: MyPluginSettings;
+var homework = [
+	{
+	  name: "How to Take Smart Notes",
+	  completed: false,
+	},
+];
+
+export default class HomeworkPlugin extends Plugin {
+	settings: HomeworkSettings;
 
 	async onload() {
 		await this.loadSettings();
+		//new Notice('This is a notice!');
 
-		// This creates an icon in the left ribbon.
-		const ribbonIconEl = this.addRibbonIcon('dice', 'Sample Plugin', (evt: MouseEvent) => {
-			// Called when the user clicks the icon.
-			new Notice('This is a notice!');
+		// Open homework ribbon button
+		const ribbonToggle = this.addRibbonIcon('book', 'Open Homework', (evt: MouseEvent) => {
+			new HomeworkModal(this.app).open();
 		});
+
 		// Perform additional things with the ribbon
-		ribbonIconEl.addClass('my-plugin-ribbon-class');
+		ribbonToggle.addClass('my-plugin-ribbon-class');
 
-		// This adds a status bar item to the bottom of the app. Does not work on mobile apps.
-		const statusBarItemEl = this.addStatusBarItem();
-		statusBarItemEl.setText('Status Bar Text');
-
-		// This adds a simple command that can be triggered anywhere
+		// Open homework command
 		this.addCommand({
-			id: 'open-sample-modal-simple',
-			name: 'Open sample modal (simple)',
+			id: 'open-homework',
+			name: 'Open Homework',
 			callback: () => {
-				new SampleModal(this.app).open();
+				new HomeworkModal(this.app).open();
 			}
 		});
-		// This adds an editor command that can perform some operation on the current editor instance
-		this.addCommand({
-			id: 'sample-editor-command',
-			name: 'Sample editor command',
-			editorCallback: (editor: Editor, view: MarkdownView) => {
-				console.log(editor.getSelection());
-				editor.replaceSelection('Sample Editor Command');
-			}
-		});
-		// This adds a complex command that can check whether the current state of the app allows execution of the command
-		this.addCommand({
-			id: 'open-sample-modal-complex',
-			name: 'Open sample modal (complex)',
-			checkCallback: (checking: boolean) => {
-				// Conditions to check
-				const markdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
-				if (markdownView) {
-					// If checking is true, we're simply "checking" if the command can be run.
-					// If checking is false, then we want to actually perform the operation.
-					if (!checking) {
-						new SampleModal(this.app).open();
-					}
+		
+		// this.addCommand({
+		// 	id: 'sample-editor-command',
+		// 	name: 'Sample editor command',
+		// 	editorCallback: (editor: Editor, view: MarkdownView) => {
+		// 		console.log(editor.getSelection());
+		// 		editor.replaceSelection('Sample Editor Command');
+		// 	}
+		// });
 
-					// This command will only show up in Command Palette when the check function returns true
-					return true;
-				}
-			}
-		});
-
-		// This adds a settings tab so the user can configure various aspects of the plugin
+		// Adds setting tab
 		this.addSettingTab(new SampleSettingTab(this.app, this));
 
 		// If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin)
@@ -91,14 +76,35 @@ export default class MyPlugin extends Plugin {
 	}
 }
 
-class SampleModal extends Modal {
+class HomeworkModal extends Modal {
 	constructor(app: App) {
 		super(app);
 	}
 
 	onOpen() {
 		const {contentEl} = this;
-		contentEl.setText('Woah!');
+
+		contentEl.createEl("h1", { text: "Homework" });
+
+		// Set up Subject
+		const subject = contentEl.createEl("div", { cls: "subject" });
+
+		var subjectName = subject.createEl("div", {text: "Subject", cls: "subject_name" });
+
+		// Subject Task Add Button
+
+		var buttonWrap = contentEl.createEl("div", { cls: "subject_buttonwrap" });
+		var button = subject.createEl("button", {text: "+", cls: "subject_add", parent: buttonWrap });
+
+		button.addEventListener("click", (click) => {
+			new Notice('This is a notice!');
+		});
+		
+		// Display Tasks
+		const task = contentEl.createEl("div", { cls: "task" });
+			
+		task.createEl("input", {type: "checkbox", cls: "task_checkbox" });
+		task.createEl("div", { text: "Test Name", cls: "task_name" });
 	}
 
 	onClose() {
@@ -108,9 +114,9 @@ class SampleModal extends Modal {
 }
 
 class SampleSettingTab extends PluginSettingTab {
-	plugin: MyPlugin;
+	plugin: HomeworkPlugin;
 
-	constructor(app: App, plugin: MyPlugin) {
+	constructor(app: App, plugin: HomeworkPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
