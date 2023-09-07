@@ -1,12 +1,26 @@
 .task_checkbox {
-    white-space: nowrap;
-    overflow-x: auto;
+    height: 20px !important;
+    width: 20px !important;
+
+    display:inline-block !important;
+    margin-right: 10px !important; 
+    vertical-align: middle !important;
+
+    border-radius: 50% !important;
+    border-style: solid !important;
+    border-width: 2px !important;
+    border-color: var(--text-normal) !important;
+
+    cursor: pointer !important;
+
+    padding: 0% !important;
 }
-  
+
 .task_name {
-    display:inline-block;
-    margin-left: 20px; 
+    display:inline-block !important;
+    vertical-align: middle !important;
 }
+
 
 .subject_name {
     font-size: large;
@@ -39,12 +53,4 @@
 .subject_add:hover {  
     box-shadow: none;
     background-color: var(--interactive-accent-hover)!important;
-}
-
-.task_checkbox {
-    border-radius: 50%;
-    vertical-align: middle;
-    border: 1px var(--text-normal);
-    cursor: pointer;
-    padding: 0%;
 }
