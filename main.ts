@@ -93,8 +93,7 @@ class HomeworkModal extends Modal {
 
 		// Subject Task Add Button
 
-		var buttonWrap = contentEl.createEl("div", { cls: "subject_buttonwrap" });
-		var button = subject.createEl("button", {text: "+", cls: "subject_add", parent: buttonWrap });
+		var button = subject.createEl("button", {text: "＋", cls: "subject_add", parent: subjectName });
 
 		button.addEventListener("click", (click) => {
 			new Notice('This is a notice!');
