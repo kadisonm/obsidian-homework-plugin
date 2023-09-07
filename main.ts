@@ -102,8 +102,8 @@ class HomeworkModal extends Modal {
 		// Display Tasks
 		const task = contentEl.createEl("div", { cls: "task" });
 			
-		task.createEl("input", {type: "checkbox", cls: "task_checkbox" });
-		task.createEl("div", { text: "Test Name", cls: "task_name" });
+		var taskContainer = task.createEl("label", { text: "Test Name", cls: "task_container"})
+		task.createEl("input", {type: "checkbox", parent: taskContainer });
 	}
 
 	onClose() {

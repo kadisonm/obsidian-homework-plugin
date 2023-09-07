@@ -1,4 +1,54 @@
-.task_checkbox {
+.task_container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 15px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.task_container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.task_checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 15px;
+    width: 15px;
+    background-color: #eee;
+}
+
+.task_container:hover input ~ .task_checkmark {
+    background-color: #ccc;
+}
+
+.task_container input:checked ~ .task_checkmark {
+    background-color: #2196F3;
+}
+
+.task_container .task_checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+
+/* .task_checkbox::before {
     height: 20px !important;
     width: 20px !important;
 
@@ -14,13 +64,45 @@
     cursor: pointer !important;
 
     padding: 0% !important;
+
+    transition: .3s !important;
+    content: '' !important;
 }
 
-.task_name {
+.task_checkbox label::before, .checkbox label::after {
+    position: absolute;
+    height: 20px !important;
+    width: 20px !important;
+
     display:inline-block !important;
+    margin-right: 10px !important; 
     vertical-align: middle !important;
+
+    border-radius: 50% !important;
+    border-style: solid !important;
+    border-width: 2px !important;
+    border-color: var(--text-normal) !important;
+
+    cursor: pointer !important;
+
+    padding: 0% !important;
+
+    transition: .3s !important;
+    content: '' !important;
 }
 
+.task_checkbox label::after {
+    content: '' !important;
+
+    background-color: var(--text-normal) !important;
+}
+
+.checkbox label {
+    position: relative;
+}
+
+
+*/
 
 .subject_name {
     font-size: large;
