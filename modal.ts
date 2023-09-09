@@ -16,12 +16,12 @@ export default class HomeworkModal extends Modal {
 		var subjectName = subject.createEl("div", {text: "Subject", cls: "subject_name" });
 		var subjectButton = subject.createEl("button", {text: "＋", cls: "subject_add", parent: subjectName });
 
-        var promptClass = contentEl.createEl("div", { cls: "promptClass" });
-
 		subjectButton.addEventListener("click", (click) => {
 			new Notice('This is a notice!');
 
             var toDoName = "";
+
+            var promptClass = contentEl.createEl("div", { cls: "promptClass" });
 
             var promptName = new Setting(promptClass)
             .setName("New Task")
