@@ -1,3 +1,37 @@
+/* Heading Section */
+
+.heading_text {
+    display: inline-block;
+    vertical-align: middle !important;
+}
+
+.heading_add {
+    font-size: medium;
+
+    width: calc(20% + 5px);
+
+    vertical-align: middle !important;
+
+    background-color: var(--interactive-accent)!important;
+
+    color: var(--text-normal);
+    font-weight: bolder;
+    text-align: center;
+
+    padding: 0;
+    box-shadow: none;
+    margin: none;
+    margin-left: 20px;
+
+    border-width: 0px;
+    border-color: var(--text-normal)!important;
+}
+
+.heading_add:hover {  
+    box-shadow: none;
+    background-color: var(--interactive-accent-hover)!important;
+}
+
 /* Checkboxes */
 
 .task_check {

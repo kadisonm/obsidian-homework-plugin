@@ -1,3 +1,4 @@
+import { create } from 'domain';
 import { App, Modal, Notice, Setting  } from 'obsidian';
 
 export default class HomeworkModal extends Modal {
@@ -8,15 +9,26 @@ export default class HomeworkModal extends Modal {
 	onOpen() {
 		const {contentEl} = this;
 
-		contentEl.createEl("h1", { text: "Homework" });
+		var headingClass = contentEl.createEl("div", { cls: "HeadingSection" });
+		var headingText = headingClass.createEl("h1", { text: "Homework", cls: "heading_text" });
+		var newSubject = headingClass.createEl("button", {text: " Add Subject ", cls: "heading_add", parent: headingText });
 
 		// Set up Subject
-		var subject = contentEl.createEl("div", { cls: "subject" });
+		
 
-		var subjectName = subject.createEl("div", {text: "Subject", cls: "subject_name" });
-		var subjectButton = subject.createEl("button", {text: "＋", cls: "subject_add", parent: subjectName });
+		this.createSubject("test2");
+	
+	}
 
-		subjectButton.addEventListener("click", (click) => {
+	createSubject(name: string) {
+		const {contentEl} = this;
+
+        var subject = contentEl.createEl("div", { cls: "subject" });
+
+		var subjectName = subject.createEl("div", {text: name, cls: "subject_name" });
+		var newTaskButton = subject.createEl("button", {text: "＋", cls: "subject_add", parent: subjectName });
+
+		newTaskButton.addEventListener("click", (click) => {
 			new Notice('This is a notice!');
 
             var toDoName = "";
@@ -41,7 +53,7 @@ export default class HomeworkModal extends Modal {
                     this.createTask(toDoName);
             }));
 		});
-	}
+    }
 
     createTask(name: string) {
         const {contentEl} = this;
