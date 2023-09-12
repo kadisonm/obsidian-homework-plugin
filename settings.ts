@@ -2,11 +2,11 @@ import HomeworkPlugin from "./main"
 import { App, PluginSettingTab, Setting } from 'obsidian'
 
 export interface HomeworkSettings {
-    homeworkPageLink: string;
+    homeworkPagePath: string;
 }
   
 export const DEFAULT_SETTINGS: HomeworkSettings = {
-    homeworkPageLink: "",
+    homeworkPagePath: "",
 }
 
 export class HomeworkSettingTab extends PluginSettingTab {
@@ -30,9 +30,9 @@ export class HomeworkSettingTab extends PluginSettingTab {
         .addText((text) =>
             text
             .setPlaceholder("")
-            .setValue(this.plugin.settings.homeworkPageLink)
+            .setValue(this.plugin.settings.homeworkPagePath)
             .onChange(async (value) => {
-                this.plugin.settings.homeworkPageLink = value;
+                this.plugin.settings.homeworkPagePath = value;
                 await this.plugin.saveSettings();
             })
         );

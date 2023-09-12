@@ -13,7 +13,7 @@ export default class HomeworkPlugin extends Plugin {
 
 		// Open homework ribbon button
 		const ribbonToggle = this.addRibbonIcon('book', 'Open Homework', (evt: MouseEvent) => {
-			new HomeworkModal(this.app).open();
+			new HomeworkModal(this.app, this).open();
 		});
 
 		// Perform additional things with the ribbon
@@ -24,7 +24,7 @@ export default class HomeworkPlugin extends Plugin {
 			id: 'open-homework',
 			name: 'Open Homework',
 			callback: () => {
-				new HomeworkModal(this.app).open();
+				new HomeworkModal(this.app, this).open();
 			}
 		});
 	}
