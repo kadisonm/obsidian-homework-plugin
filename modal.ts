@@ -144,11 +144,14 @@ export default class HomeworkModal extends Modal {
 
 					//this.createTask(toDoName, subject, subjectName, false);
 
+				
 					if (subjectTasks.length > 0)
 					{
 						let taskIndex = 0;
 
-						var count = (subjectTasks.match(/+/g) || []).length;
+						let count = (subjectTasks.match(new RegExp("+", "g")) || []).length;
+
+						new Notice(count.toString());
 
 						for (let i = 0; i < count / 2; i++) {
 							let taskStart = subjectTasks.indexOf("+", taskIndex);
