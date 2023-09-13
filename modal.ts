@@ -122,6 +122,10 @@ export default class HomeworkModal extends Modal {
 
 				while (true) {
 					// Find data
+
+					if (fileContent.length == 0)
+						break;
+
 					let firstSubjectStart = fileContent.indexOf("&", currentSubjectIndex);
 					let firstSubjectEnd = fileContent.indexOf("&", firstSubjectStart + 1);
 
@@ -140,6 +144,24 @@ export default class HomeworkModal extends Modal {
 
 					//this.createTask(toDoName, subject, subjectName, false);
 
+					if (subjectTasks.length > 0)
+					{
+						let taskIndex = 0;
+
+						var count = (subjectTasks.match(/+/g) || []).length;
+
+						for (let i = 0; i < count / 2; i++) {
+							let taskStart = subjectTasks.indexOf("+", taskIndex);
+							let taskEnd = subjectTasks.indexOf("+", firstSubjectStart + 1);
+
+							let taskName = subjectTasks.substring(taskStart + 1, taskEnd);
+
+							taskIndex = taskEnd;
+
+							this.createTask(taskName, subject, subjectName, false);
+						}
+					}
+					
 					currentSubjectIndex = nextSubject;
 
 					if (currentSubjectIndex == fileContent.length)
