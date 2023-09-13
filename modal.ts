@@ -18,6 +18,8 @@ export default class HomeworkModal extends Modal {
 		let headingText = headingClass.createEl("h1", { text: "Homework", cls: "heading_text" });
 		let newSubject = headingClass.createEl("button", {text: " Add Subject ", cls: "heading_add", parent: headingText });
 
+		this.loadSubjects();
+
 		newSubject.addEventListener("click", (click) => {
             let newSubjectName = "";
 
@@ -38,12 +40,12 @@ export default class HomeworkModal extends Modal {
                 .onClick(() => {
                     
                     promptClass.empty();
-                    this.createSubject(newSubjectName);
+                    this.createSubject(newSubjectName, true);
             }));
 		});
 	}
 
-	createSubject(name: string) {
+	createSubject(name: string, newData: boolean) {
 		const {contentEl} = this;
 
         let subject = contentEl.createEl("div", { cls: "subject" });
@@ -51,12 +53,15 @@ export default class HomeworkModal extends Modal {
 		let subjectName = subject.createEl("div", {text: name, cls: "subject_name" });
 		let newTaskButton = subject.createEl("button", {text: "＋", cls: "subject_add", parent: subjectName });
 
-		let file = this.app.vault.getAbstractFileByPath(`${this.plugin.settings.homeworkPagePath}`);
+		if (newData)
+		{
+			let file = this.app.vault.getAbstractFileByPath(`${this.plugin.settings.homeworkPagePath}`);
 
-		if (file instanceof TFile) {
-			this.writeSubjectFile(file, name);
+			if (file instanceof TFile) {
+				this.writeSubjectFile(file, name);
+			}	
 		}
-
+		
 		newTaskButton.addEventListener("click", (click) => {
             let toDoName = "";
 
@@ -77,12 +82,14 @@ export default class HomeworkModal extends Modal {
                 .onClick(() => {  
                     promptClass.empty();
 
-                    this.createTask(toDoName, subject, name);
-            }));
+                    this.createTask(toDoName, subject, name, true);
+            }));	
 		});
+
+		return subject;
     }
 
-    createTask(name: string, subject: HTMLDivElement, subjectName: string) {
+    createTask(name: string, subject: HTMLDivElement, subjectName: string, newData: boolean) {
         let task = subject.createEl("div", { cls: "task" });
 		
 		let taskButton = task.createEl("button", {cls: "task_check" });
@@ -90,8 +97,11 @@ export default class HomeworkModal extends Modal {
 
 		let file = this.app.vault.getAbstractFileByPath(`${this.plugin.settings.homeworkPagePath}`);
 
-		if (file instanceof TFile) {
-			this.writeTaskFile(file, subjectName, name);
+		if (newData)
+		{
+			if (file instanceof TFile) {
+				this.writeTaskFile(file, subjectName, name);
+			}	
 		}
 		
 		taskButton.addEventListener("click", (click) => {
@@ -102,6 +112,42 @@ export default class HomeworkModal extends Modal {
 			}
 		});
     }
+
+	loadSubjects() {
+		let file = this.app.vault.getAbstractFileByPath(`${this.plugin.settings.homeworkPagePath}`);
+
+		if (file instanceof TFile) {
+			this.app.vault.read(file).then((fileContent) => {
+				let currentSubjectIndex = 0
+
+				while (true) {
+					// Find data
+					let firstSubjectStart = fileContent.indexOf("&", currentSubjectIndex);
+					let firstSubjectEnd = fileContent.indexOf("&", firstSubjectStart + 1);
+
+					let subjectName = fileContent.substring(firstSubjectStart + 1, firstSubjectEnd);
+
+					let nextSubject = fileContent.indexOf("&", firstSubjectEnd + 1);
+
+					if (nextSubject == -1)
+						nextSubject = fileContent.length;
+
+					let subjectTasks = fileContent.substring(firstSubjectEnd + 1, nextSubject);
+
+					//Display Data
+
+					let subject = this.createSubject(subjectName, false);
+
+					//this.createTask(toDoName, subject, subjectName, false);
+
+					currentSubjectIndex = nextSubject;
+
+					if (currentSubjectIndex == fileContent.length)
+						break;	
+				}
+			});
+		}
+	}
 
 	writeSubjectFile(file: TFile, name: string ) {
 		this.app.vault.read(file).then((fileContent) => {
