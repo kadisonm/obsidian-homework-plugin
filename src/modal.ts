@@ -9,6 +9,7 @@ export default class HomeworkModal extends Modal {
     subjectsClass: HTMLDivElement;
     data: any;
     editMode: Boolean;
+    creating: Boolean;
 
 	constructor(app: App, plugin: HomeworkPlugin) {
 		super(app);
@@ -25,6 +26,7 @@ export default class HomeworkModal extends Modal {
 
         this.data = await loadHomeworkData();
         this.editMode = false;
+        this.creating = false;
 
 		const headingText = this.headingClass.createEl("h1", { text: "Homework", cls: "heading_text" });
         const editButton = this.headingClass.createEl("button", {text: "✎", cls: "heading_add", parent: headingText });
@@ -55,28 +57,33 @@ export default class HomeworkModal extends Modal {
             const newSubjectButton = this.subjectsClass.createEl("button", {text: " Add Subject ", cls: "heading_add" });
 
             newSubjectButton.addEventListener("click", (click) => {
-                let newSubjectName = "";
+                if (this.creating == false) {
+                    this.creating = true;
 
-                const promptClass = this.headingClass.createEl("div", { cls: "promptClass" });
+                    let newSubjectName = "";
 
-                const promptName = new Setting(promptClass)
-                .setName("New Subject")
-                .addText((text) =>
-                    text.onChange((value) => {
-                    newSubjectName = value
-                }));
+                    const promptClass = this.subjectsClass.createEl("div", { cls: "promptClass" });
 
-                let confirmName = new Setting(promptClass)
-                .addButton((btn) =>
-                    btn
-                    .setButtonText("✓")
-                    .setCta()
-                    .onClick(() => {    
-                        this.data[newSubjectName] = {};
-                        saveHomeworkData(this.data);
-                        this.loadSubjects();        
-                        promptClass.empty();
-                }));
+                    const promptName = new Setting(promptClass)
+                    .setName("New Subject")
+                    .addText((text) =>
+                        text.onChange((value) => {
+                        newSubjectName = value
+                    }));
+
+                    let confirmName = new Setting(promptClass)
+                    .addButton((btn) =>
+                        btn
+                        .setButtonText("✓")
+                        .setCta()
+                        .onClick(() => {    
+                            this.data[newSubjectName] = {};
+                            saveHomeworkData(this.data);
+                            this.loadSubjects();  
+                            this.creating = false;      
+                            promptClass.empty();
+                    }));    
+                } 
             });    
         }
         
@@ -100,46 +107,51 @@ export default class HomeworkModal extends Modal {
                 let newTaskButton = subjectClass.createEl("button", {text: "＋", cls: "subject_add", parent: subjectName });
 
                 newTaskButton.addEventListener("click", (click) => {
-                    let taskName = "";
-                    let page = "";
-        
-                    let promptClass = subjectClass.createEl("div", { cls: "promptClass" });
-        
-                    let promptName = new Setting(promptClass)
-                    .setName("New Task")
-                    .addText((text) =>
-                        text.onChange((value) => {
-                            taskName = value
-                    }));
+                    if (this.creating == false) {
+                        this.creating = true;
 
-                    const suggestButton = promptClass.createEl("button", {text: "File" });
+                        let taskName = "";
+                        let page = "";
+            
+                        let promptClass = subjectClass.createEl("div", { cls: "promptClass" });
+            
+                        let promptName = new Setting(promptClass)
+                        .setName("New Task")
+                        .addText((text) =>
+                            text.onChange((value) => {
+                                taskName = value
+                        }));
 
-                    suggestButton.addEventListener("click", (click) => {
-                        new SuggestFileModal(this.app, (result) => {
-                            page = result.path;
-                            suggestButton.setText(result.name);
-                        }).open();
-                    });
+                        const suggestButton = promptClass.createEl("button", {text: "File" });
 
-                    const dateField = promptClass.createEl("input", {type: "date"});
-        
-                    let confirmName = new Setting(promptClass)
-                    .addButton((btn) =>
-                        btn
-                        .setButtonText("✓")
-                        .setCta()
-                        .onClick(() => {  
-                            promptClass.empty();
+                        suggestButton.addEventListener("click", (click) => {
+                            new SuggestFileModal(this.app, (result) => {
+                                page = result.path;
+                                suggestButton.setText(result.name);
+                            }).open();
+                        });
 
-                            this.data[subjectKey][taskName] = {
-                                page : page,
-                                date : dateField.value,
-                            };
+                        const dateField = promptClass.createEl("input", {type: "date"});
+            
+                        let confirmName = new Setting(promptClass)
+                        .addButton((btn) =>
+                            btn
+                            .setButtonText("✓")
+                            .setCta()
+                            .onClick(() => {  
+                                promptClass.empty();
 
-                            saveHomeworkData(this.data);
+                                this.data[subjectKey][taskName] = {
+                                    page : page,
+                                    date : dateField.value,
+                                };
 
-                            this.createTask(subjectClass, subjectKey, taskName);
-                    }));	
+                                saveHomeworkData(this.data);
+
+                                this.createTask(subjectClass, subjectKey, taskName);
+                                this.creating = false;
+                        }));	
+                    }   
                 });
             }
 
