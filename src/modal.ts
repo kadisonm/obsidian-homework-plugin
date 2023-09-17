@@ -153,8 +153,18 @@ export default class HomeworkModal extends Modal {
         let taskClass = subjectClass.createEl("div", { cls: "task" });
 		
 		let taskButton = taskClass.createEl("button", {cls: "task_check" });
-		let taskText = taskClass.createEl("button", { text: taskName, cls: "task_text", parent: taskButton});
 
+        let filePath = this.data[subjectKey][taskName].page;
+
+        let taskText;
+
+        if (filePath == "") {
+            taskText = taskClass.createEl("label", { text: taskName, cls: "task_label", parent: taskButton});
+        }
+        else {
+            taskText = taskClass.createEl("button", { text: taskName, cls: "task_text", parent: taskButton});
+        }
+		
         let date = this.data[subjectKey][taskName].date;
 
         let yearIndex = date.indexOf("-");
@@ -165,20 +175,26 @@ export default class HomeworkModal extends Modal {
         let month = date.slice(yearIndex + 1, monthIndex);
         let day = date.slice(monthIndex + 1);
 
-        let newDate = day + "/" + month + "/" + year;
+        if (month != "")
+            month += "/";
+
+        if (day != "")
+            day += "/";
+
+        let newDate = day + month + year;
 
         taskClass.createEl("label", { text: newDate, cls: "task_date" });
 
         taskText.addEventListener("click", (click => {
-            let filePath = this.data[subjectKey][taskName].page;
+            if (filePath != "") {
+                let file = this.app.vault.getAbstractFileByPath(filePath);
 
-            let file = this.app.vault.getAbstractFileByPath(filePath);
-
-            if (file instanceof TFile)
-            {
-                this.app.workspace.getLeaf().openFile(file);
-                this.close();
-            }   
+                if (file instanceof TFile)
+                {
+                    this.app.workspace.getLeaf().openFile(file);
+                    this.close();
+                }       
+            }
         }))
 		
 		taskButton.addEventListener("click", (click) => {
