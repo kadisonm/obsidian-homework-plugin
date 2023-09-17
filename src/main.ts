@@ -1,14 +1,17 @@
 import { App, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
 import {DEFAULT_SETTINGS, HomeworkSettings, HomeworkSettingTab} from './settings'
+import {HomeworkData} from './data'
 import HomeworkModal from './modal'
 
 export default class HomeworkPlugin extends Plugin {
 	settings: HomeworkSettings
+	data: {}
 
 	async onload() {
 		// Set up settings
 		await this.loadSettings();
+
     	this.addSettingTab(new HomeworkSettingTab(this.app, this));
 
 		// Open homework ribbon button
@@ -27,6 +30,8 @@ export default class HomeworkPlugin extends Plugin {
 				new HomeworkModal(this.app, this).open();
 			}
 		});
+
+		this.loadHomeworkData();
 	}
 
 	async loadSettings() {
@@ -35,5 +40,17 @@ export default class HomeworkPlugin extends Plugin {
 	
 	async saveSettings() {
 		await this.saveData(this.settings);
+	}
+
+	async loadHomeworkData() {
+		const jsonPath = this.app.vault.configDir + "/plugins/Obsidian-Homework-Plugin/homeworkData.json";
+        const result = await this.app.vault.adapter.read(jsonPath);
+        this.data = JSON.parse(result);
+	}
+
+	saveHomeworkData() {
+		const jsonPath = this.app.vault.configDir + "/plugins/Obsidian-Homework-Plugin/homeworkData.json";
+    
+        this.app.vault.adapter.write(jsonPath, JSON.stringify(this.data));
 	}
 }
