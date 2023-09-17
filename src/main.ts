@@ -1,6 +1,6 @@
 import { App, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
-import {DEFAULT_SETTINGS, HomeworkSettings, HomeworkSettingTab} from './settings'
+import { DEFAULT_SETTINGS, HomeworkSettings, HomeworkSettingTab } from './settings'
 import HomeworkModal from './modal'
 
 export default class HomeworkPlugin extends Plugin {
