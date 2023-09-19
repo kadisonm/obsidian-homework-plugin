@@ -1,9 +1,36 @@
 /* Heading Section */
 
-.heading_text {
+.title {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.edit-button {
+    vertical-align: middle;
+    margin-left: 10px;
+
+    width: 30px;
+    height: 30px;
+
+    padding: 0px;
+
+    background-color: transparent !important;
+
+    /*
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;  */
+    box-shadow: none !important;
+}
+
+.edit-button:hover {
+    background-color: var(--interactive-hover) !important;
+}
+
+/* .heading_text {
     display: inline-block;
     vertical-align: middle !important;
-}
+} */
 
 .heading_add {
     font-size: medium;

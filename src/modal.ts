@@ -2,6 +2,7 @@ import HomeworkPlugin from './main';
 import { Workspace, App, Modal, Notice, Setting, TFile  } from 'obsidian';
 import { loadHomeworkData, saveHomeworkData}  from './data';
 import { SuggestFileModal } from './suggestModal';
+import { icons } from './icons';
 
 export default class HomeworkModal extends Modal {
 	plugin: HomeworkPlugin;
@@ -17,7 +18,7 @@ export default class HomeworkModal extends Modal {
         const {contentEl} = this;
 
 		this.plugin = plugin;
-        this.headingClass = contentEl.createEl("div", { cls: "HeadingSection" });
+        this.headingClass = contentEl.createEl("div");
         this.subjectsClass = contentEl.createEl("div");
 	}
 
@@ -28,19 +29,22 @@ export default class HomeworkModal extends Modal {
         this.editMode = false;
         this.creating = false;
 
-		const headingText = this.headingClass.createEl("h1", { text: "Homework", cls: "heading_text" });
-        const editButton = this.headingClass.createEl("button", {text: "✎", cls: "heading_add", parent: headingText });
+		const headingText = this.headingClass.createEl("h1", { text: "Homework", cls: "title" });
 
+        const editButton = this.headingClass.createEl("button", {cls: "edit-button", parent: headingText });
+       
         this.loadSubjects();
 
         editButton.addEventListener("click", (click) => {
             this.editMode = !this.editMode;
             this.loadSubjects();
 
-            if (this.editMode)
-                editButton.setText("🕮"); 
-            else
-                editButton.setText("✎"); 
+            if (this.editMode) {
+                
+            }
+            else {
+                
+            }
         });
 	}
 
