@@ -7,7 +7,7 @@ import { icons } from './icons';
 export default class HomeworkModal extends Modal {
 	plugin: HomeworkPlugin;
     headingClass: HTMLDivElement;
-    subjectsClass: HTMLDivElement;
+    loadClass: HTMLDivElement;
     data: any;
     editMode: Boolean;
     creating: Boolean;
@@ -19,7 +19,7 @@ export default class HomeworkModal extends Modal {
 
 		this.plugin = plugin;
         this.headingClass = contentEl.createEl("div");
-        this.subjectsClass = contentEl.createEl("div");
+        this.loadClass = contentEl.createEl("div");
 	}
 
 	async onOpen() {
@@ -30,8 +30,7 @@ export default class HomeworkModal extends Modal {
         this.creating = false;
 
 		const headingText = this.headingClass.createEl("h1", { text: "Homework", cls: "title" });
-
-        const editButton = this.headingClass.createEl("button", {cls: "edit-button", parent: headingText });
+        const editButton = this.headingClass.createEl("div", {cls: "edit-button" });
        
         this.loadSubjects();
 
@@ -40,10 +39,10 @@ export default class HomeworkModal extends Modal {
             this.loadSubjects();
 
             if (this.editMode) {
-                
+                editButton.style.backgroundImage = `url(${icons['book-open']})`; 
             }
             else {
-                
+                editButton.style.backgroundImage = `url(${icons['pen-line']})`; 
             }
         });
 	}
@@ -55,18 +54,20 @@ export default class HomeworkModal extends Modal {
 
     async loadSubjects()
     {
-        this.subjectsClass.empty();
+        this.loadClass.empty();
 
         if (this.editMode) {
-            const newSubjectButton = this.subjectsClass.createEl("button", {text: " Add Subject ", cls: "heading_add" });
+            const addSubjectButton = this.loadClass.createEl("div", { cls: "add-subject-button" });
+            addSubjectButton.createEl('div', { cls: "new-subject-image"});
+            addSubjectButton.createEl("p", { text: "Add a subject" });
 
-            newSubjectButton.addEventListener("click", (click) => {
+            addSubjectButton.addEventListener("click", (click) => {
                 if (this.creating == false) {
                     this.creating = true;
 
                     let newSubjectName = "";
 
-                    const promptClass = this.subjectsClass.createEl("div", { cls: "promptClass" });
+                    const promptClass = this.loadClass.createEl("div", { cls: "promptClass" });
 
                     const promptName = new Setting(promptClass)
                     .setName("New Subject")
@@ -91,24 +92,25 @@ export default class HomeworkModal extends Modal {
             });    
         }
         
-        for (const subjectKey in this.data)
-        {
-            let subjectClass = this.subjectsClass.createEl("div", { cls: "subject" });
+        for (const subjectKey in this.data) {
+            let newSubjectClass = this.loadClass.createEl("div", { cls: "subject" });
 
-            let subjectName = subjectClass.createEl("div", {text: subjectKey, cls: "subject_name" });
+            let subjectName = newSubjectClass.createEl("div", {text: subjectKey, cls: "subject_name" });
 
             if (this.editMode) {
-                let removeSubjectButton = subjectClass.createEl("button", {text: "X", cls: "subject_add", parent: subjectName });
+                let removeSubjectButton = newSubjectClass.createEl("div", {cls: "subject-remove", parent: subjectName });
 
+                newSubjectClass.insertBefore(removeSubjectButton, subjectName);
+                
                 removeSubjectButton.addEventListener("click", (click) => {
                     Reflect.deleteProperty(this.data, subjectKey);
                     saveHomeworkData(this.data);
 
-                    subjectClass.empty();
+                    newSubjectClass.empty();
                 });
             }
             else {
-                let newTaskButton = subjectClass.createEl("button", {text: "＋", cls: "subject_add", parent: subjectName });
+                let newTaskButton = newSubjectClass.createEl("button", {text: "＋", cls: "subject_add", parent: subjectName });
 
                 newTaskButton.addEventListener("click", (click) => {
                     if (this.creating == false) {
@@ -117,7 +119,7 @@ export default class HomeworkModal extends Modal {
                         let taskName = "";
                         let page = "";
             
-                        let promptClass = subjectClass.createEl("div", { cls: "promptClass" });
+                        let promptClass = newSubjectClass.createEl("div", { cls: "promptClass" });
             
                         let promptName = new Setting(promptClass)
                         .setName("New Task")
@@ -152,7 +154,7 @@ export default class HomeworkModal extends Modal {
 
                                 saveHomeworkData(this.data);
 
-                                this.createTask(subjectClass, subjectKey, taskName);
+                                this.createTask(newSubjectClass, subjectKey, taskName);
                                 this.creating = false;
                         }));	
                     }   
@@ -160,7 +162,7 @@ export default class HomeworkModal extends Modal {
             }
 
             for (const taskKey in this.data[subjectKey]) {
-                this.createTask(subjectClass, subjectKey, `${taskKey}`)
+                this.createTask(newSubjectClass, subjectKey, `${taskKey}`)
             }
         }
     }

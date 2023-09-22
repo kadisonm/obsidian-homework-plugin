@@ -3,23 +3,28 @@
 .title {
     display: inline-block;
     vertical-align: middle;
+    width: 80%
 }
 
 .edit-button {
+    display: inline-block;
+
     vertical-align: middle;
-    margin-left: 10px;
 
     width: 30px;
     height: 30px;
+
+    border-radius: 25%;
 
     padding: 0px;
 
     background-color: transparent !important;
 
-    /*
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1wZW4tbGluZSI+PHBhdGggZD0iTTEyIDIwaDkiLz48cGF0aCBkPSJNMTYuNSAzLjVhMi4xMiAyLjEyIDAgMCAxIDMgM0w3IDE5bC00IDEgMS00WiIvPjwvc3ZnPg==");
+    
     background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;  */
+    background-size: 25px;
+    background-position: center; 
     box-shadow: none !important;
 }
 
@@ -27,36 +32,44 @@
     background-color: var(--interactive-hover) !important;
 }
 
-/* .heading_text {
+/* Add Subject */
+
+.add-subject-button {
+    width: 35%;
+    vertical-align: middle;
     display: inline-block;
-    vertical-align: middle !important;
-} */
-
-.heading_add {
-    font-size: medium;
-
-    width: calc(20% + 5px);
-
-    vertical-align: middle !important;
-
     background-color: var(--interactive-accent)!important;
-
-    color: var(--text-normal);
-    font-weight: bolder;
-    text-align: center;
-
-    padding: 0;
-    box-shadow: none;
-    margin: none;
-    margin-left: 20px;
-
-    border-width: 0px;
-    border-color: var(--text-normal)!important;
+    border-radius: 5px;
+    margin-bottom: 10px;
 }
 
-.heading_add:hover {  
-    box-shadow: none;
+.add-subject-button:hover {  
     background-color: var(--interactive-accent-hover)!important;
+}
+
+.new-subject-image {
+    display: inline-block;
+    vertical-align: middle;
+    width: 25px;
+    height: 25px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+    background-color: transparent;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1jaGVjay1jaXJjbGUiPjxwYXRoIGQ9Ik0yMiAxMS4wOFYxMmExMCAxMCAwIDEgMS01LjkzLTkuMTQiLz48cG9seWxpbmUgcG9pbnRzPSIyMiA0IDEyIDE0LjAxIDkgMTEuMDEiLz48L3N2Zz4=);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center; 
+}
+
+.add-subject-button p {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+    font-size: large;
+    font-weight: bolder;
 }
 
 /* Checkboxes */
@@ -93,10 +106,34 @@
 
 .subject_name {
     font-size: large;
-    font-weight: bold;
-    margin-right: 15px; 
-    line-height: 3;
+    font-weight: bold; 
     display: inline-block;
+    vertical-align: middle;
+    padding: 10px;
+}
+
+.subject-remove {
+    display: inline-block;
+
+    vertical-align: middle;
+
+    width: 20px;
+    height: 20px;
+
+    border-radius: 50%;
+    margin-right: 10px;
+
+    background-color:red;
+
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1taW51cy1jaXJjbGUiPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjEwIi8+PHBhdGggZD0iTTggMTJoOCIvPjwvc3ZnPg==");
+    
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center; 
+}
+
+.subject-remove:hover {
+    background-color: rgb(133, 0, 0);
 }
 
 .subject_add {
