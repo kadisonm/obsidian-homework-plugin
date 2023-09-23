@@ -47,6 +47,9 @@ export default class HomeworkModal extends Modal {
                     editButton.style.backgroundImage = `url(${icons['pen-line']})`; 
                 }   
             }
+            else {
+                new Notice("Please complete prompt first.");
+            }
             
         });
 	}
@@ -111,7 +114,10 @@ export default class HomeworkModal extends Modal {
                     confirmSubject.addEventListener("click", (click) => {
                         onPromptFinish(this);
                     });   
-                } 
+                }
+                else {
+                    new Notice("Already creating new subject.");
+                }
             });    
         }
         
@@ -199,7 +205,10 @@ export default class HomeworkModal extends Modal {
                         confirmTask.addEventListener("click", (click) => {
                             onPromptFinish(this);
                         });
-                    }   
+                    }
+                    else {
+                        new Notice("Already creating task.");
+                    }
                 });
             }
 
