@@ -146,6 +146,7 @@
 .subject-prompt-input {
   display: inline-block;
   vertical-align: middle;
+  width: 50% !important;
 }
 .subject-prompt-confirm {
   display: inline-block;
@@ -164,9 +165,13 @@
   background-color: var(--interactive-hover);
 }
 
+.task-prompt {
+  margin-top: 10px;
+}
 .task-prompt-input {
   display: block;
   margin-bottom: 10px;
+  width: 50% !important;
 }
 .task-prompt-suggest {
   display: inline-block;

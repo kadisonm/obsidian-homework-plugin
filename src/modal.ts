@@ -1,9 +1,8 @@
 import HomeworkPlugin from './main';
-import { Workspace, App, Modal, Notice, Setting, TFile  } from 'obsidian';
+import { App, Modal, TFile } from 'obsidian';
 import { loadHomeworkData, saveHomeworkData}  from './data';
 import { SuggestFileModal } from './suggestModal';
 import { icons } from './icons';
-import { KeyObject } from 'crypto';
 
 export default class HomeworkModal extends Modal {
 	plugin: HomeworkPlugin;
@@ -36,15 +35,19 @@ export default class HomeworkModal extends Modal {
         this.loadSubjects();
 
         editButton.addEventListener("click", (click) => {
-            this.editMode = !this.editMode;
-            this.loadSubjects();
+            if (this.creating == false)
+            {
+                this.editMode = !this.editMode;
+                this.loadSubjects();
 
-            if (this.editMode) {
-                editButton.style.backgroundImage = `url(${icons['book-open']})`; 
+                if (this.editMode) {
+                    editButton.style.backgroundImage = `url(${icons['book-open']})`; 
+                }
+                else {
+                    editButton.style.backgroundImage = `url(${icons['pen-line']})`; 
+                }   
             }
-            else {
-                editButton.style.backgroundImage = `url(${icons['pen-line']})`; 
-            }
+            
         });
 	}
 

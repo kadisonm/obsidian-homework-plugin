@@ -1,11 +1,11 @@
 {
 	"id": "homework-manager",
 	"name": "Homework Manager",
-	"version": "1.0.1",
+	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "This plugin makes keeping track of homework in Obsidian easier!",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "A todo plugin that makes keeping track of homework in Obsidian easier!",
+	"author": "Kadison McLellan",
+	"authorUrl": "https://github.com/KadisonM",
+	"fundingUrl": "https://www.buymeacoffee.com/kadisonm",
 	"isDesktopOnly": false
 }

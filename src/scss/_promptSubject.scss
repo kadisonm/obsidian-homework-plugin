@@ -10,6 +10,7 @@
 
     &-input {
         @include centerInlineBlock();
+        width: 50% !important;
     }
 
     &-confirm {

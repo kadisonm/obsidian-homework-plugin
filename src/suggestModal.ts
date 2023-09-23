@@ -1,4 +1,4 @@
-import { App, Notice, SuggestModal, TFile } from "obsidian";
+import { App, SuggestModal, TFile } from "obsidian";
 
 export class SuggestFileModal extends SuggestModal<TFile> {
     result: TFile;
