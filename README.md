@@ -1,6 +1,6 @@
 # Obsidian Homework Plugin
 
-This plugin is designed to allow for easy homework management within obsidian.
+Keeps track of homework through a to-do list.
 
 ## How To Use
 
