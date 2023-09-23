@@ -5,35 +5,55 @@
 .task-prompt {
     margin-top: 10px;
 
-    &-input {
-        display: block;
+    &-flextop {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
         margin-bottom: 10px;
-        width: 50% !important;
-    }
+        align-items: center;
+        justify-content: left;
 
-    &-suggest {
-        @include centerInlineBlock();
-    }
+        &-input {
+            flex-basis: 50%;
+            width: 50%;
+        }
 
-    &-date {
-        @include centerInlineBlock();
-        margin-left: 5px;
-    }
-
-    &-confirm {
-        @include centerInlineBlock();
-        @include divImage($arrow-right);
-
-        width: 30px;
-        height: 30px;
-
-        border-radius: 25%;
-        margin-left: 5px;
-
-        background-color: var(--interactive-normal);
-
-        &:hover {
+        &-confirm {
+            @include divImage($arrow-right);
+    
+            width: 30px;
+            height: 30px;
+    
+            border-radius: 5px;
+            margin-left: 5px;
+    
             background-color: var(--interactive-hover);
+    
+            &:hover {
+                background-color: var(--interactive-accent-hover);
+            }
+        }
+    }
+
+    &-flexbottom {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        align-items: center;
+        justify-content: left;
+
+        &-suggest {
+            padding: 5px 10px 5px 10px;
+            border-radius: 5px;
+            background-color: var(--interactive-hover);
+
+            &:hover {
+                background-color: var(--interactive-accent-hover); 
+            }
+        }
+    
+        &-date {
+           
         }
     }
 }

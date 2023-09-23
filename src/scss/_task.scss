@@ -3,16 +3,19 @@
 @import 'variables';
 
 @mixin taskText() {
-    @include centerInlineBlock();
+    width: 60%;
+    overflow: hidden;
     font-size: large;
+    word-break: break-all;
 }
 
 .task {
     margin-top: 15px;
     margin-bottom: 15px;
+    overflow: hidden;
 
     &-check {
-        @include centerInlineBlock();
+        float: left;
         background-color: transparent;
 
         width: 25px;
@@ -21,7 +24,7 @@
 
         border-style: solid;
         border-width: 2px !important;
-        border-color: var(--interactive-normal);
+        border-color: var(--interactive-hover);
         border-radius: 50%;
 
         &:hover {

@@ -6,45 +6,46 @@
     margin-top: 20px;
     margin-bottom: 30px;
 
-    &-name {
-        @include centerInlineBlock();
-        font-size: x-large;
+    &-heading {
+        display: flex;
+        flex-wrap: wrap-reverse;
+        gap: 15px;
+        align-items: center;
+        justify-content: left;
 
-        padding: none;
-        margin: none;
-    }
-
-    &-remove {
-        @include centerInlineBlock();
-        @include divImage($minus-circle);
-
-        width: 20px;
-        height: 20px;
-
-        border-radius: 50%;
-        margin-right: 10px;
-
-        background-color:red;
-
-        &:hover {
-            background-color: rgb(133, 0, 0);
+        &-name {
+            font-size: x-large;
+            flex-basis: 80%; 
         }
-    }
 
-    &-add {
-        @include centerInlineBlock();
-        @include divImage($plus);
+        &-remove {
+            @include divImage($minus);
 
-        background-color: transparent;
+            width: 25px;
+            height: 25px;
 
-        margin-left: 15px;
-        border-radius: 5px;
+            border-radius: 50%;
+            background-color:var(--interactive-hover);
 
-        width: 25px;
-        height: 25px;
-
-        &:hover {
-            background-color: var(--interactive-hover);
+            &:hover {
+                background-color:red;
+            }
         }
+
+        &-add {
+            @include divImage($plus);
+    
+            background-color: transparent;
+
+            border-radius: 50%;
+
+            width: 30px;
+            height: 30px;
+
+            &:hover {
+                background-color: var(--interactive-hover);
+            }
+        }    
     }
+    
 }

@@ -3,18 +3,24 @@
 @import 'variables';
 
 .subject-prompt {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 15px;
+    align-items: center;
+    justify-content: left;
+
     & p {
+        flex-basis: 100%;
         font-size: large;
         font-weight: bold;
     }
 
     &-input {
-        @include centerInlineBlock();
-        width: 50% !important;
+        flex-basis: 50%;
+        width: 50%;
     }
 
     &-confirm {
-        @include centerInlineBlock();
         @include divImage($arrow-right);
 
         width: 30px;
@@ -23,10 +29,10 @@
         border-radius: 25%;
         margin-left: 10px;
 
-        background-color: var(--interactive-normal);
+        background-color: var(--interactive-hover);
 
         &:hover {
-            background-color: var(--interactive-hover);
+            background-color: var(--interactive-accent-hover);
         }
     }
 }
