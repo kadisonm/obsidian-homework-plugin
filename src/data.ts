@@ -1,22 +1,21 @@
 import { normalizePath, Notice } from 'obsidian';
 
 export async function loadHomeworkData() {
-    const jsonPath = this.app.vault.adapter.getBasePath() + "/homeworkData.json";
+    const jsonPath = this.app.vault.configDir + "/plugins/Obsidian-Homework-Plugin/homeworkData.json";
     const normalisedPath = normalizePath(jsonPath);
 
-    let exists = await this.app.vault.adapter.exists("/homeworkData.json");
+    let exists = await this.app.vault.adapter.exists(jsonPath);
 
     if (!exists) {
-        this.app.vault.create("/homeworkData.json", "{}");
-
-        new Notice(exists);
+        await this.app.vault.create(jsonPath, "{}");
     }
 
-    const result = await this.app.vault.adapter.read("/homeworkData.json");
+    const result = await this.app.vault.adapter.read(jsonPath);
 
     return JSON.parse(result);
 }
 
 export function saveHomeworkData(data : Object) {
-    this.app.vault.adapter.write("/homeworkData.json", JSON.stringify(data));
+    const jsonPath = this.app.vault.configDir + "/plugins/Obsidian-Homework-Plugin/homeworkData.json";
+    this.app.vault.adapter.write(jsonPath, JSON.stringify(data));
 }
