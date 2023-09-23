@@ -22,4 +22,4 @@ data.json
 .DS_Store
 
 # homework plugin
-/.obsidian/plugins/homework-manager/homeworkData.json
+homeworkData.json
