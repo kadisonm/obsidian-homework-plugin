@@ -1,5 +1,5 @@
 import HomeworkPlugin from './main';
-import { App, Modal, TFile } from 'obsidian';
+import { App, Modal, TFile, Notice } from 'obsidian';
 import { loadHomeworkData, saveHomeworkData}  from './data';
 import { SuggestFileModal } from './suggestModal';
 import { icons } from './icons';
@@ -79,8 +79,18 @@ export default class HomeworkModal extends Modal {
                     inputText.addEventListener('keydown', (event) => {
                         if (event.key == 'Enter'){
                             if (inputText.value.match(".*[A-Za-z0-9].*")) {
-                                if (!this.data[inputText.value])    
-                                    this.data[inputText.value] = {};
+                                if (inputText.value.length <= 32) {
+                                    if (!this.data[inputText.value]) {
+                                        this.data[inputText.value] = {};
+                                    }      
+                                } 
+                                else {
+                                    new Notice("Must be under 32 characters.");
+                                }
+                                                          
+                            }
+                            else {
+                                new Notice("Must not contain special characters.");
                             }
 
                             saveHomeworkData(this.data);
