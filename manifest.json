@@ -3,7 +3,7 @@
 	"name": "Homework Manager",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "A todo plugin that makes keeping track of homework in Obsidian easier!",
+	"description": "Keeps track of homework through a to-do list.",
 	"author": "Kadison McLellan",
 	"authorUrl": "https://github.com/KadisonM",
 	"fundingUrl": "https://www.buymeacoffee.com/kadisonm",
