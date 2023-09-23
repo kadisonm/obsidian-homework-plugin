@@ -1,0 +1,31 @@
+@import 'mixins/centerInlineBlock';
+@import 'mixins/divImage';
+@import 'variables';
+
+.subject-prompt {
+    & p {
+        font-size: large;
+        font-weight: bold;
+    }
+
+    &-input {
+        @include centerInlineBlock();
+    }
+
+    &-confirm {
+        @include centerInlineBlock();
+        @include divImage($arrow-right);
+
+        width: 30px;
+        height: 30px;
+
+        border-radius: 25%;
+        margin-left: 10px;
+
+        background-color: var(--interactive-normal);
+
+        &:hover {
+            background-color: var(--interactive-hover);
+        }
+    }
+}

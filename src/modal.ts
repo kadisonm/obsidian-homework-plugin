@@ -3,6 +3,7 @@ import { Workspace, App, Modal, Notice, Setting, TFile  } from 'obsidian';
 import { loadHomeworkData, saveHomeworkData}  from './data';
 import { SuggestFileModal } from './suggestModal';
 import { icons } from './icons';
+import { KeyObject } from 'crypto';
 
 export default class HomeworkModal extends Modal {
 	plugin: HomeworkPlugin;
@@ -57,37 +58,48 @@ export default class HomeworkModal extends Modal {
         this.loadClass.empty();
 
         if (this.editMode) {
-            const addSubjectButton = this.loadClass.createEl("div", { cls: "add-subject-button" });
-            addSubjectButton.createEl('div', { cls: "new-subject-image"});
+            const addSubjectButton = this.loadClass.createEl("div", { cls: "add-subject" });
+            addSubjectButton.createEl('div', {cls: "add-subject-image"});
             addSubjectButton.createEl("p", { text: "Add a subject" });
 
             addSubjectButton.addEventListener("click", (click) => {
                 if (this.creating == false) {
                     this.creating = true;
 
-                    let newSubjectName = "";
+                    const promptClass = this.loadClass.createEl("div", {cls: "subject-prompt"});
 
-                    const promptClass = this.loadClass.createEl("div", { cls: "promptClass" });
+                    promptClass.createEl("p", {text: "New subject"});
 
-                    const promptName = new Setting(promptClass)
-                    .setName("New Subject")
-                    .addText((text) =>
-                        text.onChange((value) => {
-                        newSubjectName = value
-                    }));
+                    const inputText = promptClass.createEl("input", {type: "text", cls: "subject-prompt-input"});
+                    inputText.focus();
 
-                    let confirmName = new Setting(promptClass)
-                    .addButton((btn) =>
-                        btn
-                        .setButtonText("✓")
-                        .setCta()
-                        .onClick(() => {    
-                            this.data[newSubjectName] = {};
+                    inputText.addEventListener('keydown', (event) => {
+                        if (event.key == 'Enter'){
+                            if (inputText.value.match(".*[A-Za-z0-9].*")) {
+                                if (!this.data[inputText.value])    
+                                    this.data[inputText.value] = {};
+                            }
+
                             saveHomeworkData(this.data);
+                                
                             this.loadSubjects();  
                             this.creating = false;      
                             promptClass.empty();
-                    }));    
+                        }
+                    });
+
+                    const confirmSubject = promptClass.createEl("div", {cls: "subject-prompt-confirm"});
+
+                    confirmSubject.addEventListener("click", (click) => {
+                        if (inputText.value.match(".*[A-Za-z0-9].*")) {
+                            if (!this.data[inputText.value])    
+                                this.data[inputText.value] = {};
+                        }
+                        saveHomeworkData(this.data);
+                        this.loadSubjects();  
+                        this.creating = false;      
+                        promptClass.empty();
+                    });   
                 } 
             });    
         }
@@ -95,7 +107,7 @@ export default class HomeworkModal extends Modal {
         for (const subjectKey in this.data) {
             let newSubjectClass = this.loadClass.createEl("div", { cls: "subject" });
 
-            let subjectName = newSubjectClass.createEl("div", {text: subjectKey, cls: "subject_name" });
+            let subjectName = newSubjectClass.createEl("div", {text: subjectKey, cls: "subject-name" });
 
             if (this.editMode) {
                 let removeSubjectButton = newSubjectClass.createEl("div", {cls: "subject-remove", parent: subjectName });
@@ -110,25 +122,20 @@ export default class HomeworkModal extends Modal {
                 });
             }
             else {
-                let newTaskButton = newSubjectClass.createEl("button", {text: "＋", cls: "subject_add", parent: subjectName });
+                let newTaskButton = newSubjectClass.createEl("div", {cls: "subject-add", parent: subjectName });
 
                 newTaskButton.addEventListener("click", (click) => {
                     if (this.creating == false) {
                         this.creating = true;
 
-                        let taskName = "";
                         let page = "";
             
-                        let promptClass = newSubjectClass.createEl("div", { cls: "promptClass" });
-            
-                        let promptName = new Setting(promptClass)
-                        .setName("New Task")
-                        .addText((text) =>
-                            text.onChange((value) => {
-                                taskName = value
-                        }));
+                        let promptClass = newSubjectClass.createEl("div", { cls: "task-prompt" });
 
-                        const suggestButton = promptClass.createEl("button", {text: "File" });
+                        const inputText = promptClass.createEl("input", {type: "text", cls: "task-prompt-input"});
+                        inputText.focus();
+
+                        const suggestButton = promptClass.createEl("button", {text: "File", cls: "task-prompt-suggest"});
 
                         suggestButton.addEventListener("click", (click) => {
                             new SuggestFileModal(this.app, (result) => {
@@ -137,26 +144,47 @@ export default class HomeworkModal extends Modal {
                             }).open();
                         });
 
-                        const dateField = promptClass.createEl("input", {type: "date"});
-            
-                        let confirmName = new Setting(promptClass)
-                        .addButton((btn) =>
-                            btn
-                            .setButtonText("✓")
-                            .setCta()
-                            .onClick(() => {  
-                                promptClass.empty();
+                        const dateField = promptClass.createEl("input", {type: "date", cls: "task-prompt-date"});
 
-                                this.data[subjectKey][taskName] = {
-                                    page : page,
-                                    date : dateField.value,
-                                };
-
+                        inputText.addEventListener('keydown', (event) => {
+                            if (event.key == 'Enter'){
+                                if (inputText.value.match(".*[A-Za-z0-9].*")) {
+                                    if (!this.data[subjectKey][inputText.value]) {
+                                        this.data[subjectKey][inputText.value] = {
+                                            page : page,
+                                            date : dateField.value,
+                                        };
+        
+                                        this.createTask(newSubjectClass, subjectKey, inputText.value);    
+                                    }
+                                }
+    
                                 saveHomeworkData(this.data);
-
-                                this.createTask(newSubjectClass, subjectKey, taskName);
                                 this.creating = false;
-                        }));	
+    
+                                promptClass.empty();
+                            }
+                        });
+
+                        const confirmTask = promptClass.createEl("div", {cls: "task-prompt-confirm"});
+
+                        confirmTask.addEventListener("click", (click) => {
+                            if (inputText.value.match(".*[A-Za-z0-9].*")) {
+                                if (!this.data[subjectKey][inputText.value]) {
+                                    this.data[subjectKey][inputText.value] = {
+                                        page : page,
+                                        date : dateField.value,
+                                    };
+    
+                                    this.createTask(newSubjectClass, subjectKey, inputText.value);    
+                                }
+                            }
+
+                            saveHomeworkData(this.data);
+                            this.creating = false;
+
+                            promptClass.empty();
+                        });
                     }   
                 });
             }
@@ -170,38 +198,31 @@ export default class HomeworkModal extends Modal {
     createTask(subjectClass : HTMLDivElement, subjectKey : string, taskName : string) {
         let taskClass = subjectClass.createEl("div", { cls: "task" });
 		
-		let taskButton = taskClass.createEl("button", {cls: "task_check" });
+		let taskButton = taskClass.createEl("div", {cls: "task-check" });
 
         let filePath = this.data[subjectKey][taskName].page;
 
         let taskText;
 
         if (filePath == "") {
-            taskText = taskClass.createEl("label", { text: taskName, cls: "task_label", parent: taskButton});
+            taskText = taskClass.createEl("div", { text: taskName, cls: "task-text", parent: taskButton});
         }
         else {
-            taskText = taskClass.createEl("button", { text: taskName, cls: "task_text", parent: taskButton});
+            taskText = taskClass.createEl("div", { text: taskName, cls: "task-link", parent: taskButton});
         }
-		
-        let date = this.data[subjectKey][taskName].date;
 
-        let yearIndex = date.indexOf("-");
-        let monthIndex = date.indexOf("-", yearIndex + 1);
-        let dayIndex = date.indexOf("-", monthIndex + 1);
+        let dateValue = this.data[subjectKey][taskName].date;
 
-        let year = date.slice(0, yearIndex);
-        let month = date.slice(yearIndex + 1, monthIndex);
-        let day = date.slice(monthIndex + 1);
+        if (dateValue != "") {
+            let date = new Date(this.data[subjectKey][taskName].date);
+            var dateArr = date.toDateString().split(' ');
+            var dateFormat = dateArr[2] + ' ' + dateArr[1] + ' ' + dateArr[3];
+            let taskDate = taskClass.createEl("div", { text: dateFormat, cls: "task-date", parent: taskText });    
 
-        if (month != "")
-            month += "/";
-
-        if (day != "")
-            day += "/";
-
-        let newDate = day + month + year;
-
-        taskClass.createEl("label", { text: newDate, cls: "task_date" });
+            if (new Date() > date && new Date().toDateString() != date.toDateString()) {
+                taskDate.style.color = "var(--text-error)";
+            }
+        }
 
         taskText.addEventListener("click", (click => {
             if (filePath != "") {

@@ -1,0 +1,61 @@
+@import 'mixins/centerInlineBlock';
+@import 'mixins/divImage';
+@import 'variables';
+
+.title {
+    @include centerInlineBlock();
+    width: 80%;
+    font-size: xx-large;
+
+    margin-bottom: none;
+}
+
+.edit-button {
+    @include centerInlineBlock();
+    @include divImage($pen-line, 25px);
+
+    width: 30px;
+    height: 30px;
+
+    border-radius: 25%;
+
+    padding: 0px;
+
+    background-color: transparent;
+
+    &:hover {
+        background-color: var(--interactive-hover);
+    }
+}
+
+.add-subject {
+    @include centerInlineBlock();
+    width: 35%;
+    background-color: var(--interactive-accent);
+    border-radius: 5px;
+    margin-bottom: 10px;
+
+    &:hover {
+        background-color: var(--interactive-accent-hover);
+    }
+
+    &-image {
+        @include centerInlineBlock();
+        @include divImage($check-circle);
+        width: 25px;
+        height: 25px;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+
+        background-color: transparent;
+    }
+
+    & p {
+        @include centerInlineBlock();
+        margin: 0;
+        font-size: large;
+        font-weight: bolder;
+    }
+}

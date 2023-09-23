@@ -1,0 +1,50 @@
+@import 'mixins/centerInlineBlock';
+@import 'mixins/divImage';
+@import 'variables';
+
+.subject {
+    margin-top: 20px;
+    margin-bottom: 30px;
+
+    &-name {
+        @include centerInlineBlock();
+        font-size: x-large;
+
+        padding: none;
+        margin: none;
+    }
+
+    &-remove {
+        @include centerInlineBlock();
+        @include divImage($minus-circle);
+
+        width: 20px;
+        height: 20px;
+
+        border-radius: 50%;
+        margin-right: 10px;
+
+        background-color:red;
+
+        &:hover {
+            background-color: rgb(133, 0, 0);
+        }
+    }
+
+    &-add {
+        @include centerInlineBlock();
+        @include divImage($plus);
+
+        background-color: transparent;
+
+        margin-left: 15px;
+        border-radius: 5px;
+
+        width: 25px;
+        height: 25px;
+
+        &:hover {
+            background-color: var(--interactive-hover);
+        }
+    }
+}
