@@ -63,6 +63,6 @@ Disclaimer: You will not be able to undo this, and must recreate the task again.
 If you want to support me you can do so here:
 https://www.buymeacoffee.com/kadisonm
 
-[<img style="float:left" src="https://github.com/KadisonM/Obsidian-Homework-Plugin/assets/134670047/2558dcdd-9686-49b1-b838-3775e185fb8a" width="200">](https://www.buymeacoffee.com/kadisonm)
+[![BuyMeACoffee](https://github.com/KadisonM/Obsidian-Homework-Plugin/assets/134670047/2558dcdd-9686-49b1-b838-3775e185fb8a)](https://www.buymeacoffee.com/kadisonm)
 
 Thank you so much for using my plugin.
