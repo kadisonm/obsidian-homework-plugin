@@ -6,7 +6,7 @@ export default class HomeworkPlugin extends Plugin {
 
 	async onload() {
 		// Open homework ribbon button
-		const ribbonToggle = this.addRibbonIcon('book', 'Open Homework', (evt: MouseEvent) => {
+		const ribbonToggle = this.addRibbonIcon('book', 'Open homework', (evt: MouseEvent) => {
 			new HomeworkModal(this.app, this).open();
 		});
 
@@ -16,7 +16,7 @@ export default class HomeworkPlugin extends Plugin {
 		// Open homework command
 		this.addCommand({
 			id: 'open-homework',
-			name: 'Open Homework',
+			name: 'Open homework',
 			callback: () => {
 				new HomeworkModal(this.app, this).open();
 			}
