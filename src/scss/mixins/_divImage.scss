@@ -1,6 +1,0 @@
-@mixin divImage($url, $size : cover) {
-    background-image: url($url);
-    background-repeat: no-repeat;
-    background-size: $size;
-    background-position: center; 
-}

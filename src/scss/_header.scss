@@ -1,5 +1,5 @@
 @import 'mixins/centerInlineBlock';
-@import 'mixins/divImage';
+@import 'mixins/icon';
 @import 'variables';
 
 .header {
@@ -17,8 +17,8 @@
     }
 
     &-edit-button {
-        @include divImage($pen-line, 25px);
-
+        @include icon(cover);
+        
         width: 30px;
         height: 30px;
 

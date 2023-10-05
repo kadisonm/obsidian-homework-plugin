@@ -1,5 +1,5 @@
 @import 'mixins/centerInlineBlock';
-@import 'mixins/divImage';
+//@import 'mixins/divImage';
 @import 'variables';
 
 .subject {
@@ -19,7 +19,7 @@
         }
 
         &-remove {
-            @include divImage($minus);
+            //@include divImage($minus);
 
             width: 25px;
             height: 25px;
@@ -33,7 +33,7 @@
         }
 
         &-add {
-            @include divImage($plus);
+            //@include divImage($plus);
     
             background-color: transparent;
 

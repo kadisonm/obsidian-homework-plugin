@@ -1,5 +1,5 @@
 @import 'mixins/centerInlineBlock';
-@import 'mixins/divImage';
+//@import 'mixins/divImage';
 @import 'variables';
 
 .task-prompt {
@@ -19,7 +19,7 @@
         }
 
         &-confirm {
-            @include divImage($arrow-right);
+            //@include divImage($arrow-right);
     
             width: 30px;
             height: 30px;

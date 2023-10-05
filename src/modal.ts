@@ -1,5 +1,5 @@
 import HomeworkPlugin from './main';
-import { App, Modal, TFile, Notice } from 'obsidian';
+import { App, Modal, TFile, Notice, setIcon } from 'obsidian';
 import { loadHomeworkData, saveHomeworkData }  from './data';
 import { SuggestFileModal } from './suggestModal';
 import { icons } from './icons';
@@ -31,6 +31,7 @@ export default class HomeworkModal extends Modal {
 
 		const headingText = this.headingClass.createEl("h1", { text: "Homework", cls: "header-title" });
         const editButton = this.headingClass.createEl("div", {cls: "header-edit-button" });
+        setIcon(editButton, "pen-line");
        
         this.loadSubjects();
 
@@ -41,10 +42,12 @@ export default class HomeworkModal extends Modal {
                 this.loadSubjects();
 
                 if (this.editMode) {
-                    editButton.style.backgroundImage = `url(${icons['book-open']})`; 
+                    setIcon(editButton, "book-open");
+                    //editButton.style.backgroundImage = `url(${icons['book-open']})`; 
                 }
                 else {
-                    editButton.style.backgroundImage = `url(${icons['pen-line']})`; 
+                    setIcon(editButton, "pen-line");
+                    //editButton.style.backgroundImage = `url(${icons['pen-line']})`; 
                 }   
             }
             else {
