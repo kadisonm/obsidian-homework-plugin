@@ -1,5 +1,5 @@
 import HomeworkPlugin from './main';
-import { App, Modal, TFile, Notice, Platform } from 'obsidian';
+import { App, Modal, TFile, Notice } from 'obsidian';
 import { loadHomeworkData, saveHomeworkData }  from './data';
 import { SuggestFileModal } from './suggestModal';
 import { icons } from './icons';
@@ -158,10 +158,6 @@ export default class HomeworkModal extends Modal {
                         const flexClassBottom = promptClass.createEl("div", { cls: "task-prompt-flexbottom" });
                         const suggestButton = flexClassBottom.createEl("div", {text: "File", cls: "task-prompt-flexbottom-suggest"});
                         const dateField = flexClassBottom.createEl("input", {type: "date", cls: "task-prompt-flexbottom-date"});
-
-                        if (Platform.isIosApp || Platform.isAndroidApp) {
-                            dateField.textContent = "Date";
-                        }
                         
                         suggestButton.addEventListener("click", (click) => {
                             new SuggestFileModal(this.app, (result) => {
