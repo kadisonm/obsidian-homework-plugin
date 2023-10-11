@@ -1,6 +1,5 @@
 @import 'mixins/centerInlineBlock';
-@import 'mixins/icon';
-@import 'variables';
+@import 'mixins/iconAlign';
 
 .header {
     display: flex;
@@ -17,7 +16,7 @@
     }
 
     &-edit-button {
-        @include icon(cover);
+        @include iconAlign(cover);
         
         width: 30px;
         height: 30px;

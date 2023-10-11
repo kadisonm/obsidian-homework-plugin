@@ -60,6 +60,10 @@
   flex-basis: 80%;
 }
 .subject-heading-remove {
+  --icon-size: $size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 25px;
   height: 25px;
   border-radius: 50%;
@@ -69,6 +73,10 @@
   background-color: red;
 }
 .subject-heading-add {
+  --icon-size: $size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: transparent;
   border-radius: 50%;
   width: 30px;
@@ -135,6 +143,10 @@
   width: 50%;
 }
 .subject-prompt-confirm {
+  --icon-size: $size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 30px;
   height: 30px;
   border-radius: 25%;
@@ -161,6 +173,10 @@
   width: 50%;
 }
 .task-prompt-flextop-confirm {
+  --icon-size: $size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 30px;
   height: 30px;
   border-radius: 5px;

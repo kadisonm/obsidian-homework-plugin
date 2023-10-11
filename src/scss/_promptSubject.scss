@@ -1,6 +1,5 @@
 @import 'mixins/centerInlineBlock';
-//@import 'mixins/divImage';
-@import 'variables';
+@import 'mixins/iconAlign';
 
 .subject-prompt {
     display: flex;
@@ -21,7 +20,7 @@
     }
 
     &-confirm {
-        //@include divImage($arrow-right);
+        @include iconAlign(cover);
 
         width: 30px;
         height: 30px;

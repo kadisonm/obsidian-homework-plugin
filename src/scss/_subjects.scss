@@ -1,6 +1,5 @@
 @import 'mixins/centerInlineBlock';
-//@import 'mixins/divImage';
-@import 'variables';
+@import 'mixins/iconAlign';
 
 .subject {
     margin-top: 20px;
@@ -19,7 +18,7 @@
         }
 
         &-remove {
-            //@include divImage($minus);
+            @include iconAlign(cover);
 
             width: 25px;
             height: 25px;
@@ -33,8 +32,8 @@
         }
 
         &-add {
-            //@include divImage($plus);
-    
+            @include iconAlign(cover);
+
             background-color: transparent;
 
             border-radius: 50%;

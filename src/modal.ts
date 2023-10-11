@@ -31,7 +31,7 @@ export default class HomeworkModal extends Modal {
 
 		const headingText = this.headingClass.createEl("h1", { text: "Homework", cls: "header-title" });
         const editButton = this.headingClass.createEl("div", {cls: "header-edit-button" });
-        setIcon(editButton, "pen-line");
+        setIcon(editButton, "pencil");
        
         this.loadSubjects();
 
@@ -43,17 +43,14 @@ export default class HomeworkModal extends Modal {
 
                 if (this.editMode) {
                     setIcon(editButton, "book-open");
-                    //editButton.style.backgroundImage = `url(${icons['book-open']})`; 
                 }
                 else {
-                    setIcon(editButton, "pen-line");
-                    //editButton.style.backgroundImage = `url(${icons['pen-line']})`; 
+                    setIcon(editButton, "pencil");
                 }   
             }
             else {
                 new Notice("Please complete prompt first.");
-            }
-            
+            }    
         });
 	}
 
@@ -113,6 +110,7 @@ export default class HomeworkModal extends Modal {
                     });
 
                     const confirmSubject = promptClass.createEl("div", {cls: "subject-prompt-confirm"});
+                    setIcon(confirmSubject, "check");
 
                     confirmSubject.addEventListener("click", (click) => {
                         onPromptFinish(this);
@@ -132,6 +130,7 @@ export default class HomeworkModal extends Modal {
 
             if (this.editMode) {
                 let removeSubjectButton = subjectHeading.createEl("div", {cls: "subject-heading-remove" });
+                setIcon(removeSubjectButton, "minus");
 
                 subjectHeading.insertBefore(removeSubjectButton, subjectName);
                 
@@ -144,6 +143,7 @@ export default class HomeworkModal extends Modal {
             }
             else {
                 let newTaskButton = subjectHeading.createEl("div", {cls: "subject-heading-add" });
+                setIcon(newTaskButton, "plus");
 
                 newTaskButton.addEventListener("click", (click) => {
                     if (this.creating == false) {
@@ -156,6 +156,7 @@ export default class HomeworkModal extends Modal {
                         const flexClassTop = promptClass.createEl("div", { cls: "task-prompt-flextop" });
                         const inputText = flexClassTop.createEl("input", {type: "text", cls: "task-prompt-flextop-input"});
                         const confirmTask = flexClassTop.createEl("div", {cls: "task-prompt-flextop-confirm"});
+                        setIcon(confirmTask, "check");
                         inputText.focus();
 
                         const flexClassBottom = promptClass.createEl("div", { cls: "task-prompt-flexbottom" });

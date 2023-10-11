@@ -1,6 +1,5 @@
 @import 'mixins/centerInlineBlock';
-//@import 'mixins/divImage';
-@import 'variables';
+@import 'mixins/iconAlign';
 
 .task-prompt {
     margin-top: 10px;
@@ -19,7 +18,7 @@
         }
 
         &-confirm {
-            //@include divImage($arrow-right);
+            @include iconAlign(cover);
     
             width: 30px;
             height: 30px;
@@ -50,10 +49,6 @@
             &:hover {
                 background-color: var(--interactive-accent-hover); 
             }
-        }
-    
-        &-date {
-           
         }
     }
 }
