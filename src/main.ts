@@ -3,6 +3,7 @@ import { Plugin } from 'obsidian';
 import HomeworkModal from './modal'
 
 export default class HomeworkPlugin extends Plugin {
+	data: any;
 
 	async onload() {
 		// Open homework ribbon button
@@ -21,5 +22,13 @@ export default class HomeworkPlugin extends Plugin {
 				new HomeworkModal(this.app, this).open();
 			}
 		});
+	}
+
+	async loadHomework() {
+		this.data = Object.assign({}, await this.loadData());
+	}
+	
+	async saveHomework() {
+		await this.saveData(this.data);
 	}
 }

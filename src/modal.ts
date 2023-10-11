@@ -1,14 +1,11 @@
 import HomeworkPlugin from './main';
 import { App, Modal, TFile, Notice, setIcon } from 'obsidian';
-import { loadHomeworkData, saveHomeworkData }  from './data';
 import { SuggestFileModal } from './suggestModal';
-import { icons } from './icons';
 
 export default class HomeworkModal extends Modal {
 	plugin: HomeworkPlugin;
     headingClass: HTMLDivElement;
     loadClass: HTMLDivElement;
-    data: any;
     editMode: Boolean;
     creating: Boolean;
 
@@ -25,7 +22,8 @@ export default class HomeworkModal extends Modal {
 	async onOpen() {
 		const {contentEl} = this;
 
-        this.data = await loadHomeworkData();
+        await this.plugin.loadHomework();
+
         this.editMode = false;
         this.creating = false;
 
@@ -82,8 +80,8 @@ export default class HomeworkModal extends Modal {
                     function onPromptFinish(object : HomeworkModal) {
                         if (inputText.value.match(".*[A-Za-z0-9].*")) {
                             if (inputText.value.length <= 32) {
-                                if (!object.data[inputText.value]) {
-                                    object.data[inputText.value] = {};
+                                if (!object.plugin.data[inputText.value]) {
+                                    object.plugin.data[inputText.value] = {};
                                 }      
                             } 
                             else {
@@ -94,11 +92,10 @@ export default class HomeworkModal extends Modal {
                             new Notice("Must not contain special characters.");
                         }
 
-                        saveHomeworkData(object.data);
+                        object.plugin.saveHomework();
                             
                         object.loadSubjects();  
                         object.creating = false;      
-
 
                         return;
                     }
@@ -122,7 +119,7 @@ export default class HomeworkModal extends Modal {
             });    
         }
         
-        for (const subjectKey in this.data) {
+        for (const subjectKey in this.plugin.data) {
             let newSubjectClass = this.loadClass.createEl("div", { cls: "subject" });
 
             let subjectHeading = newSubjectClass.createEl("div", { cls: "subject-heading" });
@@ -135,8 +132,8 @@ export default class HomeworkModal extends Modal {
                 subjectHeading.insertBefore(removeSubjectButton, subjectName);
                 
                 removeSubjectButton.addEventListener("click", (click) => {
-                    Reflect.deleteProperty(this.data, subjectKey);
-                    saveHomeworkData(this.data);
+                    Reflect.deleteProperty(this.plugin.data, subjectKey);
+                    this.plugin.saveHomework();
 
                     newSubjectClass.empty();
                 });
@@ -173,8 +170,8 @@ export default class HomeworkModal extends Modal {
                         function onPromptFinish(object : HomeworkModal) {
                             if (inputText.value.match(".*[A-Za-z0-9].*")) {
                                 if (inputText.value.length <= 100) {
-                                    if (!object.data[subjectKey][inputText.value]) {
-                                        object.data[subjectKey][inputText.value] = {
+                                    if (!object.plugin.data[subjectKey][inputText.value]) {
+                                        object.plugin.data[subjectKey][inputText.value] = {
                                             page : page,
                                             date : dateField.value,
                                         };
@@ -190,7 +187,7 @@ export default class HomeworkModal extends Modal {
                                 new Notice("Must not contain special characters.");
                             }
 
-                            saveHomeworkData(object.data);
+                            object.plugin.saveHomework();
                             object.creating = false;
 
                             promptClass.empty();
@@ -213,7 +210,7 @@ export default class HomeworkModal extends Modal {
             }
 
             if (!this.editMode) {
-                for (const taskKey in this.data[subjectKey]) {
+                for (const taskKey in this.plugin.data[subjectKey]) {
                     this.createTask(newSubjectClass, subjectKey, `${taskKey}`)
                 }    
             }
@@ -225,7 +222,7 @@ export default class HomeworkModal extends Modal {
 		
 		let taskButton = taskClass.createEl("div", {cls: "task-check" });
 
-        let filePath = this.data[subjectKey][taskName].page;
+        let filePath = this.plugin.data[subjectKey][taskName].page;
 
         let taskText;
 
@@ -236,10 +233,10 @@ export default class HomeworkModal extends Modal {
             taskText = taskClass.createEl("div", { text: taskName, cls: "task-link", parent: taskButton});
         }
 
-        let dateValue = this.data[subjectKey][taskName].date;
+        let dateValue = this.plugin.data[subjectKey][taskName].date;
 
         if (dateValue != "") {
-            let date = new Date(this.data[subjectKey][taskName].date);
+            let date = new Date(this.plugin.data[subjectKey][taskName].date);
             var dateArr = date.toDateString().split(' ');
             var dateFormat = dateArr[2] + ' ' + dateArr[1] + ' ' + dateArr[3];
             let taskDate = taskClass.createEl("div", { text: dateFormat, cls: "task-date", parent: taskText });    
@@ -262,8 +259,8 @@ export default class HomeworkModal extends Modal {
         }))
 		
 		taskButton.addEventListener("click", (click) => {
-            Reflect.deleteProperty(this.data[subjectKey], taskName);
-            saveHomeworkData(this.data);
+            Reflect.deleteProperty(this.plugin.data[subjectKey], taskName);
+            this.plugin.saveHomework();
             
             taskClass.empty();
 		});
