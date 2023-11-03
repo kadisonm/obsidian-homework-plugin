@@ -25,12 +25,16 @@ As of current, this is not available on Obsidian's community plugins. However, y
 ### Adding & Removing Subjects
 ![Obsidian_CPWZ6Wf6u6](https://github.com/kadisonm/obsidian-homework-plugin/assets/134670047/cce6918e-7aa1-490c-af36-6a3656b5f845)
 
+Click the edit mode toggle in the top right to add new subjects or delete existing ones.
+
 ⚠ Removing a subject removes all tasks underneath it ⚠
 
 ---
 
 ### Adding & Completing Tasks
 ![Obsidian_gsre59WtQJ](https://github.com/kadisonm/obsidian-homework-plugin/assets/134670047/e15db3f6-fbb6-49c9-807a-d2d652eb8c52)
+
+Click the + button next to a subject to add a new task under it. To complete, click the check box on the left of it.
 
 ⚠ Completing a task cannot be undone ⚠
 
@@ -39,7 +43,7 @@ As of current, this is not available on Obsidian's community plugins. However, y
 ### Adding Due Dates
 ![Obsidian_l8zkWSeczT](https://github.com/kadisonm/obsidian-homework-plugin/assets/134670047/3410485a-a21b-4f2c-b1fd-3c52aec79774)
 
-Due dates set before the current date will appear red.
+Upon creating a task, a due date can be added. Click the calendar icon to select a date. Due dates set before the current date will appear red.
   
 ⚠ It is advised to press the calendar icon as missing any elements (`day`, `month`, `year`) will result in creation failure. ⚠
 
@@ -47,6 +51,8 @@ Due dates set before the current date will appear red.
 
 ### Linking Notes
 ![Obsidian_ixDVJx2jga](https://github.com/kadisonm/obsidian-homework-plugin/assets/134670047/2ed7e89f-0b7f-4c41-b03f-1a99f7661aec)
+
+Upon creating a task, a linked note can be added. Click on the task name to take you to the note.
 
 ## Show Your Support
 
