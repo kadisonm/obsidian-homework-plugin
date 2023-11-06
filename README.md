@@ -9,7 +9,10 @@ This plugin offers:
 - Clean and easy to navigate UI
 
 ## Installation
-As of current, this is not available on Obsidian's community plugins. However, you can:
+- Install through [Obsidian's Community Plugins](https://obsidian.md/plugins) and add directly to your vault.
+
+Or
+
 - Download the [latest release](https://github.com/kadisonm/obsidian-homework-plugin/releases) and manually add the `main.js`, `manifest.json`, `styles.css` assets to `your-vault\.obsidian\plugins\homework-manager`
 
 ⚠ Always back up your vault before doing this. ⚠
