@@ -61,6 +61,6 @@ Upon creating a task, a linked note can be added. Click on the task name to take
 
 If you want to support me you can do so here:
 
-[<img src="https://github.com/kadisonm/obsidian-homework-plugin/assets/134670047/c2fb8b04-ed28-4c0f-8cb5-5c056a92b4cd" width="300"/>](https://www.buymeacoffee.com/kadisonm)
+[<img src="https://github.com/kadisonm/obsidian-homework-plugin/assets/134670047/c2fb8b04-ed28-4c0f-8cb5-5c056a92b4cd" width="150"/>](https://www.buymeacoffee.com/kadisonm)
 
 Thank you so much for using my plugin.
