@@ -61,6 +61,6 @@ Upon creating a task, a linked note can be added. Click on the task name to take
 
 If you want to support me you can do so here:
 
-[<img src="img/Pizza.png" width="200">](https://www.buymeacoffee.com/kadisonm)
+[<img src="img/pizza.png" width="200">](https://www.buymeacoffee.com/kadisonm)
 
 Thank you so much for using my plugin.
