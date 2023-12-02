@@ -11,8 +11,6 @@ body:
     id: suggestion
     attributes:
       label: What feature do you suggest?
-      description: 
       placeholder: Describe your suggestion!
-      value: "An awesome feature."
     validations:
       required: true
