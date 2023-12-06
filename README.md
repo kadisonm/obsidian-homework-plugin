@@ -11,12 +11,6 @@ This plugin offers:
 ## Installation
 - Install through [Obsidian's Community Plugins](https://obsidian.md/plugins) and add directly to your vault.
 
-Or
-
-- Download the [latest release](https://github.com/kadisonm/obsidian-homework-plugin/releases) and manually add the `main.js`, `manifest.json`, `styles.css` assets to `your-vault\.obsidian\plugins\homework-manager`
-
-⚠ Always back up your vault before doing this. ⚠
-
 ## Usage
 <h3><img src="https://github.com/kadisonm/obsidian-homework-plugin/assets/134670047/e648f705-b3d0-4da3-a9e9-835e2707ac57" width="15"/> Open & Close</h3>
 
