@@ -19,7 +19,7 @@ This plugin offers:
 
 ---
 
-### Adding & Removing Subjects
+### Adding & removing Subjects
 ![Obsidian_CPWZ6Wf6u6](https://github.com/kadisonm/obsidian-homework-plugin/assets/134670047/cce6918e-7aa1-490c-af36-6a3656b5f845)
 
 Click the edit mode toggle in the top right to add new subjects or delete existing ones.
@@ -28,7 +28,7 @@ Click the edit mode toggle in the top right to add new subjects or delete existi
 
 ---
 
-### Adding & Completing Tasks
+### Adding & completing tasks
 ![Obsidian_gsre59WtQJ](https://github.com/kadisonm/obsidian-homework-plugin/assets/134670047/e15db3f6-fbb6-49c9-807a-d2d652eb8c52)
 
 Click the + button next to a subject to add a new task under it. To complete, click the check box on the left of it.
@@ -37,7 +37,7 @@ Click the + button next to a subject to add a new task under it. To complete, cl
 
 ---
 
-### Adding Due Dates
+### Adding due dates
 ![Obsidian_l8zkWSeczT](https://github.com/kadisonm/obsidian-homework-plugin/assets/134670047/3410485a-a21b-4f2c-b1fd-3c52aec79774)
 
 Upon creating a task, a due date can be added. Click the calendar icon to select a date. Due dates set before the current date will appear red.
@@ -46,14 +46,14 @@ Upon creating a task, a due date can be added. Click the calendar icon to select
 
 ---
 
-### Linking Notes
+### Linking notes
 ![Obsidian_ixDVJx2jga](https://github.com/kadisonm/obsidian-homework-plugin/assets/134670047/2ed7e89f-0b7f-4c41-b03f-1a99f7661aec)
 
 Upon creating a task, a linked note can be added. Click on the task name to take you to the note.
 
-## Show Your Support
+## Show your support
 
-If you want to support me you can do so here:
+If you want to support me you can do so here, but please know that this is not expected and this plugin is completely free.
 
 [<img src="img/pizza.png" width="200">](https://www.buymeacoffee.com/kadisonm)
 
