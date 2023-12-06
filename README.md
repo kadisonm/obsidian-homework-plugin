@@ -55,6 +55,6 @@ Upon creating a task, a linked note can be added. Click on the task name to take
 
 If you want to support me you can do so here, but please know that this is not expected and this plugin is completely free.
 
-[<img src="img/pizza.png" width="200">](https://www.buymeacoffee.com/kadisonm)
+[<img src="https://github.com/kadisonm/obsidian-reference-generator/assets/134670047/826ead37-1265-42b1-b171-928d1e17035f" width="200">](https://www.buymeacoffee.com/kadisonm)
 
 Thank you so much for using my plugin.
