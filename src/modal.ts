@@ -78,7 +78,7 @@ export default class HomeworkModal extends Modal {
                     inputText.focus();
 
                     function onPromptFinish(object : HomeworkModal) {
-                        if (inputText.value.match(".*[A-Za-z0-9].*")) {
+                        if (inputText.value.match(".*[A-Za-zА-Яа-я0-9].*")) {
                             if (inputText.value.length <= 32) {
                                 if (!object.plugin.data[inputText.value]) {
                                     object.plugin.data[inputText.value] = {};
@@ -168,7 +168,7 @@ export default class HomeworkModal extends Modal {
                         });
 
                         function onPromptFinish(object : HomeworkModal) {
-                            if (inputText.value.match(".*[A-Za-z0-9].*")) {
+                            if (inputText.value.match(".*[A-Za-zА-Яа-я0-9].*")) {
                                 if (inputText.value.length <= 100) {
                                     if (!object.plugin.data[subjectKey][inputText.value]) {
                                         object.plugin.data[subjectKey][inputText.value] = {
