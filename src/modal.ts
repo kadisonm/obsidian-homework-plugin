@@ -180,8 +180,6 @@ export default class HomeworkModal extends Modal {
                                             page : page,
                                             date : dateField.value,
                                         };
-
-                                        console.log(taskText);
         
                                         object.createTask(newSubjectClass, subjectKey, taskText);     
                                     } else {
