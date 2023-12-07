@@ -78,19 +78,22 @@ export default class HomeworkModal extends Modal {
                     inputText.focus();
 
                     function onPromptFinish(object : HomeworkModal) {
-                        if (inputText.value.match(".*[A-Za-z0-9].*")) {
-                            if (inputText.value.length <= 32) {
-                                if (!object.plugin.data[inputText.value]) {
-                                    object.plugin.data[inputText.value] = {};
-                                }      
-                            } 
-                            else {
-                                new Notice("Must be under 32 characters.");
-                            }                       
-                        }
+                        const subjectText = inputText.value.trim();
+
+                        if (subjectText.length <= 32) {
+                            if (!object.plugin.data[subjectText]) {
+                                if (subjectText != "") {
+                                    object.plugin.data[subjectText] = {};
+                                } else {
+                                    new Notice("Subject must have a name.");
+                                } 
+                            } else {
+                                new Notice("Cannot create duplicate subject.");
+                            }   
+                        } 
                         else {
-                            new Notice("Must not contain special characters.");
-                        }
+                            new Notice("Must be under 32 characters.");
+                        }                        
 
                         object.plugin.saveHomework();
                             
@@ -167,25 +170,28 @@ export default class HomeworkModal extends Modal {
                             }).open();
                         });
 
-                        function onPromptFinish(object : HomeworkModal) {
-                            if (inputText.value.match(".*[A-Za-z0-9].*")) {
-                                if (inputText.value.length <= 100) {
-                                    if (!object.plugin.data[subjectKey][inputText.value]) {
-                                        object.plugin.data[subjectKey][inputText.value] = {
+                        function onPromptFinish(object : HomeworkModal) {  
+                            const taskText = inputText.value.trim();  
+
+                            if (taskText.length <= 100) {
+                                if (!object.plugin.data[subjectKey][taskText]) {
+                                    if (taskText != "") {
+                                        object.plugin.data[subjectKey][taskText] = {
                                             page : page,
                                             date : dateField.value,
                                         };
         
-                                        object.createTask(newSubjectClass, subjectKey, inputText.value);    
-                                    }
-                                }
-                                else {
-                                    new Notice("Must be under 100 characters.");
-                                }
+                                        object.createTask(newSubjectClass, subjectKey, taskText);     
+                                    } else {
+                                        new Notice("Must have a name.");
+                                    }    
+                                } else {
+                                    new Notice("Cannot create duplicate task.");
+                                }  
                             }
                             else {
-                                new Notice("Must not contain special characters.");
-                            }
+                                new Notice("Must be under 100 characters.");
+                            }  
 
                             object.plugin.saveHomework();
                             object.creating = false;
