@@ -1,9 +1,14 @@
-<h1 align="center"> Obsidian Homework Manager </h1>
-<p align="center"> An <a href="https://obsidian.md/">Obsidian</a> plugin that makes keeping track of homework easy.</p>
+<h1 align="center"> Homework Manager </h1>
+
+<h4 align="center">An <a href="https://obsidian.md/">Obsidian</a> plugin that makes keeping track of homework easy.</h4>
+
+<br>
 
 ![Homework Manager Thumbnail](https://github.com/kadisonm/obsidian-homework-plugin/assets/134670047/e45a888f-8f11-4358-9a81-16c28572f3ca)
 
-This plugin offers:
+This plugin is **not** an official Obsidian plugin.
+
+## This plugin offers:
 - Easy creation of tasks and subjects
 - Task due dates and linking to notes
 - Clean and easy to navigate UI
