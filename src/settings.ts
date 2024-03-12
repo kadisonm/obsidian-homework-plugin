@@ -5,18 +5,14 @@ export interface HomeworkManagerData {
     settings: {
         deleteFinishedTasks: boolean;
     }
-    data: {
-
-    }
+    views: Array<any>
 }
 
 export const DEFAULT_DATA: HomeworkManagerData = {
     settings: {
         deleteFinishedTasks: true,
     },
-    data: {
-
-    }
+    views: new Array()
 }
 
 export const defaultLogo = "book";

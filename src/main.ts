@@ -13,7 +13,7 @@ export default class HomeworkManagerPlugin extends Plugin {
 
 		// Open homework ribbon button
 		const ribbonToggle = this.addRibbonIcon(defaultLogo, 'Open homework', (evt: MouseEvent) => {
-			//new HomeworkModal(this.app, this).open();
+			new HomeworkModal(this.app, this).open();
 		});
 
 		// Perform additional things with the ribbon
@@ -24,7 +24,7 @@ export default class HomeworkManagerPlugin extends Plugin {
 			id: 'open-homework',
 			name: 'Open homework',
 			callback: () => {
-				//new HomeworkModal(this.app, this).open();
+				new HomeworkModal(this.app, this).open();
 			}
 		});
 	}
@@ -34,9 +34,9 @@ export default class HomeworkManagerPlugin extends Plugin {
 		let newData = foundData;
 
 		// Check if legacy data and convert
-		if (foundData.data === undefined) {
+		if (foundData.views === undefined) {
 			newData = Object.assign({}, DEFAULT_DATA);
-			newData.data["View 1"] = foundData;
+			newData.views.push({"View 1": foundData});
 		}
 
 		this.data = newData;

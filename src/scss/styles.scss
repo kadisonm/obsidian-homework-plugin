@@ -1,7 +1,42 @@
-@import 'header';
-@import 'subjects';
-@import 'task';
-@import 'promptSubject';
-@import 'promptTask';
+.homework-manager {
+    &-header {
+        display: flex;
+        justify-content: space-between;
+        margin-right: 20px;
 
+        & div {
+            display: flex;
+            align-items: center;
+        }
 
+        & span {
+            margin-right: 10px;
+        }
+        
+        & h1 {
+            font-size: x-large;
+            margin: 0;
+        }
+    }
+
+    &-icon-button {
+        width: 30px;
+        height: 30px;
+    }
+
+    // Using !important is bad practice, will fix later
+    &-hidden_element {
+        display: none !important;
+    }
+
+    &-menu {
+        display: flex;
+        flex-direction: column;
+
+        &-item {
+            &:hover {
+                background-color: var(--background-modifier-hover);
+            }    
+        }
+    }
+}

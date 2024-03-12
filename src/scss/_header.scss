@@ -1,37 +1,7 @@
 @import 'mixins/centerInlineBlock';
 @import 'mixins/iconAlign';
 
-.header {
-    display: flex;
-    flex-wrap: wrap-reverse;
-    gap: 15px;
-    align-items: center;
-    justify-content: left;
 
-    &-title {
-        width: 80%;
-        font-size: xx-large;
-
-        margin-bottom: none;
-    }
-
-    &-edit-button {
-        @include iconAlign(cover);
-        
-        width: 30px;
-        height: 30px;
-
-        border-radius: 25%;
-
-        padding: 0px;
-
-        background-color: transparent;
-
-        &:hover {
-            background-color: var(--interactive-hover);
-        }
-    }    
-}
 
 .add-subject {
     overflow: hidden;
