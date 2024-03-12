@@ -1,14 +1,19 @@
 import { Plugin } from 'obsidian';
+import { SettingsTab, HomeworkManagerData, DEFAULT_DATA, defaultLogo } from "./settings";
 
 import HomeworkModal from './modal'
 
-export default class HomeworkPlugin extends Plugin {
-	data: any;
+export default class HomeworkManagerPlugin extends Plugin {
+	data: HomeworkManagerData;
 
 	async onload() {
+		await this.fetchData();
+
+		this.addSettingTab(new SettingsTab(this.app, this));
+
 		// Open homework ribbon button
-		const ribbonToggle = this.addRibbonIcon('book', 'Open homework', (evt: MouseEvent) => {
-			new HomeworkModal(this.app, this).open();
+		const ribbonToggle = this.addRibbonIcon(defaultLogo, 'Open homework', (evt: MouseEvent) => {
+			//new HomeworkModal(this.app, this).open();
 		});
 
 		// Perform additional things with the ribbon
@@ -19,16 +24,26 @@ export default class HomeworkPlugin extends Plugin {
 			id: 'open-homework',
 			name: 'Open homework',
 			callback: () => {
-				new HomeworkModal(this.app, this).open();
+				//new HomeworkModal(this.app, this).open();
 			}
 		});
 	}
 
-	async loadHomework() {
-		this.data = Object.assign({}, await this.loadData());
+	async fetchData() {
+		const foundData = Object.assign({}, await this.loadData());
+		let newData = foundData;
+
+		// Check if legacy data and convert
+		if (foundData.data === undefined) {
+			newData = Object.assign({}, DEFAULT_DATA);
+			newData.data["View 1"] = foundData;
+		}
+
+		this.data = newData;
+		this.writeData();
 	}
-	
-	async saveHomework() {
+
+	async writeData() {
 		await this.saveData(this.data);
 	}
 }
