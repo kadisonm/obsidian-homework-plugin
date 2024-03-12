@@ -6,7 +6,9 @@
 
 ![Homework Manager Thumbnail](https://github.com/kadisonm/obsidian-homework-plugin/assets/134670047/e45a888f-8f11-4358-9a81-16c28572f3ca)
 
-This plugin is **not** an official Obsidian plugin.
+This plugin is not an official Obsidian plugin.
+
+To track the development, please visit the [project page](https://github.com/users/kadisonm/projects/3/views/1).
 
 ## This plugin offers:
 - Easy creation of tasks and subjects
