@@ -10,15 +10,16 @@ export default class HomeworkModal extends Modal {
 
     divHeader: HTMLDivElement;
     divViewSelector: HTMLDivElement;
+    divBody: HTMLDivElement;
 
     currentView: string;
-    subjectEditMode: boolean;
+    editMode: boolean;
     creating: boolean;
 
 	constructor(app: App, plugin: HomeworkPlugin) {
 		super(app);
 		this.plugin = plugin;
-        this.subjectEditMode = false;
+        this.editMode = false;
         this.creating = false;
 	}
 
@@ -26,6 +27,7 @@ export default class HomeworkModal extends Modal {
 		const {contentEl} = this;
         this.divHeader = contentEl.createEl("div", { cls: "homework-manager-header" });
         this.divViewSelector = contentEl.createEl("div");
+        this.divBody = contentEl.createEl("div");
 
         this.changeView(0);
 	}
@@ -37,6 +39,12 @@ export default class HomeworkModal extends Modal {
 
     changeView(viewIndex: number) {
         this.createHeader(viewIndex);
+
+        if (this.editMode) {
+            this.createEditMode();
+        } else {
+            this.createReadMode();
+        }
     }
 
     createHeader(viewIndex: number) {
@@ -68,6 +76,7 @@ export default class HomeworkModal extends Modal {
                             const viewButtonTitle = viewButton?.createEl("div", {cls: ["menu-item-title"], text: viewOption.name});
                             
                             viewButton?.addEventListener("click", (click) => {
+                                this.editMode = false;
                                 this.changeView(index);
                             }); 
                         }
@@ -94,24 +103,32 @@ export default class HomeworkModal extends Modal {
         });
 
         // Set the view title
-        let viewName = this.plugin.data.views[viewIndex].name;
-		const headingText = headerLeft.createEl("h1", { text: viewName });
+        let viewName = views[viewIndex].name;
+		headerLeft.createEl("h1", { text: viewName });
 
         // ------------------- RIGHT HEADER ------------------- //
 
         // Create the edit button
         const editButton = this.divHeader.createEl("span", {cls: ["homework-manager-icon-button", "clickable-icon"]});
-        setIcon(editButton, "pencil");
+        const editIcon = this.editMode ? "book-open" : "pencil";
+        setIcon(editButton, editIcon);
 
         editButton.addEventListener("click", (click) => {
-            this.subjectEditMode = !this.subjectEditMode;
-
-            if (this.subjectEditMode) {
-                setIcon(editButton, "book-open");
-            }
-            else {
-                setIcon(editButton, "pencil");
-            }  
+            this.editMode = !this.editMode;
+            this.changeView(viewIndex);
         });
+    }
+
+    createReadMode() {
+        this.divBody.empty();
+
+        this.divBody.createEl("h1", { text: "Read mode" });
+        
+    }
+
+    createEditMode() {
+        this.divBody.empty();
+
+        this.divBody.createEl("h1", { text: "Edit mode" });
     }
 }
