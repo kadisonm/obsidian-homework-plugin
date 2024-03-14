@@ -14,6 +14,9 @@
   font-size: x-large;
   margin: 0;
 }
+.homework-manager-header-task {
+  margin-left: 10px;
+}
 .homework-manager-icon-button {
   width: 30px;
   height: 30px;

@@ -60,6 +60,8 @@ export default class HomeworkModal extends Modal {
 
         const dropdownButton = headerLeft.createEl("span", {cls: ["homework-manager-icon-button", "clickable-icon"]});
         setIcon(dropdownButton, "chevron-down");
+        dropdownButton.setAttribute("aria-label", "Views");
+        dropdownButton.setAttribute("data-tooltip-position", "top");
 
         let dropdownList: HTMLDivElement | undefined = undefined;
 
@@ -106,12 +108,25 @@ export default class HomeworkModal extends Modal {
         let viewName = views[viewIndex].name;
 		headerLeft.createEl("h1", { text: viewName });
 
+        // Add top-level task
+        const newTaskButton = headerLeft.createEl("span", {cls: ["homework-manager-header-task", "homework-manager-icon-button", "clickable-icon"]});
+        newTaskButton.setAttribute("aria-label", "Add new task without subject");
+        newTaskButton.setAttribute("data-tooltip-position", "top");
+        setIcon(newTaskButton, "plus");
+
+        newTaskButton.addEventListener("click", (click) => {
+            // TODO: Call create task function and list the source (Subject/Top)
+        });
+
         // ------------------- RIGHT HEADER ------------------- //
 
         // Create the edit button
         const editButton = this.divHeader.createEl("span", {cls: ["homework-manager-icon-button", "clickable-icon"]});
         const editIcon = this.editMode ? "book-open" : "pencil";
         setIcon(editButton, editIcon);
+        const attributeMessage = this.editMode ? "Switch to view mode" : "Switch to edit mode\nFor editing, reordering or deleting tasks/subjects"
+        editButton.setAttribute("aria-label", attributeMessage);
+        editButton.setAttribute("data-tooltip-position", "top");
 
         editButton.addEventListener("click", (click) => {
             this.editMode = !this.editMode;
