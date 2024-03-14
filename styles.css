@@ -28,5 +28,11 @@
 .homework-manager-menu-item:hover {
   background-color: var(--background-modifier-hover);
 }
+.homework-manager-menu-item-delete {
+  color: var(--text-error);
+}
+.homework-manager-menu-item-delete-icon {
+  color: var(--text-error);
+}
 
 /*# sourceMappingURL=styles.css.map */

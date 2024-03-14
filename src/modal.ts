@@ -26,7 +26,7 @@ export default class HomeworkModal extends Modal {
         this.divHeader = contentEl.createEl("div", { cls: "homework-manager-header" });
         this.divViewSelector = contentEl.createEl("div");
 
-        this.changeView(this.plugin.data.views[0]);
+        this.changeView(0);
 	}
 
 	onClose() {   
@@ -34,11 +34,11 @@ export default class HomeworkModal extends Modal {
 		contentEl.empty();
 	}
 
-    changeView(view:any) {
-        this.createHeader(view);
+    changeView(viewIndex: number) {
+        this.createHeader(viewIndex);
     }
 
-    createHeader(view: any) {
+    createHeader(viewIndex: number) {
         // Clear existing header
         this.divHeader.empty();
         this.divViewSelector.empty();
@@ -47,6 +47,8 @@ export default class HomeworkModal extends Modal {
         const headerLeft = this.divHeader.createEl("div");
 
         // Create dropdown button to switch views
+        const views = this.plugin.data.views;
+
         const dropdownButton = headerLeft.createEl("span", {cls: ["homework-manager-icon-button", "clickable-icon"]});
         setIcon(dropdownButton, "chevron-down");
 
@@ -56,16 +58,53 @@ export default class HomeworkModal extends Modal {
             if (dropdownList == undefined) {
                 dropdownList = this.divViewSelector.createEl("div", {cls: ["homework-manager-menu", "menu mod-tab-list"]});
 
-                for (const object of this.plugin.data.views) {
-                    if (object !== view) {
-                        const objectName = Object.keys(object)[0];
-                        const viewButton = dropdownList.createEl("div", {cls: ["homework-manager-menu-item", "menu-item"], text: objectName});
+                if (views.length > 1) {
+                    views.forEach((viewOption, index) => {
+                        if (index != viewIndex) {
+                            const viewButton = dropdownList?.createEl("div", {cls: ["homework-manager-menu-item", "menu-item"]});
+                            const viewButtonIcon = viewButton?.createEl("div", {cls: ["menu-item-icon"]})!;
+                            setIcon(viewButtonIcon, "layers");
+                            const viewButtonTitle = viewButton?.createEl("div", {cls: ["menu-item-title"], text: viewOption.name});
 
-                        viewButton.addEventListener("click", (click) => {
-                            this.changeView(object);
-                        });
-                    }
-                } 
+                            
+                            viewButton?.addEventListener("click", (click) => {
+                                this.changeView(index);
+                            }); 
+                        }
+                    });   
+                    
+                    dropdownList.createEl("div", {cls: "menu-separator"});
+                }
+                
+                // Add view button
+                const addViewButton = dropdownList.createEl("div", {cls: ["homework-manager-menu-item", "menu-item"]});
+                const addViewButtonIcon = addViewButton.createEl("div", {cls: ["menu-item-icon"]});
+                setIcon(addViewButtonIcon, "plus");
+                addViewButton.createEl("div", {cls: ["menu-item-title"], text: "Add view"});
+
+                addViewButton?.addEventListener("click", (click) => {
+                    
+                }); 
+
+                // Reorder view button
+                const reorderViewButton = dropdownList.createEl("div", {cls: ["homework-manager-menu-item", "menu-item"]});
+                const reorderViewButtonIcon = reorderViewButton.createEl("div", {cls: ["menu-item-icon"]});
+                setIcon(reorderViewButtonIcon, "arrow-down-up");
+                reorderViewButton.createEl("div", {cls: ["menu-item-title"], text: "Reorder views"});
+
+                reorderViewButton?.addEventListener("click", (click) => {
+                    
+                }); 
+
+                // Delete view button
+                const deleteViewButton = dropdownList.createEl("div", {cls: ["homework-manager-menu-item-delete", "homework-manager-menu-item", "menu-item"]});
+                const deleteViewButtonIcon = deleteViewButton.createEl("div", {cls: ["homework-manager-menu-item-delete-icon", "menu-item-icon"]});
+                setIcon(deleteViewButtonIcon, "trash");
+                deleteViewButton.createEl("div", {cls: ["menu-item-title"], text: "Delete view"});
+
+                deleteViewButton?.addEventListener("click", (click) => {
+                    
+                }); 
             } else {
                 dropdownList?.remove();
                 dropdownList = undefined;
@@ -73,7 +112,7 @@ export default class HomeworkModal extends Modal {
         });
 
         // Set the view title
-        let viewName = Object.keys(view)[0];
+        let viewName = this.plugin.data.views[viewIndex].name;
 		const headingText = headerLeft.createEl("h1", { text: viewName });
 
         // ------------------- RIGHT HEADER ------------------- //

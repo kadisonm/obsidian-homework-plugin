@@ -36,7 +36,15 @@
         &-item {
             &:hover {
                 background-color: var(--background-modifier-hover);
-            }    
+            }  
+            
+            &-delete {
+                color: var(--text-error);
+
+                &-icon {
+                    color: var(--text-error); 
+                }
+            }
         }
     }
 }

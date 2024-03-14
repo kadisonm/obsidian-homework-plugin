@@ -35,8 +35,36 @@ export default class HomeworkManagerPlugin extends Plugin {
 
 		// Check if legacy data and convert
 		if (foundData.views === undefined) {
+			let reformattedSubjects = new Array();
+
+			for (const subjectKey in foundData) {
+				let subject = {
+					name: subjectKey,
+					tasks: new Array<any>()
+				}
+
+				const oldSubject = foundData[subjectKey];
+
+				for (const taskKey in oldSubject) {
+					const task = {
+						name: taskKey,
+						page: oldSubject[taskKey].page,
+      					date: oldSubject[taskKey].date
+					}
+					
+					subject.tasks.push(task);
+				}
+
+				reformattedSubjects.push(subject);
+			}
+
+			const view = {
+				name: "View 1",
+				subjects: reformattedSubjects
+			}
+
 			newData = Object.assign({}, DEFAULT_DATA);
-			newData.views.push({"View 1": foundData});
+			newData.views.push(view);
 		}
 
 		this.data = newData;
