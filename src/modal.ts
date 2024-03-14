@@ -65,7 +65,6 @@ export default class HomeworkModal extends Modal {
                             const viewButtonIcon = viewButton?.createEl("div", {cls: ["menu-item-icon"]})!;
                             setIcon(viewButtonIcon, "layers");
                             const viewButtonTitle = viewButton?.createEl("div", {cls: ["menu-item-title"], text: viewOption.name});
-
                             
                             viewButton?.addEventListener("click", (click) => {
                                 this.changeView(index);
@@ -76,33 +75,13 @@ export default class HomeworkModal extends Modal {
                     dropdownList.createEl("div", {cls: "menu-separator"});
                 }
                 
-                // Add view button
-                const addViewButton = dropdownList.createEl("div", {cls: ["homework-manager-menu-item", "menu-item"]});
-                const addViewButtonIcon = addViewButton.createEl("div", {cls: ["menu-item-icon"]});
-                setIcon(addViewButtonIcon, "plus");
-                addViewButton.createEl("div", {cls: ["menu-item-title"], text: "Add view"});
+                // Manage views button
+                const manageViewsButton = dropdownList.createEl("div", {cls: ["homework-manager-menu-item", "menu-item"]});
+                const manageViewsButtonIcon = manageViewsButton.createEl("div", {cls: ["menu-item-icon"]});
+                setIcon(manageViewsButtonIcon, "pencil");
+                manageViewsButton.createEl("div", {cls: ["menu-item-title"], text: "Manage views"});
 
-                addViewButton?.addEventListener("click", (click) => {
-                    
-                }); 
-
-                // Reorder view button
-                const reorderViewButton = dropdownList.createEl("div", {cls: ["homework-manager-menu-item", "menu-item"]});
-                const reorderViewButtonIcon = reorderViewButton.createEl("div", {cls: ["menu-item-icon"]});
-                setIcon(reorderViewButtonIcon, "arrow-down-up");
-                reorderViewButton.createEl("div", {cls: ["menu-item-title"], text: "Reorder views"});
-
-                reorderViewButton?.addEventListener("click", (click) => {
-                    
-                }); 
-
-                // Delete view button
-                const deleteViewButton = dropdownList.createEl("div", {cls: ["homework-manager-menu-item-delete", "homework-manager-menu-item", "menu-item"]});
-                const deleteViewButtonIcon = deleteViewButton.createEl("div", {cls: ["homework-manager-menu-item-delete-icon", "menu-item-icon"]});
-                setIcon(deleteViewButtonIcon, "trash");
-                deleteViewButton.createEl("div", {cls: ["menu-item-title"], text: "Delete view"});
-
-                deleteViewButton?.addEventListener("click", (click) => {
+                manageViewsButton?.addEventListener("click", (click) => {
                     
                 }); 
             } else {
