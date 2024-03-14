@@ -1,6 +1,7 @@
 import HomeworkPlugin from './main';
 import { App, Modal, TFile, Notice, setIcon } from 'obsidian';
-import { SuggestFileModal } from './suggestModal';
+import { SuggestFileModal } from './file-modal';
+import ViewManagerModal from './view-modal';
 
 //let headerGet = this.headerDiv.getElementsByClassName("header-title");
 
@@ -82,7 +83,9 @@ export default class HomeworkModal extends Modal {
                 manageViewsButton.createEl("div", {cls: ["menu-item-title"], text: "Manage views"});
 
                 manageViewsButton?.addEventListener("click", (click) => {
-                    
+                    // Open modal
+                    this.changeView(viewIndex);
+                    new ViewManagerModal(this.app, this.plugin).open();
                 }); 
             } else {
                 dropdownList?.remove();

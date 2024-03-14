@@ -1,7 +1,7 @@
 import { Plugin } from 'obsidian';
 import { SettingsTab, HomeworkManagerData, DEFAULT_DATA, defaultLogo } from "./settings";
 
-import HomeworkModal from './modal'
+import HomeworkModal from './homework-modal'
 
 export default class HomeworkManagerPlugin extends Plugin {
 	data: HomeworkManagerData;
@@ -51,7 +51,7 @@ export default class HomeworkManagerPlugin extends Plugin {
 						page: oldSubject[taskKey].page,
       					date: oldSubject[taskKey].date
 					}
-					
+
 					subject.tasks.push(task);
 				}
 
