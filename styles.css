@@ -1,41 +1,88 @@
-.homework-manager-header {
+.homework-manager h1 {
+  font-size: xx-large;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.homework-manager h2 {
+  font-size: x-large;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.homework-manager .clickable-icon {
+  width: 32px;
+  height: 32px;
+}
+.homework-manager #header {
   display: flex;
   justify-content: space-between;
   margin-right: 20px;
 }
-.homework-manager-header div {
+.homework-manager #header #left-column {
   display: flex;
   align-items: center;
 }
-.homework-manager-header span {
+.homework-manager #header *:not(svg) {
   margin-right: 10px;
 }
-.homework-manager-header h1 {
-  font-size: x-large;
+.homework-manager #body {
+  margin-top: 30px;
+}
+.homework-manager #body *:not(svg) {
+  margin-right: 10px;
+}
+.homework-manager #body #subject {
+  margin-bottom: 30px;
+}
+.homework-manager #body #title {
+  display: flex;
+  align-items: center;
+}
+.homework-manager #body #task {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+}
+.homework-manager #body #task div {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+.homework-manager #body #task #check {
+  background-color: transparent;
+  width: 25px;
+  height: 25px;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 50%;
+  border-color: var(--icon-color);
+  opacity: var(--icon-opacity);
+  transition: opacity 0.15s ease-in-out;
+}
+.homework-manager #body #task #check:hover {
+  opacity: var(--icon-opacity-hover);
+  border-color: var(--icon-color-hover);
+}
+.homework-manager #body #task #check:active {
+  opacity: var(--icon-opacity-hover);
+  border-color: var(--icon-color-focused);
+}
+.homework-manager #body #task p {
+  font-size: large;
   margin: 0;
 }
-.homework-manager-header-task {
-  margin-left: 10px;
+.homework-manager #body #task #date {
+  color: var(--text-muted);
+  font-size: small;
 }
-.homework-manager-icon-button {
-  width: 30px;
-  height: 30px;
-}
-.homework-manager-hidden {
-  display: none !important;
-}
-.homework-manager-menu {
+.homework-manager #menu {
   display: flex;
   flex-direction: column;
 }
-.homework-manager-menu-item:hover {
+.homework-manager #menu *:not(svg):hover {
   background-color: var(--background-modifier-hover);
 }
-.homework-manager-menu-item-delete {
-  color: var(--text-error);
-}
-.homework-manager-menu-item-delete-icon {
-  color: var(--text-error);
+.homework-manager #hidden {
+  display: none;
 }
 
 /*# sourceMappingURL=styles.css.map */

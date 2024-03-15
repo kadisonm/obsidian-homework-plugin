@@ -1,54 +1,111 @@
 .homework-manager {
-    &-header {
+    // Header title
+    h1 {
+        font-size: xx-large;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    // Subject names
+    h2 {
+        font-size: x-large;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .clickable-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    #header {
         display: flex;
         justify-content: space-between;
         margin-right: 20px;
 
-        & div {
+        #left-column {
             display: flex;
             align-items: center;
         }
 
-        & span {
+        *:not(svg) {
             margin-right: 10px;
         }
-        
-        & h1 {
-            font-size: x-large;
-            margin: 0;
+    }
+
+    #body {
+        margin-top: 30px;
+
+        *:not(svg) {
+            margin-right: 10px;
         }
 
-        &-task {
-            margin-left: 10px;
+        #subject {
+            margin-bottom: 30px;
+        }
+
+        #title {
+            display: flex;
+            align-items: center;    
+        }
+
+        #task {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+
+            div {
+                display: flex;
+                flex-direction: column;
+                align-items: left;
+            }
+
+            #check {
+                background-color: transparent;
+                width: 25px;
+                height: 25px;
+
+                border-style: solid;
+                border-width: 2px;
+                border-radius: 50%;
+                border-color: var(--icon-color);
+                opacity: var(--icon-opacity);
+                transition: opacity 0.15s ease-in-out;
+
+                &:hover {
+                    opacity: var(--icon-opacity-hover);
+                    border-color: var(--icon-color-hover);
+                }
+
+                &:active {
+                    opacity: var(--icon-opacity-hover);
+                    border-color: var(--icon-color-focused);
+                }
+            }
+
+            // Text
+            p {
+                font-size: large;
+                margin: 0;
+            }
+
+            #date {
+                color: var(--text-muted);
+                font-size: small;
+            }
         }
     }
 
-    &-icon-button {
-        width: 30px;
-        height: 30px;
-    }
-
-    // Using !important is bad practice, will fix later
-    &-hidden {
-        display: none !important;
-    }
-
-    &-menu {
+    #menu {
         display: flex;
         flex-direction: column;
 
-        &-item {
-            &:hover {
-                background-color: var(--background-modifier-hover);
-            }  
-            
-            &-delete {
-                color: var(--text-error);
-
-                &-icon {
-                    color: var(--text-error); 
-                }
-            }
+        *:not(svg):hover {
+            background-color: var(--background-modifier-hover);
         }
+    }
+
+    #hidden {
+        display: none;
     }
 }

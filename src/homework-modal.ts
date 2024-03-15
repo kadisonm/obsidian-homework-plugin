@@ -25,9 +25,10 @@ export default class HomeworkModal extends Modal {
 
 	onOpen() {
 		const {contentEl} = this;
-        this.divHeader = contentEl.createEl("div", { cls: "homework-manager-header" });
+        contentEl.addClass("homework-manager");
+        this.divHeader = contentEl.createEl("div", { attr: {"id": "header"}});
         this.divViewSelector = contentEl.createEl("div");
-        this.divBody = contentEl.createEl("div");
+        this.divBody = contentEl.createEl("div", { attr: {"id": "body"} });
 
         this.changeView(0);
 	}
@@ -41,9 +42,9 @@ export default class HomeworkModal extends Modal {
         this.createHeader(viewIndex);
 
         if (this.editMode) {
-            this.createEditMode();
+            this.createEditMode(viewIndex);
         } else {
-            this.createReadMode();
+            this.createReadMode(viewIndex);
         }
     }
 
@@ -53,12 +54,12 @@ export default class HomeworkModal extends Modal {
         this.divViewSelector.empty();
 
         // ------------------- LEFT HEADER ------------------- //
-        const headerLeft = this.divHeader.createEl("div");
-
+        const headerLeft = this.divHeader.createEl("div", {attr: {"id": "left-column"}});
+        
         // Create dropdown button to switch views
         const views = this.plugin.data.views;
 
-        const dropdownButton = headerLeft.createEl("span", {cls: ["homework-manager-icon-button", "clickable-icon"]});
+        const dropdownButton = headerLeft.createEl("span", {cls: "clickable-icon"});
         setIcon(dropdownButton, "chevron-down");
 
         if (this.plugin.data.settings.showTooltips) {
@@ -70,15 +71,16 @@ export default class HomeworkModal extends Modal {
 
         dropdownButton.addEventListener("click", (click) => {
             if (dropdownList == undefined) {
-                dropdownList = this.divViewSelector.createEl("div", {cls: ["homework-manager-menu", "menu mod-tab-list"]});
+                dropdownList = this.divViewSelector.createEl("div", {cls: "menu mod-tab-list", attr: {"id": "menu"}});
 
+                // Add button for each view
                 if (views.length > 1) {
                     views.forEach((viewOption, index) => {
                         if (index != viewIndex) {
-                            const viewButton = dropdownList?.createEl("div", {cls: ["homework-manager-menu-item", "menu-item"]});
-                            const viewButtonIcon = viewButton?.createEl("div", {cls: ["menu-item-icon"]})!;
+                            const viewButton = dropdownList?.createEl("div", {cls: "menu-item"});
+                            const viewButtonIcon = viewButton?.createEl("div", {cls: "menu-item-icon"})!;
                             setIcon(viewButtonIcon, "layers");
-                            const viewButtonTitle = viewButton?.createEl("div", {cls: ["menu-item-title"], text: viewOption.name});
+                            viewButton?.createEl("div", {cls: "menu-item-title", text: viewOption.name});
                             
                             viewButton?.addEventListener("click", (click) => {
                                 this.editMode = false;
@@ -91,12 +93,12 @@ export default class HomeworkModal extends Modal {
                 }
                 
                 // Manage views button
-                const manageViewsButton = dropdownList.createEl("div", {cls: ["homework-manager-menu-item", "menu-item"]});
-                const manageViewsButtonIcon = manageViewsButton.createEl("div", {cls: ["menu-item-icon"]});
-                setIcon(manageViewsButtonIcon, "pencil");
-                manageViewsButton.createEl("div", {cls: ["menu-item-title"], text: "Manage views"});
+                const manageButton = dropdownList.createEl("div", {cls: "menu-item"});
+                const manageButtonIcon = manageButton.createEl("div", {cls: "menu-item-icon"});
+                setIcon(manageButtonIcon, "pencil");
+                manageButton.createEl("div", {cls: "menu-item-title", text: "Manage views"});
 
-                manageViewsButton?.addEventListener("click", (click) => {
+                manageButton?.addEventListener("click", (click) => {
                     // Open modal
                     this.changeView(viewIndex);
                     new ViewManagerModal(this.app, this.plugin).open();
@@ -108,11 +110,11 @@ export default class HomeworkModal extends Modal {
         });
 
         // Set the view title
-        let viewName = views[viewIndex].name;
+        const viewName = views[viewIndex].name;
 		headerLeft.createEl("h1", { text: viewName });
 
         // Add top-level task
-        const newTaskButton = headerLeft.createEl("span", {cls: ["homework-manager-header-task", "homework-manager-icon-button", "clickable-icon"]});
+        const newTaskButton = headerLeft.createEl("span", {cls: "clickable-icon"});
         setIcon(newTaskButton, "plus");
 
         if (this.plugin.data.settings.showTooltips) {
@@ -127,7 +129,7 @@ export default class HomeworkModal extends Modal {
         // ------------------- RIGHT HEADER ------------------- //
 
         // Create the edit button
-        const editButton = this.divHeader.createEl("span", {cls: ["homework-manager-icon-button", "clickable-icon"]});
+        const editButton = this.divHeader.createEl("span", {cls: "clickable-icon", attr: {"id": "edit-button"}});
         const editIcon = this.editMode ? "book-open" : "pencil";
         setIcon(editButton, editIcon);
         const attributeMessage = this.editMode ? "Switch to view mode" : "Switch to edit mode\nFor editing, reordering or deleting tasks/subjects"
@@ -143,14 +145,88 @@ export default class HomeworkModal extends Modal {
         });
     }
 
-    createReadMode() {
+    createReadMode(viewIndex: number) {
         this.divBody.empty();
 
-        this.divBody.createEl("h1", { text: "Read mode" });
-        
+        const subjects = this.plugin.data.views[viewIndex].subjects;
+
+        subjects.forEach((subject: any) => {
+            // Create subject title
+            const subjectDiv =  this.divBody.createEl("div", {attr: {"id": "subject"}});
+
+            const titleDiv = subjectDiv.createEl("div", {attr: {"id": "title"}});
+            titleDiv.createEl("h2", {text: subject.name});
+
+            // Add subject new task button
+            const newTaskButton = titleDiv.createEl("span", {cls: "clickable-icon"});
+            setIcon(newTaskButton, "plus");
+
+            if (this.plugin.data.settings.showTooltips) {
+                newTaskButton.setAttribute("aria-label", "Add new task");
+                newTaskButton.setAttribute("data-tooltip-position", "top");
+            }
+
+            newTaskButton.addEventListener("click", (click) => {
+                // TODO: Call create task function and list the source (Subject/Top)
+            });
+
+            // Create tasks under subject
+            const tasks = subject.tasks;
+
+            tasks.forEach((task: any) => {
+                const taskDiv = subjectDiv.createEl("div", {attr: {"id": "task"}});
+                const leftDiv = taskDiv.createEl("div");
+                const rightDiv = taskDiv.createEl("div");
+
+                // Checkbox
+                const check = leftDiv.createEl("div", {attr: {"id": "check"}});
+
+                check.addEventListener("click", (click) => {
+                    // TODO: Remove the task from data
+                    this.changeView(viewIndex);
+                });
+
+                // Task name
+                rightDiv.createEl("p", {text: task.name});
+
+                // Due date
+                if (task.date.length > 0) {
+                    const date = new Date(task.date);
+
+                    let formattedDate = date.toLocaleDateString(undefined, {
+                        weekday: 'short',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    });
+
+                    const today = new Date();
+
+                    const yesterday = new Date();
+                    yesterday.setDate(today.getDate() - 1);
+
+                    const tomorrow = new Date();
+                    tomorrow.setDate(today.getDate() + 1);
+
+                    if (date.toDateString() == today.toDateString()) {
+                        formattedDate = "Today";
+                    } else if (date.toDateString() == tomorrow.toDateString()) {
+                        formattedDate = "Tomorrow";
+                    } else if (date.toDateString() == yesterday.toDateString()) {
+                        formattedDate = "Yesterday";
+                    } 
+
+                    const taskDate = rightDiv.createEl("p", {text: formattedDate, attr: {"id": "date"}});    
+
+                    if (today > date && today.toDateString() !== date.toDateString()) {
+                        taskDate.style.color = "var(--text-error)";
+                    }
+                }
+            });
+        });
     }
 
-    createEditMode() {
+    createEditMode(viewIndex: number) {
         this.divBody.empty();
 
         this.divBody.createEl("h1", { text: "Edit mode" });
