@@ -153,7 +153,7 @@ export default class HomeworkModal extends Modal {
         subjects.forEach((subject: any) => {
             // Create subject title
             const subjectDiv =  this.divBody.createEl("div", {attr: {"id": "subject"}});
-
+            
             const titleDiv = subjectDiv.createEl("div", {attr: {"id": "title"}});
             titleDiv.createEl("h2", {text: subject.name});
 

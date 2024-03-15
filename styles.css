@@ -36,6 +36,7 @@
 .homework-manager #body #title {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 .homework-manager #body #task {
   display: flex;
