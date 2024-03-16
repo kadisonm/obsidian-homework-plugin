@@ -113,7 +113,7 @@ export default class HomeworkModal extends Modal {
                 taskButton.createEl("div", {cls: "menu-item-title", text: "Add task"});
 
                 taskButton?.addEventListener("click", (click) => {
-                    // TODO: Add subject
+                    // TODO: Add task to top level
                 });
 
                 // Add Subject Button
@@ -123,7 +123,7 @@ export default class HomeworkModal extends Modal {
                 subjectButton.createEl("div", {cls: "menu-item-title", text: "Add subject"});
 
                 subjectButton?.addEventListener("click", (click) => {
-                    // TODO: Add task to top level
+                    // TODO: Add subject
                 });  
             } else {
                 dropdownList?.remove();
@@ -134,19 +134,6 @@ export default class HomeworkModal extends Modal {
         // Set the view title
         const viewName = views[viewIndex].name;
 		headerLeft.createEl("h1", { text: viewName });
-
-        // Add top-level task
-        const newTaskButton = headerLeft.createEl("span", {cls: "clickable-icon"});
-        setIcon(newTaskButton, "plus");
-
-        if (this.plugin.data.settings.showTooltips) {
-            newTaskButton.setAttribute("aria-label", "Add new task without subject");
-            newTaskButton.setAttribute("data-tooltip-position", "top");
-        }
-
-        newTaskButton.addEventListener("click", (click) => {
-            // TODO: Call create task function and list the source (Subject/Top)
-        });
 
         // ------------------- RIGHT HEADER ------------------- //
 
@@ -209,7 +196,29 @@ export default class HomeworkModal extends Modal {
                 });
 
                 // Task name
-                rightDiv.createEl("p", {text: task.name});
+                const taskName = rightDiv.createEl("p", {text: task.name});
+
+                if (task.page !== "") {
+                    taskName.addClass("homework-manager-link");
+
+                    if (this.plugin.data.settings.showTooltips) {
+                        taskName.setAttribute("aria-label", "Go to linked file");
+                        taskName.setAttribute("data-tooltip-position", "right");
+                    }
+
+                    taskName.addEventListener("click", (click) => {
+                        const file = this.app.vault.getAbstractFileByPath(task.page);
+ 
+                        if (file instanceof TFile)
+                        {
+                            this.app.workspace.getLeaf().openFile(file);
+                            this.close();
+                            return;
+                        }
+
+                        new Notice("Linked file cannot be found.");
+                    });
+                }
 
                 // Due date
                 if (task.date.length > 0) {

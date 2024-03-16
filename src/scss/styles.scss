@@ -109,4 +109,11 @@
     #hidden {
         display: none;
     }
+
+    &-link {
+        &:hover {
+            cursor: var(--cursor-link);
+            text-decoration-line: var(--link-decoration-hover);
+        }
+    }
 }

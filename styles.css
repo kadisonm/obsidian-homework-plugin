@@ -85,5 +85,9 @@
 .homework-manager #hidden {
   display: none;
 }
+.homework-manager-link:hover {
+  cursor: var(--cursor-link);
+  text-decoration-line: var(--link-decoration-hover);
+}
 
 /*# sourceMappingURL=styles.css.map */
