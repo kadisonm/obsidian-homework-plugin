@@ -103,6 +103,28 @@ export default class HomeworkModal extends Modal {
                     this.changeView(viewIndex);
                     new ViewManagerModal(this.app, this.plugin).open();
                 }); 
+
+                dropdownList.createEl("div", {cls: "menu-separator"});
+
+                // Add Task Button
+                const taskButton = dropdownList.createEl("div", {cls: "menu-item"});
+                const taskButtonIcon = taskButton.createEl("div", {cls: "menu-item-icon"});
+                setIcon(taskButtonIcon, "plus");
+                taskButton.createEl("div", {cls: "menu-item-title", text: "Add task"});
+
+                taskButton?.addEventListener("click", (click) => {
+                    // TODO: Add subject
+                });
+
+                // Add Subject Button
+                const subjectButton = dropdownList.createEl("div", {cls: "menu-item"});
+                const subjectButtonIcon = subjectButton.createEl("div", {cls: "menu-item-icon"});
+                setIcon(subjectButtonIcon, "copy-plus");
+                subjectButton.createEl("div", {cls: "menu-item-title", text: "Add subject"});
+
+                subjectButton?.addEventListener("click", (click) => {
+                    // TODO: Add task to top level
+                });  
             } else {
                 dropdownList?.remove();
                 dropdownList = undefined;

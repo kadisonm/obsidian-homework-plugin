@@ -79,7 +79,7 @@
   display: flex;
   flex-direction: column;
 }
-.homework-manager #menu *:not(svg):hover {
+.homework-manager #menu .menu-item:hover {
   background-color: var(--background-modifier-hover);
 }
 .homework-manager #hidden {

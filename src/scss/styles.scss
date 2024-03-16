@@ -101,7 +101,7 @@
         display: flex;
         flex-direction: column;
 
-        *:not(svg):hover {
+        .menu-item:hover {
             background-color: var(--background-modifier-hover);
         }
     }
