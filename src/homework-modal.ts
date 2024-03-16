@@ -10,6 +10,7 @@ export default class HomeworkModal extends Modal {
 
     divHeader: HTMLDivElement;
     divViewSelector: HTMLDivElement;
+    divTopLevel: HTMLDivElement;
     divBody: HTMLDivElement;
 
     currentView: string;
@@ -30,6 +31,7 @@ export default class HomeworkModal extends Modal {
         contentEl.addClass("homework-manager");
         this.divHeader = contentEl.createEl("div", { attr: {"id": "header"}});
         this.divViewSelector = contentEl.createEl("div");
+        this.divTopLevel = contentEl.createEl("div", {cls: "homework-manager-hidden", attr: {"id": "subjectPrompt"}});
         this.divBody = contentEl.createEl("div", { attr: {"id": "body"} });
 
         this.changeView(0);
@@ -135,9 +137,14 @@ export default class HomeworkModal extends Modal {
                 subjectButton.createEl("div", {cls: "menu-item-title", text: "Add subject"});
 
                 subjectButton?.addEventListener("click", async (click) => {
-                    // TODO: Add subject input
-                    //this.plugin.dataEditor.addSubject(viewIndex, "");
-                    this.changeView(viewIndex);
+                    dropdownList?.remove();
+                    dropdownList = undefined;
+                    const subjectName = await this.addSubjectPrompt();
+
+                    if (subjectName !== undefined) {
+                        await this.plugin.dataEditor.addSubject(viewIndex, subjectName);
+                        this.changeView(viewIndex);    
+                    }
                 });  
             } else {
                 dropdownList?.remove();
@@ -278,5 +285,67 @@ export default class HomeworkModal extends Modal {
         this.divBody.empty();
 
         this.divBody.createEl("h1", { text: "Edit mode" });
+    }
+
+    addSubjectPrompt(): Promise<string | undefined> {
+        this.divTopLevel.empty();
+        this.divTopLevel.removeClass("homework-manager-hidden");
+
+        const inputText = this.divTopLevel.createEl("input", {type: "text", placeholder: "Enter subject name"});
+        inputText.focus();
+
+        const saveButton = this.divTopLevel.createEl("span", {cls: "clickable-icon"});
+        setIcon(saveButton, "check");
+        saveButton.addClass("homework-manager-hidden");
+
+        if (this.plugin.data.settings.showTooltips) {
+            saveButton.setAttribute("aria-label", "Confirm");
+            saveButton.setAttribute("data-tooltip-position", "bottom");    
+        }
+
+        const cancelButton = this.divTopLevel.createEl("span", {cls: "clickable-icon"});
+        setIcon(cancelButton, "x");
+
+        if (this.plugin.data.settings.showTooltips) {
+            cancelButton.setAttribute("aria-label", "Cancel");
+            cancelButton.setAttribute("data-tooltip-position", "bottom");    
+        }
+
+        inputText.addEventListener('keyup', (event) => {
+            if (inputText.value.length > 0) {
+                saveButton.removeClass("homework-manager-hidden");
+            } else {
+                saveButton.addClass("homework-manager-hidden");
+            }
+        });
+
+        return new Promise<string | undefined>((resolve) => {
+            inputText.addEventListener('keyup', (event) => {
+                if (event.key === 'Enter') {
+                    if (inputText.value.length > 0) {
+                        this.divTopLevel.empty();
+                        this.divTopLevel.addClass("homework-manager-hidden");
+                        resolve(inputText.value.trim());
+                    }
+                }
+            });
+    
+            saveButton.addEventListener("click", () => {
+                this.divTopLevel.empty();
+                this.divTopLevel.addClass("homework-manager-hidden");
+
+                if (inputText.value.length > 0) {
+                    resolve(inputText.value.trim());
+                }
+                    
+                resolve(undefined);
+            });
+    
+            cancelButton.addEventListener("click", () => {
+                this.divTopLevel.empty();
+                this.divTopLevel.addClass("homework-manager-hidden");
+                resolve(undefined);
+            });
+        });
     }
 }

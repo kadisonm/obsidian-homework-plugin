@@ -8,6 +8,11 @@
   margin-top: 0;
   margin-bottom: 0;
 }
+.homework-manager h3 {
+  font-size: large;
+  margin-top: 0;
+  margin-bottom: 0;
+}
 .homework-manager .clickable-icon {
   width: 32px;
   height: 32px;
@@ -82,8 +87,14 @@
 .homework-manager #menu .menu-item:hover {
   background-color: var(--background-modifier-hover);
 }
-.homework-manager #hidden {
-  display: none;
+.homework-manager #subjectPrompt {
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+  gap: 10px;
+}
+.homework-manager-hidden {
+  display: none !important;
 }
 .homework-manager-link:hover {
   cursor: var(--cursor-link);
