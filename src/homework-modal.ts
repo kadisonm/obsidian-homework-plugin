@@ -23,8 +23,10 @@ export default class HomeworkModal extends Modal {
         this.creating = false;
 	}
 
-	onOpen() {
+	async onOpen() {
 		const {contentEl} = this;
+        await this.plugin.fetchData();
+
         contentEl.addClass("homework-manager");
         this.divHeader = contentEl.createEl("div", { attr: {"id": "header"}});
         this.divViewSelector = contentEl.createEl("div");
@@ -122,7 +124,7 @@ export default class HomeworkModal extends Modal {
                 setIcon(taskButtonIcon, "plus");
                 taskButton.createEl("div", {cls: "menu-item-title", text: "Add task"});
 
-                taskButton?.addEventListener("click", (click) => {
+                taskButton?.addEventListener("click", async (click) => {
                     // TODO: Add task to top level
                 });
 
@@ -132,7 +134,7 @@ export default class HomeworkModal extends Modal {
                 setIcon(subjectButtonIcon, "copy-plus");
                 subjectButton.createEl("div", {cls: "menu-item-title", text: "Add subject"});
 
-                subjectButton?.addEventListener("click", (click) => {
+                subjectButton?.addEventListener("click", async (click) => {
                     // TODO: Add subject input
                     //this.plugin.dataEditor.addSubject(viewIndex, "");
                     this.changeView(viewIndex);
@@ -171,7 +173,10 @@ export default class HomeworkModal extends Modal {
 
         const subjects = this.plugin.data.views[viewIndex].subjects;
 
-        subjects.forEach((subject: any) => {
+        // TODO: Create top level tasks
+
+        // Create subjects and tasks
+        subjects.forEach((subject: any, subjectIndex: number) => {
             // Create subject title
             const subjectDiv =  this.divBody.createEl("div", {attr: {"id": "subject"}});
             
@@ -194,7 +199,7 @@ export default class HomeworkModal extends Modal {
             // Create tasks under subject
             const tasks = subject.tasks;
 
-            tasks.forEach((task: any) => {
+            tasks.forEach(async (task: any, taskIndex: number) => {
                 const taskDiv = subjectDiv.createEl("div", {attr: {"id": "task"}});
                 const leftDiv = taskDiv.createEl("div");
                 const rightDiv = taskDiv.createEl("div");
@@ -202,8 +207,8 @@ export default class HomeworkModal extends Modal {
                 // Checkbox
                 const check = leftDiv.createEl("div", {attr: {"id": "check"}});
 
-                check.addEventListener("click", (click) => {
-                    // TODO: Remove the task from data
+                check.addEventListener("click", async (click) => {
+                    await this.plugin.dataEditor.removeTask(viewIndex, subjectIndex, taskIndex);
                     this.changeView(viewIndex);
                 });
 

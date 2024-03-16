@@ -33,6 +33,10 @@ export default class HomeworkManagerPlugin extends Plugin {
 		});
 	}
 
+	async onunload() {
+		await this.writeData();
+	}
+
 	async fetchData() {
 		const foundData = Object.assign({}, await this.loadData());
 		let newData = foundData;
@@ -64,7 +68,8 @@ export default class HomeworkManagerPlugin extends Plugin {
 
 			const view = {
 				name: "View 1",
-				subjects: reformattedSubjects
+				subjects: reformattedSubjects,
+				tasks: new Array<any>()
 			}
 
 			newData = Object.assign({}, DEFAULT_DATA);
@@ -72,7 +77,7 @@ export default class HomeworkManagerPlugin extends Plugin {
 		}
 
 		this.data = newData;
-		this.writeData();
+		await this.writeData();
 	}
 
 	async writeData() {

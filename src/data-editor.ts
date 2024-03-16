@@ -7,7 +7,8 @@ export default class DataEditor {
 		this.plugin = plugin;
 	}
 
-    addSubject(viewIndex: number, subjectName: string) {
+    async addSubject(viewIndex: number, subjectName: string) {
+        await this.plugin.fetchData();
         const view = this.plugin.data.views[viewIndex];
 
         if (!view) {
@@ -19,10 +20,11 @@ export default class DataEditor {
             "tasks": []
         });
 
-        this.plugin.writeData();
+        await this.plugin.writeData();
     }
 
-    removeSubject(viewIndex: number, subjectIndex: number) {
+    async removeSubject(viewIndex: number, subjectIndex: number) {
+        await this.plugin.fetchData();
         const view = this.plugin.data.views[viewIndex];
 
         if (!view.subjects[subjectIndex]) {
@@ -31,22 +33,41 @@ export default class DataEditor {
 
         view.subjects.splice(subjectIndex, 1);
 
-        this.plugin.writeData();
+        await this.plugin.writeData();
     }
 
-    moveSubject() {
-
-    }
-
-    addTask() {
+    async moveSubject() {
 
     }
 
-    removeTask() {
+    async addTask() {
 
     }
 
-    moveTask() {
+    async removeTask(viewIndex: number, subjectIndex: number | undefined, taskIndex: number) {
+        await this.plugin.fetchData();
+        const view = this.plugin.data.views[viewIndex];
+
+        if (!view) {
+            return;
+        }
+
+        if (subjectIndex !== undefined) {
+            const subject = view.subjects[subjectIndex];
+ 
+            if (subject) {
+                subject.tasks.splice(taskIndex, 1); 
+            }
+        } else {
+            if (view.tasks) {
+                view.tasks.splice(taskIndex, 1);
+            }
+        }
+
+        await this.plugin.writeData();
+    }
+
+    async moveTask() {
 
     }
 }
