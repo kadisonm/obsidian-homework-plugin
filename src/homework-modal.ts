@@ -1,4 +1,4 @@
-import HomeworkPlugin from './main';
+import HomeworkManagerPlugin from './main';
 import { App, Modal, TFile, Notice, setIcon } from 'obsidian';
 import { SuggestFileModal } from './file-modal';
 import ViewManagerModal from './view-modal';
@@ -6,7 +6,7 @@ import ViewManagerModal from './view-modal';
 //let headerGet = this.headerDiv.getElementsByClassName("header-title");
 
 export default class HomeworkModal extends Modal {
-	plugin: HomeworkPlugin;
+	plugin: HomeworkManagerPlugin;
 
     divHeader: HTMLDivElement;
     divViewSelector: HTMLDivElement;
@@ -16,7 +16,7 @@ export default class HomeworkModal extends Modal {
     editMode: boolean;
     creating: boolean;
 
-	constructor(app: App, plugin: HomeworkPlugin) {
+	constructor(app: App, plugin: HomeworkManagerPlugin) {
 		super(app);
 		this.plugin = plugin;
         this.editMode = false;
@@ -39,6 +39,11 @@ export default class HomeworkModal extends Modal {
 	}
 
     changeView(viewIndex: number) {
+        if (!this.plugin.data.views[viewIndex]) {
+            console.log("Cannot find requested view in data.");
+            viewIndex = 0;
+        }
+
         this.createHeader(viewIndex);
 
         if (this.editMode) {
@@ -123,7 +128,9 @@ export default class HomeworkModal extends Modal {
                 subjectButton.createEl("div", {cls: "menu-item-title", text: "Add subject"});
 
                 subjectButton?.addEventListener("click", (click) => {
-                    // TODO: Add subject
+                    // TODO: Add subject input
+                    //this.plugin.dataEditor.addSubject(viewIndex, "");
+                    this.changeView(viewIndex);
                 });  
             } else {
                 dropdownList?.remove();
