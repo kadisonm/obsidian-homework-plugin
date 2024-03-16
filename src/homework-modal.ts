@@ -86,6 +86,11 @@ export default class HomeworkModal extends Modal {
                             const viewButtonIcon = viewButton?.createEl("div", {cls: "menu-item-icon"})!;
                             setIcon(viewButtonIcon, "layers");
                             viewButton?.createEl("div", {cls: "menu-item-title", text: viewOption.name});
+
+                            if (this.plugin.data.settings.showTooltips) {
+                                viewButton?.setAttribute("aria-label", "View");
+                                viewButton?.setAttribute("data-tooltip-position", "right");
+                            }
                             
                             viewButton?.addEventListener("click", (click) => {
                                 this.editMode = false;
