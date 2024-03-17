@@ -1,4 +1,4 @@
-import HomeworkManagerPlugin from './main';
+import HomeworkManagerPlugin from '../main';
 import { App, Modal, TFile, Notice, setIcon } from 'obsidian';
 import ViewManagerModal from './view-modal';
 import { SuggestFileModal } from './file-modal';

@@ -1,4 +1,4 @@
-import HomeworkPlugin from './main';
+import HomeworkPlugin from '../main';
 import { App, Modal, setIcon, Setting } from 'obsidian';
 
 export default class ViewManagerModal extends Modal {
