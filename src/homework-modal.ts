@@ -1,9 +1,7 @@
 import HomeworkManagerPlugin from './main';
 import { App, Modal, TFile, Notice, setIcon } from 'obsidian';
-import { SuggestFileModal } from './file-modal';
 import ViewManagerModal from './view-modal';
-
-//let headerGet = this.headerDiv.getElementsByClassName("header-title");
+import { SuggestFileModal } from './file-modal';
 
 export default class HomeworkModal extends Modal {
 	plugin: HomeworkManagerPlugin;
@@ -13,7 +11,6 @@ export default class HomeworkModal extends Modal {
     divTopLevel: HTMLDivElement;
     divBody: HTMLDivElement;
 
-    currentView: string;
     editMode: boolean;
     creating: boolean;
 
@@ -177,13 +174,12 @@ export default class HomeworkModal extends Modal {
             titleDiv.createEl("h2", {text: subject.name});
 
             // Add subject new task button
-            const newTaskButton = titleDiv.createEl("span", {cls: "clickable-icon"});
-            setIcon(newTaskButton, "plus");
-
-            if (this.plugin.data.settings.showTooltips) {
-                newTaskButton.setAttribute("aria-label", "Add new task");
-                newTaskButton.setAttribute("data-tooltip-position", "top");
-            }
+            const newTaskButton = this.createIconButton(
+                titleDiv,
+                undefined,
+                "plus",
+                {message: "Add new task to subject"}
+            );
 
             newTaskButton.addEventListener("click", (click) => {
                 // TODO: Call create task function and list the source (Subject/Top)
@@ -280,10 +276,10 @@ export default class HomeworkModal extends Modal {
         const inputText = this.divTopLevel.createEl("input", {type: "text", placeholder: "Enter subject name"});
         inputText.focus();
 
-        const saveButton = this.createIconButton(this.divTopLevel, undefined, "check", "Confirm", "bottom");
+        const saveButton = this.createIconButton(this.divTopLevel, undefined, "check", {message: "Confirm", position: "bottom"});
         saveButton.addClass("homework-manager-hidden");
 
-        const cancelButton = this.createIconButton(this.divTopLevel, undefined, "x", "Cancel", "bottom");
+        const cancelButton = this.createIconButton(this.divTopLevel, undefined, "x", {message: "Cancel", position: "bottom"});
 
         inputText.addEventListener('keyup', (event) => {
             if (inputText.value.length > 0) {
