@@ -40,8 +40,27 @@ export default class DataEditor {
 
     }
 
-    async addTask() {
+    async addTask(viewIndex: number, subjectIndex: number | undefined, taskOptions: {name:string, date:string, page:string}) {
+        await this.plugin.fetchData();
+        const view = this.plugin.data.views[viewIndex];
 
+        if (!view) {
+            return;
+        }
+
+        if (subjectIndex !== undefined) {
+            const subject = view.subjects[subjectIndex];
+ 
+            if (subject) {
+                subject.tasks.push(taskOptions); 
+            }
+        } else {
+            if (view.tasks) {
+                view.tasks.push(taskOptions);
+            }
+        }
+
+        await this.plugin.writeData();
     }
 
     async removeTask(viewIndex: number, subjectIndex: number | undefined, taskIndex: number) {

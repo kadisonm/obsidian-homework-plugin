@@ -87,10 +87,24 @@
 .homework-manager #menu .menu-item:hover {
   background-color: var(--background-modifier-hover);
 }
-.homework-manager #subjectPrompt {
+.homework-manager #subject-prompt {
   display: flex;
   align-items: center;
   margin-top: 30px;
+  gap: 10px;
+}
+.homework-manager #task-prompt {
+  margin-top: 15px;
+}
+.homework-manager #task-prompt #top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.homework-manager #task-prompt #bottom {
+  display: flex;
+  align-items: center;
   gap: 10px;
 }
 .homework-manager-hidden {

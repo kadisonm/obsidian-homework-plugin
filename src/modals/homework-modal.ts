@@ -1,7 +1,7 @@
 import HomeworkManagerPlugin from '../main';
 import { App, Modal, TFile, Notice, setIcon } from 'obsidian';
 import ViewManagerModal from './view-modal';
-import { SuggestFileModal } from './file-modal';
+import SuggestFileModal from './file-modal';
 
 export default class HomeworkModal extends Modal {
 	plugin: HomeworkManagerPlugin;
@@ -28,7 +28,7 @@ export default class HomeworkModal extends Modal {
         contentEl.addClass("homework-manager");
         this.divHeader = contentEl.createEl("div", { attr: {"id": "header"}});
         this.divViewSelector = contentEl.createEl("div");
-        this.divTopLevel = contentEl.createEl("div", {cls: "homework-manager-hidden", attr: {"id": "subjectPrompt"}});
+        this.divTopLevel = contentEl.createEl("div", {cls: "homework-manager-hidden"});
         this.divBody = contentEl.createEl("div", { attr: {"id": "body"} });
 
         this.changeView(0);
@@ -115,7 +115,14 @@ export default class HomeworkModal extends Modal {
                     {message: "Creates a task without a subject", position: "right"});
 
                 taskButton?.addEventListener("click", async (click) => {
-                    // TODO: Add task to top level
+                    dropdownList?.remove();
+                    dropdownList = undefined;
+                    const taskOptions = await this.addTaskPrompt(this.divTopLevel);
+
+                    if (taskOptions) {
+                        await this.plugin.dataEditor.addTask(viewIndex, undefined, taskOptions);
+                        this.changeView(viewIndex);
+                    }
                 });
 
                 // Add Subject Button
@@ -181,8 +188,13 @@ export default class HomeworkModal extends Modal {
                 {message: "Add new task to subject"}
             );
 
-            newTaskButton.addEventListener("click", (click) => {
-                // TODO: Call create task function and list the source (Subject/Top)
+            newTaskButton.addEventListener("click", async (click) => {
+                const taskOptions = await this.addTaskPrompt(subjectDiv);
+
+                if (taskOptions) {
+                    await this.plugin.dataEditor.addTask(viewIndex, subjectIndex, taskOptions);
+                    this.changeView(viewIndex);
+                }
             });
 
             // Create tasks under subject
@@ -273,13 +285,15 @@ export default class HomeworkModal extends Modal {
         this.divTopLevel.empty();
         this.divTopLevel.removeClass("homework-manager-hidden");
 
-        const inputText = this.divTopLevel.createEl("input", {type: "text", placeholder: "Enter subject name"});
+        const subjectPrompt = this.divTopLevel.createEl("div", {attr: {"id": "subject-prompt"}});
+
+        const inputText = subjectPrompt.createEl("input", {type: "text", placeholder: "Enter subject name"});
         inputText.focus();
 
-        const saveButton = this.createIconButton(this.divTopLevel, undefined, "check", {message: "Confirm", position: "bottom"});
+        const saveButton = this.createIconButton(subjectPrompt, undefined, "check", {message: "Confirm", position: "bottom"});
         saveButton.addClass("homework-manager-hidden");
 
-        const cancelButton = this.createIconButton(this.divTopLevel, undefined, "x", {message: "Cancel", position: "bottom"});
+        const cancelButton = this.createIconButton(subjectPrompt, undefined, "x", {message: "Cancel", position: "bottom"});
 
         inputText.addEventListener('keyup', (event) => {
             if (inputText.value.length > 0) {
@@ -316,6 +330,97 @@ export default class HomeworkModal extends Modal {
     
             cancelButton.addEventListener("click", () => {
                 hideDiv();
+                resolve(undefined);
+            });
+        });
+    }
+
+    addTaskPrompt(subjectDiv: HTMLDivElement): Promise<{name: string, date: string, page: string} | undefined> {
+        let topLevel = false;
+        
+        if (subjectDiv === this.divTopLevel) {
+            topLevel = true
+        }
+
+        if (topLevel) {
+            this.divTopLevel.empty();
+            this.divTopLevel.removeClass("homework-manager-hidden");
+        }
+
+        const taskPrompt = subjectDiv.createEl("div", {attr: {"id": "task-prompt"}});
+        const top = taskPrompt.createEl("div", {attr: {"id": "top"}});
+        const bottom = taskPrompt.createEl("div", {attr: {"id": "bottom"}});
+
+        // Top
+        const inputText = top.createEl("input", {type: "text", placeholder: "Enter task name"});
+        inputText.focus();
+
+        const saveButton = this.createIconButton(top, undefined, "check", {message: "Confirm", position: "bottom"});
+        saveButton.addClass("homework-manager-hidden");
+
+        const cancelButton = this.createIconButton(top, undefined, "x", {message: "Cancel", position: "bottom"});
+
+        inputText.addEventListener('keyup', (event) => {
+            if (inputText.value.length > 0) {
+                saveButton.removeClass("homework-manager-hidden");
+            } else {
+                saveButton.addClass("homework-manager-hidden");
+            }
+        });
+
+        // Bottom
+        const fileButton = bottom.createEl("button", {text: "File"});
+        const dateButton = bottom.createEl("input", {type: "date"});
+        let page = "";
+
+        fileButton.addEventListener('click', () => {
+            new SuggestFileModal(this.app, (result) => {
+                page = result.path;
+                fileButton.setText(result.name);
+            }).open();
+        });
+
+        const getTaskOptions = () => {
+            return {
+                name: inputText.value.trim(),
+                date: dateButton.value,
+                page: page
+            }
+        }
+
+        const hideDiv = () => {
+            if (topLevel) {
+                this.divTopLevel.empty();
+                this.divTopLevel.addClass("homework-manager-hidden");    
+            }
+        }
+
+        return new Promise<{name: string, date: string, page: string} | undefined>((resolve) => {
+            inputText.addEventListener('keyup', (event) => {
+                const result = getTaskOptions();
+
+                if (event.key === 'Enter') {
+                    if (result.name.length > 0) {
+                        hideDiv();
+                        resolve(result);
+                    }
+                }
+            });
+    
+            saveButton.addEventListener("click", () => {
+                const result = getTaskOptions();
+                hideDiv();
+
+                if (result.name.length > 0) {
+                    resolve(result);
+                } 
+                taskPrompt.remove();
+                resolve(undefined);     
+            });
+    
+            cancelButton.addEventListener("click", () => {
+                hideDiv();
+                taskPrompt.remove();
                 resolve(undefined);
             });
         });

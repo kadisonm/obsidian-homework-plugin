@@ -113,11 +113,28 @@
         }
     }
 
-    #subjectPrompt {
+    #subject-prompt {
         display: flex;
         align-items: center;
         margin-top: 30px;
         gap: 10px;
+    }
+
+    #task-prompt {
+        margin-top: 15px;
+
+        #top {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        #bottom {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
     }
 
     &-hidden {

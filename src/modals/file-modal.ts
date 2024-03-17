@@ -1,6 +1,6 @@
 import { App, SuggestModal, TFile } from "obsidian";
 
-export class SuggestFileModal extends SuggestModal<TFile> {
+export default class SuggestFileModal extends SuggestModal<TFile> {
     result: TFile;
     onSubmit: (result: TFile) => void;
 
