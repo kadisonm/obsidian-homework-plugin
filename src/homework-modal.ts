@@ -65,16 +65,9 @@ export default class HomeworkModal extends Modal {
         // ------------------- LEFT HEADER ------------------- //
         const headerLeft = this.divHeader.createEl("div", {attr: {"id": "left-column"}});
         
-        // Create dropdown button to switch views
         const views = this.plugin.data.views;
 
-        const dropdownButton = headerLeft.createEl("span", {cls: "clickable-icon"});
-        setIcon(dropdownButton, "chevron-down");
-
-        if (this.plugin.data.settings.showTooltips) {
-            dropdownButton.setAttribute("aria-label", "Views");
-            dropdownButton.setAttribute("data-tooltip-position", "top");
-        }
+        const dropdownButton = this.createIconButton(headerLeft, undefined, "chevron-down", {message: "View options"});
 
         let dropdownList: HTMLDivElement | undefined = undefined;
 
@@ -85,17 +78,13 @@ export default class HomeworkModal extends Modal {
                 // Add button for each view
                 if (views.length > 1) {
                     views.forEach((viewOption, index) => {
-                        if (index != viewIndex) {
-                            const viewButton = dropdownList?.createEl("div", {cls: "menu-item"});
-                            const viewButtonIcon = viewButton?.createEl("div", {cls: "menu-item-icon"})!;
-                            setIcon(viewButtonIcon, "layers");
-                            viewButton?.createEl("div", {cls: "menu-item-title", text: viewOption.name});
+                        if (index != viewIndex && dropdownList) {
+                            const viewButton = this.createMenuButton(
+                                dropdownList, 
+                                undefined, 
+                                { icon: "layers", text: viewOption.name}, 
+                                {message: "Switch to view", position: "right"});
 
-                            if (this.plugin.data.settings.showTooltips) {
-                                viewButton?.setAttribute("aria-label", "View");
-                                viewButton?.setAttribute("data-tooltip-position", "right");
-                            }
-                            
                             viewButton?.addEventListener("click", (click) => {
                                 this.editMode = false;
                                 this.changeView(index);
@@ -107,10 +96,11 @@ export default class HomeworkModal extends Modal {
                 }
                 
                 // Manage views button
-                const manageButton = dropdownList.createEl("div", {cls: "menu-item"});
-                const manageButtonIcon = manageButton.createEl("div", {cls: "menu-item-icon"});
-                setIcon(manageButtonIcon, "pencil");
-                manageButton.createEl("div", {cls: "menu-item-title", text: "Manage views"});
+                const manageButton = this.createMenuButton(
+                    dropdownList, 
+                    undefined, 
+                    { icon: "pencil", text: "Manage views"}, 
+                    {message: "Add, delete, sort, or rename your views", position: "right"});
 
                 manageButton?.addEventListener("click", (click) => {
                     // Open modal
@@ -121,20 +111,22 @@ export default class HomeworkModal extends Modal {
                 dropdownList.createEl("div", {cls: "menu-separator"});
 
                 // Add Task Button
-                const taskButton = dropdownList.createEl("div", {cls: "menu-item"});
-                const taskButtonIcon = taskButton.createEl("div", {cls: "menu-item-icon"});
-                setIcon(taskButtonIcon, "plus");
-                taskButton.createEl("div", {cls: "menu-item-title", text: "Add task"});
+                const taskButton = this.createMenuButton(
+                    dropdownList, 
+                    undefined, 
+                    { icon: "plus", text: "Add task"}, 
+                    {message: "Creates a task without a subject", position: "right"});
 
                 taskButton?.addEventListener("click", async (click) => {
                     // TODO: Add task to top level
                 });
 
                 // Add Subject Button
-                const subjectButton = dropdownList.createEl("div", {cls: "menu-item"});
-                const subjectButtonIcon = subjectButton.createEl("div", {cls: "menu-item-icon"});
-                setIcon(subjectButtonIcon, "copy-plus");
-                subjectButton.createEl("div", {cls: "menu-item-title", text: "Add subject"});
+                const subjectButton = this.createMenuButton(
+                    dropdownList, 
+                    undefined, 
+                    { icon: "copy-plus", text: "Add subject"},
+                    {message: "Creates a subject in the current view", position: "right"});
 
                 subjectButton?.addEventListener("click", async (click) => {
                     dropdownList?.remove();
@@ -159,15 +151,9 @@ export default class HomeworkModal extends Modal {
         // ------------------- RIGHT HEADER ------------------- //
 
         // Create the edit button
-        const editButton = this.divHeader.createEl("span", {cls: "clickable-icon", attr: {"id": "edit-button"}});
         const editIcon = this.editMode ? "book-open" : "pencil";
-        setIcon(editButton, editIcon);
         const attributeMessage = this.editMode ? "Switch to view mode" : "Switch to edit mode\nFor editing, reordering or deleting tasks/subjects"
-
-        if (this.plugin.data.settings.showTooltips) {
-            editButton.setAttribute("aria-label", attributeMessage);
-            editButton.setAttribute("data-tooltip-position", "top");    
-        }
+        const editButton = this.createIconButton(this.divHeader, {attr: {"id": "edit-button"}}, editIcon, {message: attributeMessage});
 
         editButton.addEventListener("click", (click) => {
             this.editMode = !this.editMode;
@@ -294,22 +280,10 @@ export default class HomeworkModal extends Modal {
         const inputText = this.divTopLevel.createEl("input", {type: "text", placeholder: "Enter subject name"});
         inputText.focus();
 
-        const saveButton = this.divTopLevel.createEl("span", {cls: "clickable-icon"});
-        setIcon(saveButton, "check");
+        const saveButton = this.createIconButton(this.divTopLevel, undefined, "check", "Confirm", "bottom");
         saveButton.addClass("homework-manager-hidden");
 
-        if (this.plugin.data.settings.showTooltips) {
-            saveButton.setAttribute("aria-label", "Confirm");
-            saveButton.setAttribute("data-tooltip-position", "bottom");    
-        }
-
-        const cancelButton = this.divTopLevel.createEl("span", {cls: "clickable-icon"});
-        setIcon(cancelButton, "x");
-
-        if (this.plugin.data.settings.showTooltips) {
-            cancelButton.setAttribute("aria-label", "Cancel");
-            cancelButton.setAttribute("data-tooltip-position", "bottom");    
-        }
+        const cancelButton = this.createIconButton(this.divTopLevel, undefined, "x", "Cancel", "bottom");
 
         inputText.addEventListener('keyup', (event) => {
             if (inputText.value.length > 0) {
@@ -319,20 +293,23 @@ export default class HomeworkModal extends Modal {
             }
         });
 
+        const hideDiv = () => {
+            this.divTopLevel.empty();
+            this.divTopLevel.addClass("homework-manager-hidden");
+        }
+
         return new Promise<string | undefined>((resolve) => {
             inputText.addEventListener('keyup', (event) => {
                 if (event.key === 'Enter') {
                     if (inputText.value.length > 0) {
-                        this.divTopLevel.empty();
-                        this.divTopLevel.addClass("homework-manager-hidden");
+                        hideDiv();
                         resolve(inputText.value.trim());
                     }
                 }
             });
     
             saveButton.addEventListener("click", () => {
-                this.divTopLevel.empty();
-                this.divTopLevel.addClass("homework-manager-hidden");
+                hideDiv();
 
                 if (inputText.value.length > 0) {
                     resolve(inputText.value.trim());
@@ -342,10 +319,72 @@ export default class HomeworkModal extends Modal {
             });
     
             cancelButton.addEventListener("click", () => {
-                this.divTopLevel.empty();
-                this.divTopLevel.addClass("homework-manager-hidden");
+                hideDiv();
                 resolve(undefined);
             });
         });
+    }
+
+    createIconButton(
+        div: HTMLDivElement, 
+        elementInfo: string | DomElementInfo | undefined, 
+        icon: string, 
+        attribute?: {
+            message: string, 
+            position?: string
+        }): HTMLSpanElement
+    {    
+        const button = div.createEl("span", elementInfo);
+        button.addClass("clickable-icon");
+        setIcon(button, icon);
+
+        if (attribute?.message && this.plugin.data.settings.showTooltips) {
+            button.setAttribute("aria-label", attribute.message);
+
+            if (attribute.position) {
+                button.setAttribute("data-tooltip-position", attribute.position);    
+            } else {
+                button.setAttribute("data-tooltip-position", "top");    
+            }
+        }
+
+        return button;
+    }
+
+    createMenuButton(
+        div: HTMLDivElement, 
+        elementInfo: string | DomElementInfo | undefined,
+        item: {
+            icon?: string,
+            text?: string,
+        },
+        attribute?: {
+            message: string, 
+            position?: string
+        }): HTMLDivElement
+    {    
+        const button = div.createEl("div", elementInfo);
+        button.addClass("menu-item");
+
+        if (item.icon) {
+            const buttonIcon = button.createEl("div", {cls: "menu-item-icon"});
+            setIcon(buttonIcon, item.icon);    
+        }
+        
+        if (item.text) {
+            button.createEl("div", {cls: "menu-item-title", "text": item.text});
+        }
+        
+        if (attribute?.message && this.plugin.data.settings.showTooltips) {
+            button.setAttribute("aria-label", attribute.message);
+
+            if (attribute.position) {
+                button.setAttribute("data-tooltip-position", attribute.position);    
+            } else {
+                button.setAttribute("data-tooltip-position", "top");    
+            }
+        }
+
+        return button;
     }
 }
