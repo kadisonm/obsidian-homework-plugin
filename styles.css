@@ -93,6 +93,9 @@
   margin-top: 30px;
   gap: 10px;
 }
+.homework-manager #subject-prompt input {
+  width: 50%;
+}
 .homework-manager #task-prompt {
   margin-top: 15px;
 }
@@ -101,6 +104,9 @@
   align-items: center;
   gap: 10px;
   margin-bottom: 10px;
+}
+.homework-manager #task-prompt #top input {
+  width: 50%;
 }
 .homework-manager #task-prompt #bottom {
   display: flex;

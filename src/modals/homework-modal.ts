@@ -296,7 +296,7 @@ export default class HomeworkModal extends Modal {
         const cancelButton = this.createIconButton(subjectPrompt, undefined, "x", {message: "Cancel", position: "bottom"});
 
         inputText.addEventListener('keyup', (event) => {
-            if (inputText.value.length > 0) {
+            if (inputText.value.trim().length > 0) {
                 saveButton.removeClass("homework-manager-hidden");
             } else {
                 saveButton.addClass("homework-manager-hidden");
@@ -311,7 +311,7 @@ export default class HomeworkModal extends Modal {
         return new Promise<string | undefined>((resolve) => {
             inputText.addEventListener('keyup', (event) => {
                 if (event.key === 'Enter') {
-                    if (inputText.value.length > 0) {
+                    if (inputText.value.trim().length > 0) {
                         hideDiv();
                         resolve(inputText.value.trim());
                     }
@@ -321,7 +321,7 @@ export default class HomeworkModal extends Modal {
             saveButton.addEventListener("click", () => {
                 hideDiv();
 
-                if (inputText.value.length > 0) {
+                if (inputText.value.trim().length > 0) {
                     resolve(inputText.value.trim());
                 }
                     
@@ -361,7 +361,7 @@ export default class HomeworkModal extends Modal {
         const cancelButton = this.createIconButton(top, undefined, "x", {message: "Cancel", position: "bottom"});
 
         inputText.addEventListener('keyup', (event) => {
-            if (inputText.value.length > 0) {
+            if (inputText.value.trim().length > 0) {
                 saveButton.removeClass("homework-manager-hidden");
             } else {
                 saveButton.addClass("homework-manager-hidden");

@@ -118,6 +118,10 @@
         align-items: center;
         margin-top: 30px;
         gap: 10px;
+
+        input {
+            width: 50%;
+        }
     }
 
     #task-prompt {
@@ -128,6 +132,10 @@
             align-items: center;
             gap: 10px;
             margin-bottom: 10px;
+            
+            input {
+                width: 50%;
+            }
         }
 
         #bottom {
