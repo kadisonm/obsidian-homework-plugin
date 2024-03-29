@@ -15,6 +15,8 @@ export default class HomeworkModal extends Modal {
 	}
 
     async onOpen() {
+		this.containerEl.addClass("homework-manager");
+
 		const views = this.plugin.data.views;
 		const viewName = views[0].name;
 
