@@ -93,7 +93,7 @@ export default class DataEditor {
     }
 
     // Convert legacy versions (1.0.0, 1.1.0) to new data structure
-    convertFromLegacy(data: any): View {
+    convertFromLegacy(data: any) {
         const view = new View();
         view.name = "View 1";
 
@@ -114,7 +114,12 @@ export default class DataEditor {
             view.subjects.push(subject);
         }
 
-        return view;
+        const newData = Object.assign({}, DEFAULT_DATA);
+
+        newData.views.push(view);
+		console.log("Found data is legacy, converting now.\n\nLegacy", data, "\n\nConverted", newData)
+
+        return newData;
     }
 
     async addSubject(viewIndex: number, subjectName: string) {
