@@ -64,97 +64,99 @@ export default class HomeworkModal extends Modal {
         
         const views = this.plugin.data.views;
 
-        const dropdownButton = this.createIconButton(headerLeft, undefined, "chevron-down", {message: "View options"});
+        if (!this.editMode) {
+            const dropdownButton = this.createIconButton(headerLeft, undefined, "chevron-down", {message: "View options"});
 
-        let dropdownList: HTMLDivElement | undefined = undefined;
+            let dropdownList: HTMLDivElement | undefined = undefined;
 
-        dropdownButton.addEventListener("click", (click) => {
-            if (dropdownList == undefined) {
-                dropdownList = this.divViewSelector.createEl("div", {cls: "menu mod-tab-list", attr: {"id": "menu"}});
+            dropdownButton.addEventListener("click", (click) => {
+                if (dropdownList == undefined) {
+                    dropdownList = this.divViewSelector.createEl("div", {cls: "menu mod-tab-list", attr: {"id": "menu"}});
 
-                // Add button for each view
-                if (views.length > 1) {
-                    views.forEach((viewOption, index) => {
-                        if (index != viewIndex && dropdownList) {
-                            const viewButton = this.createMenuButton(
-                                dropdownList, 
-                                undefined, 
-                                { icon: "layers", text: viewOption.name}, 
-                                {message: "Switch to view", position: "right"});
+                    // Add button for each view
+                    if (views.length > 1) {
+                        views.forEach((viewOption, index) => {
+                            if (index != viewIndex && dropdownList) {
+                                const viewButton = this.createMenuButton(
+                                    dropdownList, 
+                                    undefined, 
+                                    { icon: "layers", text: viewOption.name}, 
+                                    {message: "Switch to view", position: "right"});
 
-                            viewButton?.addEventListener("click", (click) => {
-                                this.editMode = false;
-                                this.changeView(index);
-                            }); 
-                        }
-                    });   
+                                viewButton?.addEventListener("click", (click) => {
+                                    this.editMode = false;
+                                    this.changeView(index);
+                                }); 
+                            }
+                        });   
+                        
+                        dropdownList.createEl("div", {cls: "menu-separator"});
+                    }
                     
-                    dropdownList.createEl("div", {cls: "menu-separator"});
-                }
-                
-                // Manage views button
-                const manageButton = this.createMenuButton(
-                    dropdownList, 
-                    undefined, 
-                    { icon: "pencil", text: "Manage views"}, 
-                    {message: "Add, delete, sort, or rename your views", position: "right"});
+                    // Manage views button
+                    const manageButton = this.createMenuButton(
+                        dropdownList, 
+                        undefined, 
+                        { icon: "pencil", text: "Manage views"}, 
+                        {message: "Add, delete, sort, or rename your views", position: "right"});
 
-                manageButton?.addEventListener("click", (click) => {
-                    // Open modal
-                    this.changeView(viewIndex);
-                    new ViewManagerModal(this.app, this.plugin).open();
-                }); 
-
-                dropdownList.createEl("div", {cls: "menu-separator"});
-
-                // Add Task Button
-                const taskButton = this.createMenuButton(
-                    dropdownList, 
-                    undefined, 
-                    { icon: "plus", text: "Add task"}, 
-                    {message: "Creates a task without a subject", position: "right"});
-
-                taskButton?.addEventListener("click", async (click) => {
-                    dropdownList?.remove();
-                    dropdownList = undefined;
-
-                    let viewTasksDiv = this.divBody.getElementsByClassName("homework-manager-view-tasks")[0];
-
-                    if (viewTasksDiv === undefined) {
-                        viewTasksDiv = this.divTopLevel;
-                    }
-
-                    const taskOptions = await this.addTaskPrompt(viewTasksDiv as HTMLDivElement);
-
-                    if (taskOptions) {
-                        await this.plugin.dataEditor.addTask(viewIndex, taskOptions);
+                    manageButton?.addEventListener("click", (click) => {
+                        // Open modal
                         this.changeView(viewIndex);
-                    }
-                });
+                        new ViewManagerModal(this.app, this.plugin).open();
+                    }); 
 
-                // Add Subject Button
-                const subjectButton = this.createMenuButton(
-                    dropdownList, 
-                    undefined, 
-                    { icon: "copy-plus", text: "Add subject"},
-                    {message: "Creates a subject in the current view", position: "right"});
+                    dropdownList.createEl("div", {cls: "menu-separator"});
 
-                subjectButton?.addEventListener("click", async (click) => {
+                    // Add Task Button
+                    const taskButton = this.createMenuButton(
+                        dropdownList, 
+                        undefined, 
+                        { icon: "plus", text: "Add task"}, 
+                        {message: "Creates a task without a subject", position: "right"});
+
+                    taskButton?.addEventListener("click", async (click) => {
+                        dropdownList?.remove();
+                        dropdownList = undefined;
+
+                        let viewTasksDiv = this.divBody.getElementsByClassName("homework-manager-view-tasks")[0];
+
+                        if (viewTasksDiv === undefined) {
+                            viewTasksDiv = this.divTopLevel;
+                        }
+
+                        const taskOptions = await this.createTaskPrompt(viewTasksDiv as HTMLDivElement);
+
+                        if (taskOptions) {
+                            await this.plugin.dataEditor.addTask(viewIndex, taskOptions);
+                            this.changeView(viewIndex);
+                        }
+                    });
+
+                    // Add Subject Button
+                    const subjectButton = this.createMenuButton(
+                        dropdownList, 
+                        undefined, 
+                        { icon: "copy-plus", text: "Add subject"},
+                        {message: "Creates a subject in the current view", position: "right"});
+
+                    subjectButton?.addEventListener("click", async (click) => {
+                        dropdownList?.remove();
+                        dropdownList = undefined;
+                        const subjectName = await this.createSubjectPrompt();
+
+                        if (subjectName !== undefined) {
+                            await this.plugin.dataEditor.addSubject(viewIndex, subjectName);
+                            this.changeView(viewIndex);    
+                        }
+                    });  
+                } else {
                     dropdownList?.remove();
                     dropdownList = undefined;
-                    const subjectName = await this.addSubjectPrompt();
-
-                    if (subjectName !== undefined) {
-                        await this.plugin.dataEditor.addSubject(viewIndex, subjectName);
-                        this.changeView(viewIndex);    
-                    }
-                });  
-            } else {
-                dropdownList?.remove();
-                dropdownList = undefined;
-            }
-        });
-
+                }
+            });    
+        }
+        
         // Set the view title
         const viewName = views[viewIndex].name;
 		headerLeft.createEl("h1", { text: viewName });
@@ -182,7 +184,7 @@ export default class HomeworkModal extends Modal {
 
         // Create top level tasks
         view.tasks.forEach(async (task: any, taskIndex: number) => {
-            const check = await this.addTask(viewTasks, task, taskIndex, viewIndex);
+            const check = this.createTask(viewTasks, task, taskIndex, viewIndex);
 
             check.addEventListener("click", async (click) => {
                 await this.plugin.dataEditor.removeTask(viewIndex, taskIndex);
@@ -207,7 +209,7 @@ export default class HomeworkModal extends Modal {
             );
 
             newTaskButton.addEventListener("click", async (click) => {
-                const taskOptions = await this.addTaskPrompt(subjectDiv);
+                const taskOptions = await this.createTaskPrompt(subjectDiv);
 
                 if (taskOptions) {
                     await this.plugin.dataEditor.addTask(viewIndex, taskOptions, subjectIndex);
@@ -219,7 +221,7 @@ export default class HomeworkModal extends Modal {
             const tasks = subject.tasks;
 
             tasks.forEach(async (task: any, taskIndex: number) => {
-                const check = await this.addTask(subjectDiv, task, taskIndex, viewIndex, subjectIndex);
+                const check = this.createTask(subjectDiv, task, taskIndex, viewIndex, subjectIndex);
                 
                 check.addEventListener("click", async (click) => {
                     await this.plugin.dataEditor.removeTask(viewIndex, taskIndex, subjectIndex);
@@ -232,16 +234,54 @@ export default class HomeworkModal extends Modal {
     createEditMode(viewIndex: number) {
         this.divBody.empty();
 
-        this.divBody.createEl("h1", { text: "Edit mode" });
+        const view = this.plugin.data.views[viewIndex];
+        const subjects = this.plugin.data.views[viewIndex].subjects;
+        
+        const viewTasks = this.divBody.createEl("div", {cls: "homework-manager-view-tasks", attr: {"id": "subject"},});
+
+        // Create top level tasks
+        view.tasks.forEach(async (task: any, taskIndex: number) => {
+            const grab = this.createTask(viewTasks, task, taskIndex, viewIndex);
+
+            grab.addEventListener("click", async (click) => {
+                
+            });
+        });
+
+        // Create subjects and tasks
+        subjects.forEach((subject: any, subjectIndex: number) => {
+            // Create subject title
+            const subjectDiv =  this.divBody.createEl("div", {attr: {"id": "subject"}});
+            
+            const titleDiv = subjectDiv.createEl("div", {attr: {"id": "title"}});
+            titleDiv.createEl("h2", {text: subject.name});
+
+            // Create tasks under subject
+            const tasks = subject.tasks;
+
+            tasks.forEach(async (task: any, taskIndex: number) => {
+                const grab = this.createTask(subjectDiv, task, taskIndex, viewIndex, subjectIndex);
+                
+                grab.addEventListener("click", async (click) => {
+                    
+                });
+            });
+        });
     }
 
-    async addTask(div: HTMLDivElement, task: any, taskIndex: number, viewIndex: number, subjectIndex?: number): Promise<HTMLDivElement> {
+    createTask(div: HTMLDivElement, task: any, taskIndex: number, viewIndex: number, subjectIndex?: number): HTMLDivElement {
         const taskDiv = div.createEl("div", {attr: {"id": "task"}});
         const leftDiv = taskDiv.createEl("div");
         const rightDiv = taskDiv.createEl("div");
 
-        // Checkbox
-        const check = leftDiv.createEl("div", {attr: {"id": "check"}});
+        // Create check by default
+        let interactionDiv;
+
+        if (!this.editMode) {
+            interactionDiv = leftDiv.createEl("div", {attr: {"id": "check"}});
+        } else {
+            interactionDiv = leftDiv.createEl("div", {attr: {"id": "grab"}});
+        }
 
         // Task name
         const taskName = rightDiv.createEl("p", {text: task.name});
@@ -302,10 +342,10 @@ export default class HomeworkModal extends Modal {
             }
         }
 
-        return check;
+        return interactionDiv;
     }
 
-    addSubjectPrompt(): Promise<string | undefined> {
+    createSubjectPrompt(): Promise<string | undefined> {
         this.divTopLevel.empty();
         this.divTopLevel.removeClass("homework-manager-hidden");
 
@@ -359,7 +399,7 @@ export default class HomeworkModal extends Modal {
         });
     }
 
-    addTaskPrompt(subjectDiv: HTMLDivElement): Promise<{name: string, date: string, page: string} | undefined> {
+    createTaskPrompt(subjectDiv: HTMLDivElement): Promise<{name: string, date: string, page: string} | undefined> {
         let topLevel = false;
         
         if (subjectDiv === this.divTopLevel) {
