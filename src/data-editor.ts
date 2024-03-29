@@ -1,5 +1,38 @@
 import HomeworkManagerPlugin from './main';
 
+export interface HomeworkManagerData {
+    settings: {
+        deleteFinishedTasks: boolean;
+        showTooltips: boolean;
+    }
+    views: Array<View>
+}
+
+export const DEFAULT_DATA: HomeworkManagerData = {
+    settings: {
+        deleteFinishedTasks: true,
+        showTooltips: true,
+    },
+    views: new Array<View>()
+}
+
+class Task {
+    name = "";
+    date = "";
+    page = "";
+}
+
+class Subject {
+    name = "";
+    tasks = new Array<Task>();
+}
+
+class View {
+    name = "";
+    subjects = new Array<Subject>();
+    tasks = new Array<Task>();
+}
+
 export default class DataEditor {
     plugin: HomeworkManagerPlugin
 
@@ -7,8 +40,85 @@ export default class DataEditor {
 		this.plugin = plugin;
 	}
 
+    // Make sure new updates are reflected
+    formatData(data: any) {
+        const newData = Object.assign({}, DEFAULT_DATA);
+        newData.settings = data.settings;
+        newData.views = new Array<View>();
+
+        const assign = (assignTo: View | Task | Subject, object: any) => {
+            let filteredObject: any = {};
+            
+            for (const key in object) {
+                if (key in assignTo) {
+                    filteredObject[key] = object[key];
+                }
+            }
+        
+            return Object.assign(assignTo, filteredObject);
+        };
+
+        for (const view of data.views) {
+            const newView = assign(new View(), view);
+            newView.subjects = new Array<Subject>();
+            newView.tasks = new Array<Task>();
+
+            for (const task of view.tasks) {
+                const newTask = assign(new Task(), task);
+                newView.tasks.push(newTask);
+            }
+
+            for (const subject of view.subjects) {
+                const newSubject = assign(new Subject(), subject);
+                newSubject.tasks = new Array<Task>();
+
+                for (const task of subject.tasks) {
+                    const newTask = assign(new Task(), task);
+                    newView.tasks.push(newTask);
+                    newSubject.tasks.push(newTask);
+                }
+
+                newView.subjects.push(newSubject);
+            }
+
+            newData.views.push(newView);
+        }
+
+        if (newData.views.length === 0) {
+            const newView = new View();
+            newView.name = "View 1";
+            newData.views.push(newView);
+        }
+
+        return newData;
+    }
+
+    // Convert legacy versions (1.0.0, 1.1.0) to new data structure
+    convertFromLegacy(data: any): View {
+        const view = new View();
+        view.name = "View 1";
+
+        for (const subjectKey in data) {
+            const subject = new Subject();
+            subject.name = subjectKey;
+
+            const oldSubject = data[subjectKey];
+
+            for (const taskKey in data[subjectKey]) {
+                const task = new Task();
+                task.name = taskKey;
+                task.page = oldSubject[taskKey].page;
+                task.date = oldSubject[taskKey].date;
+                subject.tasks.push(task);
+            }
+
+            view.subjects.push(subject);
+        }
+
+        return view;
+    }
+
     async addSubject(viewIndex: number, subjectName: string) {
-        await this.plugin.fetchData();
         const view = this.plugin.data.views[viewIndex];
 
         if (!view) {
@@ -24,7 +134,6 @@ export default class DataEditor {
     }
 
     async removeSubject(viewIndex: number, subjectIndex: number) {
-        await this.plugin.fetchData();
         const view = this.plugin.data.views[viewIndex];
 
         if (!view.subjects[subjectIndex]) {
@@ -36,12 +145,25 @@ export default class DataEditor {
         await this.plugin.writeData();
     }
 
-    async moveSubject() {
+    async moveSubject(viewIndex: number, subjectIndex: number) {
+        const view = this.plugin.data.views[viewIndex];
 
+        if (!view.subjects[subjectIndex]) {
+            return;
+        }
+
+        const subject = view.subjects[subjectIndex]
+
+        // Delete old view
+        view.subjects.splice(subjectIndex, 1);
+
+        // Add new view at index
+        view.subjects.splice(viewIndex, 0, subject);
+
+        await this.plugin.writeData();
     }
 
     async addTask(viewIndex: number, subjectIndex: number | undefined, taskOptions: {name:string, date:string, page:string}) {
-        await this.plugin.fetchData();
         const view = this.plugin.data.views[viewIndex];
 
         if (!view) {
@@ -64,7 +186,6 @@ export default class DataEditor {
     }
 
     async removeTask(viewIndex: number, subjectIndex: number | undefined, taskIndex: number) {
-        await this.plugin.fetchData();
         const view = this.plugin.data.views[viewIndex];
 
         if (!view) {
@@ -87,6 +208,6 @@ export default class DataEditor {
     }
 
     async moveTask() {
-
+        
     }
 }

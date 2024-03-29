@@ -1,22 +1,6 @@
 import { App, PluginSettingTab, Setting } from "obsidian";
 import HomeworkManagerPlugin from "./main";
 
-export interface HomeworkManagerData {
-    settings: {
-        deleteFinishedTasks: boolean;
-        showTooltips: boolean;
-    }
-    views: Array<any>
-}
-
-export const DEFAULT_DATA: HomeworkManagerData = {
-    settings: {
-        deleteFinishedTasks: true,
-        showTooltips: true,
-    },
-    views: new Array()
-}
-
 export const defaultLogo = "book";
 
 export class SettingsTab extends PluginSettingTab {
