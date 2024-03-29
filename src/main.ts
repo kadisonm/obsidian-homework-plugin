@@ -33,7 +33,7 @@ export default class HomeworkManagerPlugin extends Plugin {
 	}
 
 	async onunload() {
-		//await this.writeData();
+		await this.writeData();
 	}
 
 	async fetchData() {
@@ -47,7 +47,6 @@ export default class HomeworkManagerPlugin extends Plugin {
         if (foundData.views === undefined) {
             const newView = this.dataEditor.convertFromLegacy(foundData);
 			newData = Object.assign({}, DEFAULT_DATA);
-			console.log(DEFAULT_DATA)
             newData.views.push(newView);
 			console.log("Found data is legacy, converting now.\n\nLegacy", foundData, "\n\nConverted", newData)
         }

@@ -10,7 +10,7 @@ export default class HomeworkModal extends Modal {
     divViewSelector: HTMLDivElement;
     divTopLevel: HTMLDivElement;
     divBody: HTMLDivElement;
-
+    
     editMode: boolean;
     creating: boolean;
 
@@ -31,7 +31,7 @@ export default class HomeworkModal extends Modal {
         this.divTopLevel = contentEl.createEl("div", {cls: "homework-manager-hidden"});
         this.divBody = contentEl.createEl("div", { attr: {"id": "body"} });
 
-        this.changeView(0);
+        await this.changeView(0);
 	}
 
 	onClose() {   
@@ -39,22 +39,22 @@ export default class HomeworkModal extends Modal {
 		contentEl.empty();
 	}
 
-    changeView(viewIndex: number) {
+    async changeView(viewIndex: number) {
         if (!this.plugin.data.views[viewIndex]) {
             console.log("Cannot find requested view in data.");
             viewIndex = 0;
         }
 
-        this.createHeader(viewIndex);
+        await this.createHeader(viewIndex);
 
         if (this.editMode) {
-            this.createEditMode(viewIndex);
+            await this.createEditMode(viewIndex);
         } else {
-            this.createReadMode(viewIndex);
+            await this.createReadMode(viewIndex);
         }
     }
 
-    createHeader(viewIndex: number) {
+    async createHeader(viewIndex: number) {
         // Clear existing header
         this.divHeader.empty();
         this.divViewSelector.empty();
@@ -117,10 +117,17 @@ export default class HomeworkModal extends Modal {
                 taskButton?.addEventListener("click", async (click) => {
                     dropdownList?.remove();
                     dropdownList = undefined;
-                    const taskOptions = await this.addTaskPrompt(this.divTopLevel);
+
+                    let viewTasksDiv = this.divBody.getElementsByClassName("homework-manager-view-tasks")[0];
+
+                    if (viewTasksDiv === undefined) {
+                        viewTasksDiv = this.divTopLevel;
+                    }
+
+                    const taskOptions = await this.addTaskPrompt(viewTasksDiv as HTMLDivElement);
 
                     if (taskOptions) {
-                        await this.plugin.dataEditor.addTask(viewIndex, undefined, taskOptions);
+                        await this.plugin.dataEditor.addTask(viewIndex, taskOptions);
                         this.changeView(viewIndex);
                     }
                 });
@@ -165,12 +172,23 @@ export default class HomeworkModal extends Modal {
         });
     }
 
-    createReadMode(viewIndex: number) {
+    async createReadMode(viewIndex: number) {
         this.divBody.empty();
 
+        const view = this.plugin.data.views[viewIndex];
         const subjects = this.plugin.data.views[viewIndex].subjects;
+        
+        const viewTasks = this.divBody.createEl("div", {cls: "homework-manager-view-tasks", attr: {"id": "subject"},});
 
-        // TODO: Create top level tasks
+        // Create top level tasks
+        view.tasks.forEach(async (task: any, taskIndex: number) => {
+            const check = await this.addTask(viewTasks, task, taskIndex, viewIndex);
+
+            check.addEventListener("click", async (click) => {
+                await this.plugin.dataEditor.removeTask(viewIndex, taskIndex);
+                this.changeView(viewIndex);
+            });
+        });
 
         // Create subjects and tasks
         subjects.forEach((subject: any, subjectIndex: number) => {
@@ -192,7 +210,7 @@ export default class HomeworkModal extends Modal {
                 const taskOptions = await this.addTaskPrompt(subjectDiv);
 
                 if (taskOptions) {
-                    await this.plugin.dataEditor.addTask(viewIndex, subjectIndex, taskOptions);
+                    await this.plugin.dataEditor.addTask(viewIndex, taskOptions, subjectIndex);
                     this.changeView(viewIndex);
                 }
             });
@@ -201,76 +219,12 @@ export default class HomeworkModal extends Modal {
             const tasks = subject.tasks;
 
             tasks.forEach(async (task: any, taskIndex: number) => {
-                const taskDiv = subjectDiv.createEl("div", {attr: {"id": "task"}});
-                const leftDiv = taskDiv.createEl("div");
-                const rightDiv = taskDiv.createEl("div");
-
-                // Checkbox
-                const check = leftDiv.createEl("div", {attr: {"id": "check"}});
-
+                const check = await this.addTask(subjectDiv, task, taskIndex, viewIndex, subjectIndex);
+                
                 check.addEventListener("click", async (click) => {
-                    await this.plugin.dataEditor.removeTask(viewIndex, subjectIndex, taskIndex);
+                    await this.plugin.dataEditor.removeTask(viewIndex, taskIndex, subjectIndex);
                     this.changeView(viewIndex);
                 });
-
-                // Task name
-                const taskName = rightDiv.createEl("p", {text: task.name});
-
-                if (task.page !== "") {
-                    taskName.addClass("homework-manager-link");
-
-                    if (this.plugin.data.settings.showTooltips) {
-                        taskName.setAttribute("aria-label", "Go to linked file");
-                        taskName.setAttribute("data-tooltip-position", "right");
-                    }
-
-                    taskName.addEventListener("click", (click) => {
-                        const file = this.app.vault.getAbstractFileByPath(task.page);
- 
-                        if (file instanceof TFile)
-                        {
-                            this.app.workspace.getLeaf().openFile(file);
-                            this.close();
-                            return;
-                        }
-
-                        new Notice("Linked file cannot be found.");
-                    });
-                }
-
-                // Due date
-                if (task.date.length > 0) {
-                    const date = new Date(task.date);
-
-                    let formattedDate = date.toLocaleDateString(undefined, {
-                        weekday: 'short',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                    });
-
-                    const today = new Date();
-
-                    const yesterday = new Date();
-                    yesterday.setDate(today.getDate() - 1);
-
-                    const tomorrow = new Date();
-                    tomorrow.setDate(today.getDate() + 1);
-
-                    if (date.toDateString() == today.toDateString()) {
-                        formattedDate = "Today";
-                    } else if (date.toDateString() == tomorrow.toDateString()) {
-                        formattedDate = "Tomorrow";
-                    } else if (date.toDateString() == yesterday.toDateString()) {
-                        formattedDate = "Yesterday";
-                    } 
-
-                    const taskDate = rightDiv.createEl("p", {text: formattedDate, attr: {"id": "date"}});    
-
-                    if (today > date && today.toDateString() !== date.toDateString()) {
-                        taskDate.style.color = "var(--text-error)";
-                    }
-                }
             });
         });
     }
@@ -279,6 +233,76 @@ export default class HomeworkModal extends Modal {
         this.divBody.empty();
 
         this.divBody.createEl("h1", { text: "Edit mode" });
+    }
+
+    async addTask(div: HTMLDivElement, task: any, taskIndex: number, viewIndex: number, subjectIndex?: number): Promise<HTMLDivElement> {
+        const taskDiv = div.createEl("div", {attr: {"id": "task"}});
+        const leftDiv = taskDiv.createEl("div");
+        const rightDiv = taskDiv.createEl("div");
+
+        // Checkbox
+        const check = leftDiv.createEl("div", {attr: {"id": "check"}});
+
+        // Task name
+        const taskName = rightDiv.createEl("p", {text: task.name});
+
+        if (task.page !== "") {
+            taskName.addClass("homework-manager-link");
+
+            if (this.plugin.data.settings.showTooltips) {
+                taskName.setAttribute("aria-label", "Go to linked file");
+                taskName.setAttribute("data-tooltip-position", "right");
+            }
+
+            taskName.addEventListener("click", (click) => {
+                const file = this.app.vault.getAbstractFileByPath(task.page);
+
+                if (file instanceof TFile)
+                {
+                    this.app.workspace.getLeaf().openFile(file);
+                    this.close();
+                    return;
+                }
+
+                new Notice("Linked file cannot be found.");
+            });
+        }
+
+        // Due date
+        if (task.date.length > 0) {
+            const date = new Date(task.date);
+
+            let formattedDate = date.toLocaleDateString(undefined, {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+            });
+
+            const today = new Date();
+
+            const yesterday = new Date();
+            yesterday.setDate(today.getDate() - 1);
+
+            const tomorrow = new Date();
+            tomorrow.setDate(today.getDate() + 1);
+
+            if (date.toDateString() == today.toDateString()) {
+                formattedDate = "Today";
+            } else if (date.toDateString() == tomorrow.toDateString()) {
+                formattedDate = "Tomorrow";
+            } else if (date.toDateString() == yesterday.toDateString()) {
+                formattedDate = "Yesterday";
+            } 
+
+            const taskDate = rightDiv.createEl("p", {text: formattedDate, attr: {"id": "date"}});    
+
+            if (today > date && today.toDateString() !== date.toDateString()) {
+                taskDate.style.color = "var(--text-error)";
+            }
+        }
+
+        return check;
     }
 
     addSubjectPrompt(): Promise<string | undefined> {

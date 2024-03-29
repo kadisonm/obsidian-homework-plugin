@@ -74,7 +74,6 @@ export default class DataEditor {
 
                 for (const task of subject.tasks) {
                     const newTask = assign(new Task(), task);
-                    newView.tasks.push(newTask);
                     newSubject.tasks.push(newTask);
                 }
 
@@ -163,7 +162,7 @@ export default class DataEditor {
         await this.plugin.writeData();
     }
 
-    async addTask(viewIndex: number, subjectIndex: number | undefined, taskOptions: {name:string, date:string, page:string}) {
+    async addTask(viewIndex: number, taskOptions: {name:string, date:string, page:string}, subjectIndex?: number) {
         const view = this.plugin.data.views[viewIndex];
 
         if (!view) {
@@ -185,7 +184,7 @@ export default class DataEditor {
         await this.plugin.writeData();
     }
 
-    async removeTask(viewIndex: number, subjectIndex: number | undefined, taskIndex: number) {
+    async removeTask(viewIndex: number, taskIndex: number, subjectIndex?: number) {
         const view = this.plugin.data.views[viewIndex];
 
         if (!view) {
