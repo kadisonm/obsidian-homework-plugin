@@ -14,7 +14,7 @@ export function IconButton({ icon, onClick, attributeMessage, attributePosition 
     useEffect(() => {
         if (element.current) {
             setIcon(element.current, icon);
-        }
+        } 
     });
 
     return (   

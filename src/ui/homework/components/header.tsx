@@ -1,7 +1,7 @@
 import { View } from "src/data-editor";
-import { IconButton } from "./icon-button";
+import { IconButton } from "src/ui/components/icon-button";
 import { useState } from 'preact/hooks'
-import { MenuItem } from "./menu-item";
+import { MenuItem } from "src/ui/components/menu-item";
 
 interface Props {
     onEditClick?: Function;
@@ -16,15 +16,20 @@ export default function Header({onEditClick, onMenuClick, ...props}: Props) {
     const [showDropdownMenu, setDropdownMenu] = useState(false);
     const [currentView, setCurrentView] = useState(0);
 
-    const onDropdownClick = () => {
-        setDropdownMenu(!showDropdownMenu);
-    }
-
+    // Disable dropdown menu on view change or editing
     if (editing || this.props.currentView !== currentView) {
         setDropdownMenu(false);
     }
 
     setCurrentView(this.props.currentView)
+
+    // Set edit button icon depending on mode
+    const editIcon = editing ? "book-open" : "pencil";
+
+    // If dropdown button is clicked then hide/show the menu
+    const onDropdownClick = () => {
+        setDropdownMenu(!showDropdownMenu);
+    }
 
     let dropdownMenu = (
         <div className="menu mod-tab-list" id="menu">
@@ -63,7 +68,7 @@ export default function Header({onEditClick, onMenuClick, ...props}: Props) {
                     <h1>{view.name}</h1>    
                 </div>
                 
-                <IconButton icon='pencil' onClick={onEditClick}/>
+                <IconButton icon={editIcon} onClick={onEditClick}/>
             </div>
             <div>
                 {showDropdownMenu && dropdownMenu}

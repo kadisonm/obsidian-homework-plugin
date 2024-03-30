@@ -1,8 +1,6 @@
 import HomeworkManagerPlugin from '../main';
 import { App, Modal } from 'obsidian';
-
 import { render } from "preact";
-
 import Homework from "src/ui/homework/homework";
 
 export default class HomeworkModal extends Modal {
@@ -15,7 +13,7 @@ export default class HomeworkModal extends Modal {
 
     async onOpen() {
 		this.containerEl.addClass("homework-manager");
-        render(<Homework data={this.plugin.data.views}/>, this.contentEl);
+        render(<Homework plugin={this.plugin}/>, this.contentEl);
 	}
 
 	async onClose() {
