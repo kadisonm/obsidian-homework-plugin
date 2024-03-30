@@ -16,18 +16,18 @@ export const DEFAULT_DATA: HomeworkManagerData = {
     views: new Array<View>()
 }
 
-class Task {
+export class Task {
     name = "";
     date = "";
     page = "";
 }
 
-class Subject {
+export class Subject {
     name = "";
     tasks = new Array<Task>();
 }
 
-class View {
+export class View {
     name = "";
     subjects = new Array<Subject>();
     tasks = new Array<Task>();

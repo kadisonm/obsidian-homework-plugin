@@ -1,38 +1,54 @@
-import { setIcon } from 'obsidian';
-import { useRef, useEffect } from 'preact/hooks';
+import { View } from "src/data-editor";
 
-export function Homework({ name }: {name: string}) {
-    return (
-        <>
-            <IconButton icon='pencil'/>
+import Header from "./components/header";
+import SubjectList from "./components/subject-list";
+import { useState } from "preact/hooks";
 
-            <h1>{name}</h1>
+interface Props {
+    data: View[];
+    editing: boolean;
+    currentView: number;
+};
 
-            <Task name = "TESTTTT"/>
-        </>
-    );
-}
+export default function Homework({data}: Props) {
+    let setEditing: Function;
+    [this.props.editing, setEditing] = useState(false);
 
-export function IconButton({ icon }: {icon: string}) {
-    const element = useRef(null);
+    let setView: Function;
+    [this.props.currentView, setView] = useState(0);
 
-    useEffect(() => {
-        if (element.current) {
-            setIcon(element.current, icon);
+    const onEditClick = () => {
+        setEditing(!this.props.editing);
+    };
+
+    const onMenuClick = (viewId?: number, source?: "manage-views" | "add-task" | "add-subject") => {
+        if (viewId !== undefined) {
+            if (data[viewId]) {
+                console.log("set view to", viewId)
+                setView(viewId);
+            }
+
+            return;
         }
-    });
+
+        if (source === "manage-views") {
+
+        } else if (source === "add-task") {
+
+        } else if (source === "add-subject") {
+
+        }
+    };
+
+    console.log("refresh to view ", this.props.currentView)
 
     return (
         <>
-            <span ref = {element} class = "clickable-icon"/>
-        </>
-    );
-}
+            <Header onEditClick={onEditClick} onMenuClick={onMenuClick} {...this.props} />
 
-export function Task({ name }: {name: string}) {
-    return (
-        <div>
-            <i>{name}</i>
-        </div>
+            <div id="body">
+                <SubjectList subjects={data[this.props.currentView].subjects} {...this.props}/>
+            </div>
+        </>
     );
 }

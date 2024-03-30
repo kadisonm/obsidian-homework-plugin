@@ -17,6 +17,13 @@
   width: 32px;
   height: 32px;
 }
+.homework-manager-hidden {
+  display: none !important;
+}
+.homework-manager-link:hover {
+  cursor: var(--cursor-link);
+  text-decoration-line: var(--link-decoration-hover);
+}
 .homework-manager #header {
   display: flex;
   justify-content: space-between;
@@ -84,6 +91,10 @@
   display: flex;
   flex-direction: column;
 }
+.homework-manager #menu .menu-item-icon {
+  width: 16px;
+  height: 16px;
+}
 .homework-manager #menu .menu-item:hover {
   background-color: var(--background-modifier-hover);
 }
@@ -112,13 +123,6 @@
   display: flex;
   align-items: center;
   gap: 10px;
-}
-.homework-manager-hidden {
-  display: none !important;
-}
-.homework-manager-link:hover {
-  cursor: var(--cursor-link);
-  text-decoration-line: var(--link-decoration-hover);
 }
 
 /*# sourceMappingURL=styles.css.map */

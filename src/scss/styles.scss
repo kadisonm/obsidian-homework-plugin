@@ -25,93 +25,22 @@
         height: 32px;
     }
 
-    #header {
-        display: flex;
-        justify-content: space-between;
-        margin-right: 20px;
+    &-hidden {
+        display: none !important;
+    }
 
-        #left-column {
-            display: flex;
-            align-items: center;
-        }
-
-        *:not(svg) {
-            margin-right: 10px;
+    &-link {
+        &:hover {
+            cursor: var(--cursor-link);
+            text-decoration-line: var(--link-decoration-hover);
         }
     }
 
-    #body {
-        margin-top: 30px;
+    @import './header';
 
-        *:not(svg) {
-            margin-right: 10px;
-        }
+    @import './body';
 
-        #subject {
-            margin-bottom: 30px;
-        }
-
-        #title {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        #task {
-            display: flex;
-            align-items: center;
-            margin-top: 15px;
-
-            div {
-                display: flex;
-                flex-direction: column;
-                align-items: left;
-            }
-
-            #check {
-                background-color: transparent;
-                width: 25px;
-                height: 25px;
-
-                border-style: solid;
-                border-width: 2px;
-                border-radius: 50%;
-                border-color: var(--icon-color);
-                opacity: var(--icon-opacity);
-                transition: opacity 0.15s ease-in-out;
-
-                &:hover {
-                    opacity: var(--icon-opacity-hover);
-                    border-color: var(--icon-color-hover);
-                }
-
-                &:active {
-                    opacity: var(--icon-opacity-hover);
-                    border-color: var(--icon-color-focused);
-                }
-            }
-
-            // Text
-            p {
-                font-size: large;
-                margin: 0;
-            }
-
-            #date {
-                color: var(--text-muted);
-                font-size: small;
-            }
-        }
-    }
-
-    #menu {
-        display: flex;
-        flex-direction: column;
-
-        .menu-item:hover {
-            background-color: var(--background-modifier-hover);
-        }
-    }
+    @import './menu';
 
     #subject-prompt {
         display: flex;
@@ -142,17 +71,6 @@
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-    }
-
-    &-hidden {
-        display: none !important;
-    }
-
-    &-link {
-        &:hover {
-            cursor: var(--cursor-link);
-            text-decoration-line: var(--link-decoration-hover);
         }
     }
 }

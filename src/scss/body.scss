@@ -1,0 +1,19 @@
+#body {
+    margin-top: 30px;
+
+    *:not(svg) {
+        margin-right: 10px;
+    }
+
+    #subject {
+        margin-bottom: 30px;
+    }
+
+    #title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    @import './task';
+}

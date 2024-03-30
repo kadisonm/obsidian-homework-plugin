@@ -1,0 +1,14 @@
+#header {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 20px;
+
+    #left-column {
+        display: flex;
+        align-items: center;
+    }
+
+    *:not(svg) {
+        margin-right: 10px;
+    }
+}

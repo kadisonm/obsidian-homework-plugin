@@ -3,7 +3,7 @@ import { SettingsTab, defaultLogo } from "./settings";
 import { HomeworkManagerData } from './data-editor';
 import DataEditor from './data-editor';
 
-import HomeworkModal from './homework-modal'
+import HomeworkModal from './main-modal'
 
 export default class HomeworkManagerPlugin extends Plugin {
 	data: HomeworkManagerData;

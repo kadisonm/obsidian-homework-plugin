@@ -3,7 +3,7 @@ import { App, Modal } from 'obsidian';
 
 import { render } from "preact";
 
-import { Homework } from "./ui/homework";
+import Homework from "./ui/homework";
 
 export default class HomeworkModal extends Modal {
 	preactElement: HTMLDivElement;
@@ -18,10 +18,9 @@ export default class HomeworkModal extends Modal {
 		this.containerEl.addClass("homework-manager");
 
 		const views = this.plugin.data.views;
-		const viewName = views[0].name;
 
 		this.preactElement = this.contentEl.createDiv("div");
-        render(<Homework name = {viewName}/>, this.preactElement);
+        render(<Homework data={this.plugin.data.views}/>, this.preactElement);
 	}
 
 	async onClose() {
