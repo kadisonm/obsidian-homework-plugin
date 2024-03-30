@@ -6,8 +6,8 @@ import { useState } from "preact/hooks";
 
 interface Props {
     data: View[];
-    editing: boolean;
-    currentView: number;
+    editing?: boolean;
+    currentView?: number;
 };
 
 export default function Homework({data}: Props) {
@@ -43,12 +43,12 @@ export default function Homework({data}: Props) {
     console.log("refresh to view ", this.props.currentView)
 
     return (
-        <>
+        <div className={"homework"}>
             <Header onEditClick={onEditClick} onMenuClick={onMenuClick} {...this.props} />
 
             <div id="body">
                 <SubjectList subjects={data[this.props.currentView].subjects} {...this.props}/>
             </div>
-        </>
+        </div>
     );
 }

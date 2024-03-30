@@ -1,66 +1,66 @@
-.homework-manager h1 {
+.homework-manager .homework h1 {
   font-size: xx-large;
   margin-top: 0;
   margin-bottom: 0;
 }
-.homework-manager h2 {
+.homework-manager .homework h2 {
   font-size: x-large;
   margin-top: 0;
   margin-bottom: 0;
 }
-.homework-manager h3 {
+.homework-manager .homework h3 {
   font-size: large;
   margin-top: 0;
   margin-bottom: 0;
 }
-.homework-manager .clickable-icon {
+.homework-manager .homework .clickable-icon {
   width: 32px;
   height: 32px;
 }
-.homework-manager-hidden {
+.homework-manager .homework-hidden {
   display: none !important;
 }
-.homework-manager-link:hover {
+.homework-manager .homework-link:hover {
   cursor: var(--cursor-link);
   text-decoration-line: var(--link-decoration-hover);
 }
-.homework-manager #header {
+.homework-manager .homework #header {
   display: flex;
   justify-content: space-between;
   margin-right: 20px;
 }
-.homework-manager #header #left-column {
+.homework-manager .homework #header #left-column {
   display: flex;
   align-items: center;
 }
-.homework-manager #header *:not(svg) {
+.homework-manager .homework #header *:not(svg) {
   margin-right: 10px;
 }
-.homework-manager #body {
+.homework-manager .homework #body {
   margin-top: 30px;
 }
-.homework-manager #body *:not(svg) {
+.homework-manager .homework #body *:not(svg) {
   margin-right: 10px;
 }
-.homework-manager #body #subject {
+.homework-manager .homework #body #subject {
   margin-bottom: 30px;
 }
-.homework-manager #body #title {
+.homework-manager .homework #body #title {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.homework-manager #body #task {
+.homework-manager .homework #body #task {
   display: flex;
   align-items: center;
   margin-top: 15px;
 }
-.homework-manager #body #task div {
+.homework-manager .homework #body #task div {
   display: flex;
   flex-direction: column;
   align-items: left;
 }
-.homework-manager #body #task #check {
+.homework-manager .homework #body #task #check {
   background-color: transparent;
   width: 25px;
   height: 25px;
@@ -71,55 +71,55 @@
   opacity: var(--icon-opacity);
   transition: opacity 0.15s ease-in-out;
 }
-.homework-manager #body #task #check:hover {
+.homework-manager .homework #body #task #check:hover {
   opacity: var(--icon-opacity-hover);
   border-color: var(--icon-color-hover);
 }
-.homework-manager #body #task #check:active {
+.homework-manager .homework #body #task #check:active {
   opacity: var(--icon-opacity-hover);
   border-color: var(--icon-color-focused);
 }
-.homework-manager #body #task p {
+.homework-manager .homework #body #task p {
   font-size: large;
   margin: 0;
 }
-.homework-manager #body #task #date {
+.homework-manager .homework #body #task #date {
   color: var(--text-muted);
   font-size: small;
 }
-.homework-manager #menu {
+.homework-manager .homework #menu {
   display: flex;
   flex-direction: column;
 }
-.homework-manager #menu .menu-item-icon {
+.homework-manager .homework #menu .menu-item-icon {
   width: 16px;
   height: 16px;
 }
-.homework-manager #menu .menu-item:hover {
+.homework-manager .homework #menu .menu-item:hover {
   background-color: var(--background-modifier-hover);
 }
-.homework-manager #subject-prompt {
+.homework-manager .homework #subject-prompt {
   display: flex;
   align-items: center;
   margin-top: 30px;
   gap: 10px;
 }
-.homework-manager #subject-prompt input {
+.homework-manager .homework #subject-prompt input {
   width: 50%;
 }
-.homework-manager #task-prompt {
+.homework-manager .homework #task-prompt {
   margin-top: 15px;
 }
-.homework-manager #task-prompt #top {
+.homework-manager .homework #task-prompt #top {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 10px;
 }
-.homework-manager #task-prompt #top input {
+.homework-manager .homework #task-prompt #top input {
   width: 50%;
 }
-.homework-manager #task-prompt #bottom {
+.homework-manager .homework #task-prompt #bottom {
   display: flex;
   align-items: center;
   gap: 10px;
