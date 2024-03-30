@@ -2,7 +2,7 @@ import { Subject } from "src/data-editor";
 import TaskList from './task-list';
 
 export default function SubjectList({...props}) {
-  const subjects = props.views[this.props.currentView].subjects;
+  const subjects = props.views[props.currentView].subjects;
 
   return (
     <>

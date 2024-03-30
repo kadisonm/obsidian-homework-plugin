@@ -1,8 +1,8 @@
 import HomeworkManagerPlugin from "src/main";
-import { View } from "src/data-editor";
 import Header from "./components/header";
 import SubjectList from "./components/subject-list";
 import { useState } from "preact/hooks";
+import { View } from "src/data-editor";
 
 interface Props {
     plugin: HomeworkManagerPlugin;
@@ -11,14 +11,14 @@ interface Props {
     currentView?: number;
 };
 
-export default function Homework({plugin}: Props) {
-    this.views = plugin.data.views;
+export default function Homework(props: Props) {
+    this.props.views = props.plugin.data.views;
 
     let setEditing: Function;
-    [this.props.editing, setEditing] = useState(false);
+    [props.editing, setEditing] = useState(false);
 
     let setView: Function;
-    [this.props.currentView, setView] = useState(0);
+    [props.currentView, setView] = useState(0);
 
     const onEditClick = () => {
         setEditing(!this.props.editing);
@@ -26,7 +26,7 @@ export default function Homework({plugin}: Props) {
 
     const onMenuClick = (viewId?: number, source?: "manage-views" | "add-task" | "add-subject") => {
         if (viewId !== undefined) {
-            if (this.views[viewId]) {
+            if (this.props.views[viewId]) {
                 console.log("set view to", viewId)
                 setView(viewId);
             }
@@ -45,10 +45,10 @@ export default function Homework({plugin}: Props) {
 
     return (
         <div className={"homework"}>
-            <Header onEditClick={onEditClick} onMenuClick={onMenuClick} {...this.props} />
+            <Header onEditClick={onEditClick} onMenuClick={onMenuClick} {...props} />
 
             <div id="body">
-                <SubjectList {...this.props}/>
+                <SubjectList {...props}/>
             </div>
         </div>
     );

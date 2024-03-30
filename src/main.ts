@@ -14,15 +14,12 @@ export default class HomeworkManagerPlugin extends Plugin {
 
 		this.addSettingTab(new SettingsTab(this.app, this));
 
-		// Open homework ribbon button
+		// Open modal ribbon button
 		const ribbonToggle = this.addRibbonIcon(defaultLogo, 'Open homework', (evt: MouseEvent) => {
 			new HomeworkModal(this.app, this).open();
 		});
 
-		// Perform additional things with the ribbon
-		ribbonToggle.addClass('my-plugin-ribbon-class');
-
-		// Open homework command
+		// Open modal
 		this.addCommand({
 			id: 'open-homework',
 			name: 'Open homework',

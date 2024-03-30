@@ -4,7 +4,7 @@ interface Props {
   tasks: Task[];
 };
 
-export default function TaskList({ tasks, ...props}: Props) {
+export default function TaskList({ tasks }: Props) {
   return (
     <>
       {tasks.map((task: Task, index: number)  => (

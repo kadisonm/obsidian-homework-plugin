@@ -8,10 +8,12 @@ interface Props {
     onMenuClick?: (viewId?: number, source?: "manage-views" | "add-task" | "add-subject") => any;
 };
 
-export default function Header({onEditClick, onMenuClick, ...props}: Props) {
-    const views = this.props.data;
-    const view = this.props.data[this.props.currentView]; 
-    const editing = this.props.editing;
+export default function Header({onEditClick, onMenuClick}: Props) {
+    const props = this.props;
+
+    const views = props.views;
+    const view = views[props.currentView]; 
+    const editing = props.editing;
 
     const [showDropdownMenu, setDropdownMenu] = useState(false);
     const [currentView, setCurrentView] = useState(0);
