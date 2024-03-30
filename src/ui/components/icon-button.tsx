@@ -1,5 +1,5 @@
 import { setIcon } from 'obsidian';
-import { useRef, useEffect } from 'preact/hooks';
+import { useRef, useLayoutEffect } from 'preact/hooks';
 
 interface Props {
     icon: string;
@@ -11,7 +11,7 @@ interface Props {
 export function IconButton({ icon, onClick, attributeMessage, attributePosition }: Props) {
     const element = useRef(null);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (element.current) {
             setIcon(element.current, icon);
         } 

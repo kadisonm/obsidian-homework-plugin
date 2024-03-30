@@ -91,10 +91,6 @@
   display: flex;
   flex-direction: column;
 }
-.homework-manager .homework #menu .menu-item-icon {
-  width: 16px;
-  height: 16px;
-}
 .homework-manager .homework #menu .menu-item:hover {
   background-color: var(--background-modifier-hover);
 }

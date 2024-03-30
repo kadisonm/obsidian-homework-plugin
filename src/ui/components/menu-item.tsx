@@ -1,5 +1,5 @@
 import { setIcon } from 'obsidian';
-import { useRef, useEffect } from 'preact/hooks';
+import { useRef, useLayoutEffect } from 'preact/hooks';
 
 interface Props {
     title: string;
@@ -12,7 +12,7 @@ interface Props {
 export function MenuItem({ title, icon, onClick, attributeMessage, attributePosition }: Props) {
     const element = useRef(null);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (element.current && icon) {
             setIcon(element.current, icon);
         }

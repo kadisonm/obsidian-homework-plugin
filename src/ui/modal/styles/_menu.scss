@@ -2,11 +2,6 @@
     display: flex;
     flex-direction: column;
 
-    .menu-item-icon {
-        width: 16px;
-        height: 16px;
-    }
-
     .menu-item:hover {
         background-color: var(--background-modifier-hover);
     }
