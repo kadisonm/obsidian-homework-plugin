@@ -3,7 +3,7 @@ import { IconButton } from "src/ui/components/icon-button";
 import { useState } from 'preact/hooks'
 import { MenuItem } from "src/ui/components/menu-item";
 import { HomeworkModalContext } from "..";
-import { useContext } from 'preact/hooks'
+import { useContext } from 'preact/hooks';
 
 export default function Header() {
     const props = useContext(HomeworkModalContext);

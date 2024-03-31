@@ -63,11 +63,13 @@ export default class DataEditor {
             newView.subjects = new Array<Subject>();
             newView.tasks = new Array<Task>();
 
-            for (const task of view.tasks) {
-                const newTask = assign(new Task(), task);
-                newView.tasks.push(newTask);
+            if (view.tasks) {
+                for (const task of view.tasks) {
+                    const newTask = assign(new Task(), task);
+                    newView.tasks.push(newTask);
+                }    
             }
-
+            
             for (const subject of view.subjects) {
                 const newSubject = assign(new Subject(), subject);
                 newSubject.tasks = new Array<Task>();
