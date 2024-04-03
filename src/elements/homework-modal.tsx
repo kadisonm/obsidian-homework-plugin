@@ -19,4 +19,8 @@ export default class HomeworkModal extends Modal {
 	async onClose() {
         render(null, this.contentEl);
 	}
+
+	closeModal() {
+		this.close();
+	}
 }
