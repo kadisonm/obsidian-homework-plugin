@@ -5,7 +5,9 @@ export interface HomeworkManagerData {
         deleteFinishedTasks: boolean;
         showTooltips: boolean;
     }
-    views: Array<View>
+    views: View[],
+    subjects: Subject[],
+    tasks: Task[]
 }
 
 export const DEFAULT_DATA: HomeworkManagerData = {
@@ -13,24 +15,31 @@ export const DEFAULT_DATA: HomeworkManagerData = {
         deleteFinishedTasks: true,
         showTooltips: true,
     },
-    views: new Array<View>()
+    views: [],
+    subjects: [],
+    tasks: [],
 }
 
-export class Task {
-    name = "";
-    date = "";
-    page = "";
+export interface Task {
+    id: string;
+    order: number;
+    parentId: string;
+    name: string;
+    date: string;
+    page: string;
 }
 
-export class Subject {
-    name = "";
-    tasks = new Array<Task>();
+export interface Subject {
+    id: string;
+    order: number;
+    parentId: string;
+    name: string;
 }
 
-export class View {
-    name = "";
-    subjects = new Array<Subject>();
-    tasks = new Array<Task>();
+export interface View {
+    id: string;
+    order: number;
+    name: string;
 }
 
 export default class DataEditor {
@@ -44,7 +53,6 @@ export default class DataEditor {
     formatData(data: any) {
         const newData = Object.assign({}, DEFAULT_DATA);
         newData.settings = data.settings;
-        newData.views = new Array<View>();
 
         const assign = (assignTo: View | Task | Subject, object: any) => {
             let filteredObject: any = {};
@@ -60,8 +68,6 @@ export default class DataEditor {
 
         for (const view of data.views) {
             const newView = assign(new View(), view);
-            newView.subjects = new Array<Subject>();
-            newView.tasks = new Array<Task>();
 
             if (view.tasks) {
                 for (const task of view.tasks) {
@@ -72,7 +78,6 @@ export default class DataEditor {
             
             for (const subject of view.subjects) {
                 const newSubject = assign(new Subject(), subject);
-                newSubject.tasks = new Array<Task>();
 
                 for (const task of subject.tasks) {
                     const newTask = assign(new Task(), task);
@@ -123,6 +128,8 @@ export default class DataEditor {
 
         return newData;
     }
+
+    
 
     async addSubject(viewIndex: number, subjectName: string) {
         const view = this.plugin.data.views[viewIndex];
