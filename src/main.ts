@@ -1,8 +1,7 @@
 import { Plugin } from 'obsidian';
 import { SettingsTab, defaultLogo } from "./settings";
 import { HomeworkManagerData } from './data-editor';
-import DataEditor from './data-editor';
-
+import { DataEditor, DEFAULT_DATA} from './data-editor';
 import HomeworkModal from './elements/homework-modal'
 
 export default class HomeworkManagerPlugin extends Plugin {
@@ -37,17 +36,16 @@ export default class HomeworkManagerPlugin extends Plugin {
 		this.dataEditor = new DataEditor(this);
 
 		const foundData = Object.assign({}, await this.loadData());
-		
+
 		let newData = foundData;
 
 		// Legacy data -> needs to convert
         if (foundData.views === undefined) {
+			console.log("CONVERT NOW")
             newData = this.dataEditor.convertFromLegacy(foundData);
         }
 
-		newData = this.dataEditor.formatData(newData);
-
-		this.data = newData;
+		this.data = this.dataEditor.formatData(newData);
 		await this.writeData();
 	}
 

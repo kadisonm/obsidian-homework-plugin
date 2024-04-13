@@ -1,9 +1,9 @@
 import HomeworkManagerPlugin from './main';
+import { v1 as uuidv1 } from 'uuid';
 
 export interface HomeworkManagerData {
     settings: {
         deleteFinishedTasks: boolean;
-        showTooltips: boolean;
     }
     views: View[],
     subjects: Subject[],
@@ -13,7 +13,6 @@ export interface HomeworkManagerData {
 export const DEFAULT_DATA: HomeworkManagerData = {
     settings: {
         deleteFinishedTasks: true,
-        showTooltips: true,
     },
     views: [],
     subjects: [],
@@ -42,185 +41,172 @@ export interface View {
     name: string;
 }
 
-export default class DataEditor {
+export class DataEditor {
     plugin: HomeworkManagerPlugin
 
     constructor(plugin: HomeworkManagerPlugin) {
 		this.plugin = plugin;
 	}
 
-    // Make sure new updates are reflected
-    formatData(data: any) {
-        const newData = Object.assign({}, DEFAULT_DATA);
-        newData.settings = data.settings;
-
-        const assign = (assignTo: View | Task | Subject, object: any) => {
-            let filteredObject: any = {};
-            
-            for (const key in object) {
-                if (key in assignTo) {
-                    filteredObject[key] = object[key];
-                }
-            }
-        
-            return Object.assign(assignTo, filteredObject);
-        };
-
-        for (const view of data.views) {
-            const newView = assign(new View(), view);
-
-            if (view.tasks) {
-                for (const task of view.tasks) {
-                    const newTask = assign(new Task(), task);
-                    newView.tasks.push(newTask);
-                }    
-            }
-            
-            for (const subject of view.subjects) {
-                const newSubject = assign(new Subject(), subject);
-
-                for (const task of subject.tasks) {
-                    const newTask = assign(new Task(), task);
-                    newSubject.tasks.push(newTask);
-                }
-
-                newView.subjects.push(newSubject);
-            }
-
-            newData.views.push(newView);
-        }
-
-        if (newData.views.length === 0) {
-            const newView = new View();
-            newView.name = "View 1";
-            newData.views.push(newView);
-        }
-
-        return newData;
-    }
-
     // Convert legacy versions (1.0.0, 1.1.0) to new data structure
-    convertFromLegacy(data: any) {
-        const view = new View();
-        view.name = "View 1";
-
-        for (const subjectKey in data) {
-            const subject = new Subject();
-            subject.name = subjectKey;
-
-            const oldSubject = data[subjectKey];
-
-            for (const taskKey in data[subjectKey]) {
-                const task = new Task();
-                task.name = taskKey;
-                task.page = oldSubject[taskKey].page;
-                task.date = oldSubject[taskKey].date;
-                subject.tasks.push(task);
-            }
-
-            view.subjects.push(subject);
-        }
-
+    convertFromLegacy(legacyData: any) {
         const newData = Object.assign({}, DEFAULT_DATA);
 
-        newData.views.push(view);
-		console.log("Found data is legacy, converting now.\n\nLegacy", data, "\n\nConverted", newData)
-
-        return newData;
-    }
-
-    
-
-    async addSubject(viewIndex: number, subjectName: string) {
-        const view = this.plugin.data.views[viewIndex];
-
-        if (!view) {
-            return;
-        }
-
-        view.subjects.push({
-            "name": subjectName,
-            "tasks": []
+        newData.views.push({
+            id: uuidv1(),
+            order: 0,
+            name: "View 1",
         });
 
-        await this.plugin.writeData();
+        Object.keys(legacyData).forEach((subjectName: string, subjectIndex: number) => {
+            const currentSubjectId = uuidv1();
+
+            newData.subjects.push({
+                id: currentSubjectId,
+                parentId: "V0",
+                order: subjectIndex,
+                name: subjectName
+            });
+
+            const legacySubject = legacyData[subjectName];
+
+            Object.keys(legacySubject).forEach((taskName: string, taskIndex: number) => {
+                newData.tasks.push({
+                    id: uuidv1(),
+                    parentId: currentSubjectId,
+                    order: taskIndex,
+                    name: taskName,
+                    page: legacySubject[taskName].page,
+                    date: legacySubject[taskName].date,
+                });
+            });
+        });
+
+		console.log("Found legacy data and converted.\n\nLegacy", legacyData, "\n\nConverted", newData)
+
+        return newData;
     }
 
-    async removeSubject(viewIndex: number, subjectIndex: number) {
-        const view = this.plugin.data.views[viewIndex];
+    formatData(data: any) {
+        const newData = Object.assign({}, DEFAULT_DATA, data);
 
-        if (!view.subjects[subjectIndex]) {
-            return;
-        }
+        newData.views.forEach((object: View, index: number) => {
+            const newObject = Object.assign({}, object);
 
-        view.subjects.splice(subjectIndex, 1);
+            Object.keys(newObject).forEach((key) => {
+                const view = {} as View;
 
-        await this.plugin.writeData();
+                if (!view.hasOwnProperty(key))
+                  delete newObject[key];
+            });
+
+            newData.subjects[index] = newObject
+            console.log(newData.views[index])
+        });
+
+        newData.subjects.forEach((object: Subject, index: number) => {
+            newData.subjects[index] = Object.assign({}, object);
+        });
+
+        newData.tasks.forEach((object: Task, index: number) => {
+            newData.tasks[index] = Object.assign({}, object);
+        });
+
+        return newData;
     }
 
-    async moveSubject(viewIndex: number, subjectIndex: number) {
-        const view = this.plugin.data.views[viewIndex];
 
-        if (!view.subjects[subjectIndex]) {
-            return;
-        }
 
-        const subject = view.subjects[subjectIndex]
+    // async addSubject(viewIndex: number, subjectName: string) {
+    //     const view = this.plugin.data.views[viewIndex];
 
-        // Delete old view
-        view.subjects.splice(subjectIndex, 1);
+    //     if (!view) {
+    //         return;
+    //     }
 
-        // Add new view at index
-        view.subjects.splice(viewIndex, 0, subject);
+    //     view.subjects.push({
+    //         "name": subjectName,
+    //         "tasks": []
+    //     });
 
-        await this.plugin.writeData();
-    }
+    //     await this.plugin.writeData();
+    // }
 
-    async addTask(viewIndex: number, taskOptions: {name:string, date:string, page:string}, subjectIndex?: number) {
-        const view = this.plugin.data.views[viewIndex];
+    // async removeSubject(viewIndex: number, subjectIndex: number) {
+    //     const view = this.plugin.data.views[viewIndex];
 
-        if (!view) {
-            return;
-        }
+    //     if (!view.subjects[subjectIndex]) {
+    //         return;
+    //     }
 
-        if (subjectIndex !== undefined) {
-            const subject = view.subjects[subjectIndex];
+    //     view.subjects.splice(subjectIndex, 1);
+
+    //     await this.plugin.writeData();
+    // }
+
+    // async moveSubject(viewIndex: number, subjectIndex: number) {
+    //     const view = this.plugin.data.views[viewIndex];
+
+    //     if (!view.subjects[subjectIndex]) {
+    //         return;
+    //     }
+
+    //     const subject = view.subjects[subjectIndex]
+
+    //     // Delete old view
+    //     view.subjects.splice(subjectIndex, 1);
+
+    //     // Add new view at index
+    //     view.subjects.splice(viewIndex, 0, subject);
+
+    //     await this.plugin.writeData();
+    // }
+
+    // async addTask(viewIndex: number, taskOptions: {name:string, date:string, page:string}, subjectIndex?: number) {
+    //     const view = this.plugin.data.views[viewIndex];
+
+    //     if (!view) {
+    //         return;
+    //     }
+
+    //     if (subjectIndex !== undefined) {
+    //         const subject = view.subjects[subjectIndex];
  
-            if (subject) {
-                subject.tasks.push(taskOptions); 
-            }
-        } else {
-            if (view.tasks) {
-                view.tasks.push(taskOptions);
-            }
-        }
+    //         if (subject) {
+    //             subject.tasks.push(taskOptions); 
+    //         }
+    //     } else {
+    //         if (view.tasks) {
+    //             view.tasks.push(taskOptions);
+    //         }
+    //     }
 
-        await this.plugin.writeData();
-    }
+    //     await this.plugin.writeData();
+    // }
 
-    async removeTask(viewIndex: number, taskIndex: number, subjectIndex?: number) {
-        const view = this.plugin.data.views[viewIndex];
+    // async removeTask(viewIndex: number, taskIndex: number, subjectIndex?: number) {
+    //     const view = this.plugin.data.views[viewIndex];
 
-        if (!view) {
-            return;
-        }
+    //     if (!view) {
+    //         return;
+    //     }
 
-        if (subjectIndex !== undefined) {
-            const subject = view.subjects[subjectIndex];
+    //     if (subjectIndex !== undefined) {
+    //         const subject = view.subjects[subjectIndex];
  
-            if (subject) {
-                subject.tasks.splice(taskIndex, 1); 
-            }
-        } else {
-            if (view.tasks) {
-                view.tasks.splice(taskIndex, 1);
-            }
-        }
+    //         if (subject) {
+    //             subject.tasks.splice(taskIndex, 1); 
+    //         }
+    //     } else {
+    //         if (view.tasks) {
+    //             view.tasks.splice(taskIndex, 1);
+    //         }
+    //     }
 
-        await this.plugin.writeData();
-    }
+    //     await this.plugin.writeData();
+    // }
 
-    async moveTask() {
+    // async moveTask() {
         
-    }
+    // }
 }
