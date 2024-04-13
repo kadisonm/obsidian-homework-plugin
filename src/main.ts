@@ -35,17 +35,21 @@ export default class HomeworkManagerPlugin extends Plugin {
 	async fetchData() {
 		this.dataEditor = new DataEditor(this);
 
-		const foundData = Object.assign({}, await this.loadData());
+		// Set data to be default
+		this.data = Object.assign({}, DEFAULT_DATA);
 
-		let newData = foundData;
+		// Load data from file
+		let foundData = Object.assign({}, await this.loadData());
 
-		// Legacy data -> needs to convert
+		// Convert legacy or reformat data
         if (foundData.views === undefined) {
-			console.log("CONVERT NOW")
-            newData = this.dataEditor.convertFromLegacy(foundData);
-        }
+            await this.dataEditor.convertFromLegacy(foundData);
+        } else {
+			await this.dataEditor.formatData(foundData);
+		}
 
-		this.data = this.dataEditor.formatData(newData);
+		console.log(this.data)
+
 		await this.writeData();
 	}
 
