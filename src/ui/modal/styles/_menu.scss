@@ -2,7 +2,11 @@
     display: flex;
     flex-direction: column;
 
-    .menu-item:hover {
+    #selected-view {
         background-color: var(--background-modifier-hover);
+    }
+
+    .menu-item:not(#selected-view):hover {
+        background-color: var(--background-primary);
     }
 }

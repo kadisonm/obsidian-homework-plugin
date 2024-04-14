@@ -69,6 +69,8 @@ export class DataEditor {
         });
 
 		console.log("Found legacy data and converted.\n\nLegacy", legacyData, "\n\nConverted", this.plugin.data)
+
+        await this.plugin.writeData();
     }
 
     // Rebuild structure to make sure new updates are reflected
@@ -92,8 +94,13 @@ export class DataEditor {
         foundData.tasks.forEach(async (task: Task) => {
             await this.addTask(task.parentId, task.name, task.id, task.order, task.page, task.date);
         });
+
+        await this.plugin.writeData();
     }
 
+    //---------------------------------
+    // Adding
+    //---------------------------------
     async addView(name: string, id = uuidv1(), order = this.plugin.data.views.length) {
         const view = {} as View;
         view.id = id;
@@ -101,6 +108,7 @@ export class DataEditor {
         view.order = order;
 
         this.plugin.data.views.push(view);
+
         await this.plugin.writeData();
 
         return id;
@@ -114,6 +122,7 @@ export class DataEditor {
         subject.order = order;
 
         this.plugin.data.subjects.push(subject);
+
         await this.plugin.writeData();
 
         return id;
@@ -129,86 +138,57 @@ export class DataEditor {
         task.date = date;
 
         this.plugin.data.tasks.push(task);
+
         await this.plugin.writeData();
 
         return id;
     }
 
-    // async removeSubject(viewIndex: number, subjectIndex: number) {
-    //     const view = this.plugin.data.views[viewIndex];
+    //---------------------------------
+    // Deleting
+    //---------------------------------
+    async deleteView(id: string) {
+        const foundView = this.plugin.data.views.findIndex((object) => object.id === id);
 
-    //     if (!view.subjects[subjectIndex]) {
-    //         return;
-    //     }
+        if (foundView === undefined)
+            return;
 
-    //     view.subjects.splice(subjectIndex, 1);
+        this.plugin.data.views.splice(foundView, 1);
 
-    //     await this.plugin.writeData();
-    // }
+        const foundViewsSubjects = this.plugin.data.subjects.filter((object) => object.parentId === id);
 
-    // async moveSubject(viewIndex: number, subjectIndex: number) {
-    //     const view = this.plugin.data.views[viewIndex];
+        for (const subject of foundViewsSubjects) {
+            await this.deleteSubject(subject.id);
+        }
 
-    //     if (!view.subjects[subjectIndex]) {
-    //         return;
-    //     }
+        await this.plugin.writeData();
+    }
 
-    //     const subject = view.subjects[subjectIndex]
+    async deleteSubject(id: string) {
+        const foundSubject = this.plugin.data.subjects.findIndex((object) => object.id === id);
 
-    //     // Delete old view
-    //     view.subjects.splice(subjectIndex, 1);
+        if (foundSubject === undefined) 
+            return;
 
-    //     // Add new view at index
-    //     view.subjects.splice(viewIndex, 0, subject);
-
-    //     await this.plugin.writeData();
-    // }
-
-    // async addTask(viewIndex: number, taskOptions: {name:string, date:string, page:string}, subjectIndex?: number) {
-    //     const view = this.plugin.data.views[viewIndex];
-
-    //     if (!view) {
-    //         return;
-    //     }
-
-    //     if (subjectIndex !== undefined) {
-    //         const subject = view.subjects[subjectIndex];
- 
-    //         if (subject) {
-    //             subject.tasks.push(taskOptions); 
-    //         }
-    //     } else {
-    //         if (view.tasks) {
-    //             view.tasks.push(taskOptions);
-    //         }
-    //     }
-
-    //     await this.plugin.writeData();
-    // }
-
-    // async removeTask(viewIndex: number, taskIndex: number, subjectIndex?: number) {
-    //     const view = this.plugin.data.views[viewIndex];
-
-    //     if (!view) {
-    //         return;
-    //     }
-
-    //     if (subjectIndex !== undefined) {
-    //         const subject = view.subjects[subjectIndex];
- 
-    //         if (subject) {
-    //             subject.tasks.splice(taskIndex, 1); 
-    //         }
-    //     } else {
-    //         if (view.tasks) {
-    //             view.tasks.splice(taskIndex, 1);
-    //         }
-    //     }
-
-    //     await this.plugin.writeData();
-    // }
-
-    // async moveTask() {
+        this.plugin.data.subjects.splice(foundSubject, 1);
         
-    // }
+        const foundSubjectsTasks = this.plugin.data.tasks.filter((object) => object.parentId === id);
+        
+        for (const task of foundSubjectsTasks) {
+            await this.deleteTask(task.id);
+        }
+
+        await this.plugin.writeData();
+    }
+
+    async deleteTask(id: string) {
+        const task = this.plugin.data.tasks.findIndex((object) => object.id === id);
+
+        if (task === undefined)
+            return;
+
+        this.plugin.data.tasks.splice(task, 1);
+
+        await this.plugin.writeData();
+    }
 }

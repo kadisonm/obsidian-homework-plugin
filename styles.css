@@ -91,8 +91,11 @@
   display: flex;
   flex-direction: column;
 }
-.homework-manager .homework #menu .menu-item:hover {
+.homework-manager .homework #menu #selected-view {
   background-color: var(--background-modifier-hover);
+}
+.homework-manager .homework #menu .menu-item:not(#selected-view):hover {
+  background-color: var(--background-primary);
 }
 .homework-manager .homework #subject-prompt {
   display: flex;

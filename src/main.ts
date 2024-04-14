@@ -12,7 +12,7 @@ export default class HomeworkManagerPlugin extends Plugin {
 		await this.fetchData();
 
 		this.addSettingTab(new SettingsTab(this.app, this));
-
+		
 		// Open modal ribbon button
 		const ribbonToggle = this.addRibbonIcon(defaultLogo, 'Open homework', (evt: MouseEvent) => {
 			new HomeworkModal(this.app, this).open();
@@ -47,10 +47,6 @@ export default class HomeworkManagerPlugin extends Plugin {
         } else {
 			await this.dataEditor.formatData(foundData);
 		}
-
-		console.log(this.data)
-
-		await this.writeData();
 	}
 
 	async writeData() {
