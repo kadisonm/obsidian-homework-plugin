@@ -1,20 +1,18 @@
 import { Plugin } from 'obsidian';
 import { SettingsTab, defaultLogo } from "./settings";
-import { HomeworkManagerData } from './data-editor';
-import { DataEditor, DEFAULT_DATA} from './data-editor';
+import { DataManager } from './data';
 import HomeworkModal from './elements/homework-modal'
 
 export default class HomeworkManagerPlugin extends Plugin {
-	data: HomeworkManagerData;
-	dataEditor: DataEditor;
+	data: DataManager;
 
 	async onload() {
-		await this.fetchData();
+		this.data = new DataManager(this);
 
 		this.addSettingTab(new SettingsTab(this.app, this));
 		
 		// Open modal ribbon button
-		const ribbonToggle = this.addRibbonIcon(defaultLogo, 'Open homework', (evt: MouseEvent) => {
+		this.addRibbonIcon(defaultLogo, 'Open homework', (evt: MouseEvent) => {
 			new HomeworkModal(this.app, this).open();
 		});
 
@@ -29,27 +27,6 @@ export default class HomeworkManagerPlugin extends Plugin {
 	}
 
 	async onunload() {
-		await this.writeData();
-	}
-
-	async fetchData() {
-		this.dataEditor = new DataEditor(this);
-
-		// Set data to be default
-		this.data = Object.assign({}, DEFAULT_DATA);
-
-		// Load data from file
-		let foundData = Object.assign({}, await this.loadData());
-
-		// Convert legacy or reformat data
-        if (foundData.views === undefined) {
-            await this.dataEditor.convertFromLegacy(foundData);
-        } else {
-			await this.dataEditor.formatData(foundData);
-		}
-	}
-
-	async writeData() {
-		await this.saveData(this.data);
+		await this.data.save();
 	}
 }
