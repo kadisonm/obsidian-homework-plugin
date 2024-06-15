@@ -145,4 +145,20 @@ export class DataManager {
             this.data.homework.items.splice(item, 1);
         }
     }
+
+    async changeItemParent(id: string, parent: string) {
+        const searchId = id;
+        const itemIndex = this.data.homework.items.findIndex(({ id }) => id === searchId);
+        const item = this.data.homework.items[itemIndex];
+
+        // To-do: Make a function to replace this item finding process
+        const ogParentId = item.parent;
+        const ogParentIndex = this.data.homework.items.findIndex(({ id }) => id === ogParentId);
+        this.data.homework.items[ogParentIndex].children.remove(id);
+
+        item.parent = parent;
+
+        const parentIndex = this.data.homework.items.findIndex(({ id }) => id === parent);
+        this.data.homework.items[parentIndex].children.push(id);
+    }
 }
