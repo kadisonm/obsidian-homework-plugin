@@ -1,4 +1,4 @@
-import HomeworkManagerPlugin from '../main';
+import HomeworkManagerPlugin from './main';
 import { App, Modal } from 'obsidian';
 import { render } from "preact";
 import ModalComponent from "src/ui/modal";

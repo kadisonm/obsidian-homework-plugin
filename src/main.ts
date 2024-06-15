@@ -1,7 +1,7 @@
 import { Plugin } from 'obsidian';
 import { SettingsTab, defaultLogo } from "./settings";
-import { DataManager } from './data';
-import HomeworkModal from './elements/homework-modal'
+import { DataManager } from './data-manager';
+import HomeworkModal from './homework-modal'
 
 export default class HomeworkManagerPlugin extends Plugin {
 	data: DataManager;

@@ -3,7 +3,7 @@ import Header from "./components/header";
 import { useState } from "preact/hooks";
 import { createContext } from "preact";
 import { App } from "obsidian";
-import HomeworkModal from "src/elements/homework-modal";
+import HomeworkModal from "src/homework-modal";
 import Body from "./components/body";
 
 export const HomeworkModalContext = createContext<any>(undefined);
