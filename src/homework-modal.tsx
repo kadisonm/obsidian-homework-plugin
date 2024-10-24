@@ -13,7 +13,7 @@ export default class HomeworkModal extends Modal {
 
     async onOpen() {
 		this.containerEl.addClass("homework-manager");
-        render(<ModalComponent modal={this} plugin={this.plugin} app={this.app}/>, this.contentEl);
+		render(<ModalComponent modal={this} />, this.contentEl);
 	}
 
 	async onClose() {

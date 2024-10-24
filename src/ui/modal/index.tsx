@@ -1,7 +1,7 @@
-import HomeworkManagerPlugin from "src/main";
 import { createContext } from "preact";
-import { App } from "obsidian";
 import HomeworkModal from "src/homework-modal";
+
+import Header from "./header";
 
 interface Props {
     modal: HomeworkModal
@@ -11,10 +11,11 @@ export const PluginContext = createContext<Props | null>(null);
 
 export default function ModalComponent(props: Props) {
     return (
-        <div className={"homework"}>
+        <div className={"homework-modal"}>
             <PluginContext.Provider value={props}>
-                <h1>test</h1>
+                <Header />
+                
             </PluginContext.Provider>
-        </div>    
+        </div>
     );
 }

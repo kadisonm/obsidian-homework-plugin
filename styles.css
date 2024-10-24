@@ -1,8 +1,6 @@
-.homework-manager .modal {
-  font-size: large;
-}
-.homework-manager .modal h1 {
-  color: red;
+.homework-manager .homework-modal {
+    & h1 {
+        color: red;
+    }
 }
 
-/*# sourceMappingURL=styles.css.map */
