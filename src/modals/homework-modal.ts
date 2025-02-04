@@ -1,5 +1,5 @@
 import HomeworkManagerPlugin from '../main';
-import { App, Modal, TFile, Notice, setIcon } from 'obsidian';
+import { App, Modal, TFile, Notice, setIcon, View } from 'obsidian';
 import ViewManagerModal from './view-modal';
 import SuggestFileModal from './file-modal';
 
@@ -103,7 +103,12 @@ export default class HomeworkModal extends Modal {
                     manageButton?.addEventListener("click", (click) => {
                         // Open modal
                         this.changeView(viewIndex);
-                        new ViewManagerModal(this.app, this.plugin).open();
+                        let modalManage = new ViewManagerModal(this.app, this.plugin);
+						modalManage.onClosing = () => {
+							this.changeView(viewIndex);
+						};
+
+						modalManage.open();
                     }); 
 
                     dropdownList.createEl("div", {cls: "menu-separator"});
@@ -186,13 +191,19 @@ export default class HomeworkModal extends Modal {
         view.tasks.forEach(async (task: any, taskIndex: number) => {
             const check = this.createTask(viewTasks, task, taskIndex, viewIndex);
 
-            check.addEventListener("click", async (click) => {
-                await this.plugin.dataEditor.removeTask(viewIndex, taskIndex);
-                this.changeView(viewIndex);
-            });
+			if (check !== undefined) {
+            	check.addEventListener("click", async (click) => {
+                	await this.plugin.dataEditor.removeTask(viewIndex, taskIndex);
+                	this.changeView(viewIndex);
+            	});
+			}
         });
 
         // Create subjects and tasks
+		if (this.plugin.data.settings.autoSortForTaskQuantity) {
+			subjects.sort((a, b) => (a.tasks.length > b.tasks.length) ? -1 : 1);
+		}
+
         subjects.forEach((subject: any, subjectIndex: number) => {
             // Create subject title
             const subjectDiv =  this.divBody.createEl("div", {attr: {"id": "subject"}});
@@ -223,10 +234,11 @@ export default class HomeworkModal extends Modal {
             tasks.forEach(async (task: any, taskIndex: number) => {
                 const check = this.createTask(subjectDiv, task, taskIndex, viewIndex, subjectIndex);
                 
-                check.addEventListener("click", async (click) => {
-                    await this.plugin.dataEditor.removeTask(viewIndex, taskIndex, subjectIndex);
-                    this.changeView(viewIndex);
-                });
+                	check.addEventListener("click", async (click) => {
+                    	await this.plugin.dataEditor.removeTask(viewIndex, taskIndex, subjectIndex);
+                    	this.changeView(viewIndex);
+                	});
+				
             });
         });
     }
@@ -241,11 +253,7 @@ export default class HomeworkModal extends Modal {
 
         // Create top level tasks
         view.tasks.forEach(async (task: any, taskIndex: number) => {
-            const grab = this.createTask(viewTasks, task, taskIndex, viewIndex);
-
-            grab.addEventListener("click", async (click) => {
-                
-            });
+            this.createEditTask(viewTasks, task, taskIndex, viewIndex);
         });
 
         // Create subjects and tasks
@@ -254,37 +262,87 @@ export default class HomeworkModal extends Modal {
             const subjectDiv =  this.divBody.createEl("div", {attr: {"id": "subject"}});
             
             const titleDiv = subjectDiv.createEl("div", {attr: {"id": "title"}});
-            titleDiv.createEl("h2", {text: subject.name});
+            let title = titleDiv.createEl("input", {cls: "hidden-textbox subject-box", type: "text", value: subject.name});
 
+            title.addEventListener("change", async (change) => {
+                subject.name = title.value;
+                await this.plugin.writeData();
+            });
             // Create tasks under subject
             const tasks = subject.tasks;
 
             tasks.forEach(async (task: any, taskIndex: number) => {
-                const grab = this.createTask(subjectDiv, task, taskIndex, viewIndex, subjectIndex);
-                
-                grab.addEventListener("click", async (click) => {
-                    
-                });
+                this.createEditTask(subjectDiv, task, taskIndex, viewIndex, subjectIndex);
             });
         });
     }
 
-    createTask(div: HTMLDivElement, task: any, taskIndex: number, viewIndex: number, subjectIndex?: number): HTMLDivElement {
-        const taskDiv = div.createEl("div", {attr: {"id": "task"}});
+	createEditTask(div: HTMLDivElement, task: any, taskIndex: number, viewIndex: number, subjectIndex?: number) {
+		const taskDiv = div.createEl("div", {attr: {"id": "task", "display": "flex"}});
         const leftDiv = taskDiv.createEl("div");
         const rightDiv = taskDiv.createEl("div");
+		leftDiv.style.display = "flex";
+		leftDiv.style.flexDirection = "row";
 
-        // Create check by default
+		const righterDiv = leftDiv.createEl("div");
+
+		righterDiv.style.display = "flex";
+		righterDiv.style.flexDirection = "row";
+		let up = righterDiv.createEl("p", {text: " ↑ "})
+		righterDiv.createEl("p", {text: "   "})
+		let down = righterDiv.createEl("p", {text: " ↓ "})
+		// Create check by default
+
+		up.addEventListener("click", async (click) => {
+			await this.plugin.dataEditor.moveTask(viewIndex, taskIndex, true, subjectIndex);
+			this.changeView(viewIndex);
+		});
+
+		down.addEventListener("click", async (click) => {
+			await this.plugin.dataEditor.moveTask(viewIndex, taskIndex, false, subjectIndex);
+			this.changeView(viewIndex);
+		});
+
+		const nameBox = leftDiv.createEl("input", {type: "text", value: task.name, cls: "hidden-textbox"});
+
+		nameBox.addEventListener("change", async (change) => {
+			task.name = nameBox.value;
+			await this.plugin.writeData();
+		});
+
+		const fileButton = leftDiv.createEl("button", {text: "File"});
+
+		const dateButton = rightDiv.createEl("input", {type: "date", value: task.date});
+
+        let page = "";
+
+        fileButton.addEventListener('click', () => {
+            new SuggestFileModal(this.app, (result) => {
+                page = result.path;
+                fileButton.setText(result.name);
+                task.page = page;
+                this.plugin.writeData();
+            }).open();
+        });
+
+        dateButton.addEventListener("change", async (change) => {
+            task.date = dateButton.value;
+            await this.plugin.writeData();
+        });
+	}
+
+    createTask(div: HTMLDivElement, task: any, taskIndex: number, viewIndex: number, subjectIndex?: number): HTMLDivElement {
+        const taskDiv = div.createEl("div", {attr: {"id": "task", "display": "flex"}});
+        const leftDiv = taskDiv.createEl("div");
+        const rightDiv = taskDiv.createEl("div");
+		leftDiv.style.display = "flex";
+		leftDiv.style.flexDirection = "row";
         let interactionDiv;
 
-        if (!this.editMode) {
-            interactionDiv = leftDiv.createEl("div", {attr: {"id": "check"}});
-        } else {
-            interactionDiv = leftDiv.createEl("div", {attr: {"id": "grab"}});
-        }
-
+        interactionDiv = leftDiv.createEl("div", {attr: {"id": "check"}});
+    
         // Task name
-        const taskName = rightDiv.createEl("p", {text: task.name});
+        const taskName = leftDiv.createEl("p", {text: task.name});
 
         if (task.page !== "") {
             taskName.addClass("homework-manager-link");
