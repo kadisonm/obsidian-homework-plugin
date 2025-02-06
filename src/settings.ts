@@ -28,6 +28,18 @@ export class SettingsTab extends PluginSettingTab {
                     await this.plugin.writeData();
                 })
             })
+			
+        new Setting(containerEl)
+            .setName('Auto sort for task quantity')
+            .setDesc('Automatically sort tasks by quantity.')
+            .addToggle((toggle) => {
+                toggle
+                .setValue(this.plugin.data.settings.autoSortForTaskQuantity)
+                .onChange(async (val) => {
+                    this.plugin.data.settings.autoSortForTaskQuantity = val;
+                    await this.plugin.writeData();
+                })
+            })
         
         // Show Tooltips
         new Setting(containerEl)

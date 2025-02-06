@@ -4,6 +4,7 @@ export interface HomeworkManagerData {
     settings: {
         deleteFinishedTasks: boolean;
         showTooltips: boolean;
+		autoSortForTaskQuantity: boolean;
     }
     views: Array<View>
 }
@@ -12,6 +13,7 @@ export const DEFAULT_DATA: HomeworkManagerData = {
     settings: {
         deleteFinishedTasks: true,
         showTooltips: true,
+		autoSortForTaskQuantity: true
     },
     views: new Array<View>()
 }
@@ -211,7 +213,15 @@ export default class DataEditor {
         await this.plugin.writeData();
     }
 
-    async moveTask() {
-        
+    async moveTask(viewIndex: number, taskIndex: number, up: boolean, subjectIndex: number | undefined) {
+        const view = this.plugin.data.views[viewIndex];
+		
+        if (subjectIndex !== undefined) {
+			const subject = view.subjects[subjectIndex];
+
+			if (subject && subject.tasks.length > 1 && ((up && taskIndex > 0) || (!up && taskIndex < subject.tasks.length - 1))) {
+				subject.tasks[taskIndex] = subject.tasks.splice(taskIndex + (up ? -1 : 1), 1, subject.tasks[taskIndex])[0];
+			}
+		}
     }
 }
