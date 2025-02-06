@@ -1,16 +1,31 @@
-<h1 align="center"> Homework Manager </h1>
+<h1 align="center">
+Homework Manager
+</h1>
 
-<h4 align="center">An <a href="https://obsidian.md/">Obsidian</a> plugin that makes keeping track of homework easy.</h4>
+<div align="center">
+  <h4>An <a href="https://obsidian.md/">Obsidian</a> plugin  that makes keeping track of homework easy.</h4>
 
-<br>
+  <picture>
+    <img src="./docs/assets/preview.png">
+  </picture>
 
-![Homework Manager Thumbnail](https://github.com/kadisonm/obsidian-homework-plugin/assets/134670047/e45a888f-8f11-4358-9a81-16c28572f3ca)
 
-This plugin is not an official Obsidian plugin and is licensed under the [MIT](https://github.com/kadisonm/obsidian-homework-plugin/blob/master/LICENSE) license.
+  <a href="#features">Features</a> &nbsp;&bull;&nbsp;
+  <a href="#installation">Installation</a> &nbsp;&bull;&nbsp;
+  <a href="#usage">Usage</a> &nbsp;&bull;&nbsp;
+  <a href="#contributing">Contributing</a>
 
-To track the development, please visit the [project page](https://github.com/users/kadisonm/projects/3/views/1).
+ </b>
 
-## This plugin offers:
+  <a title="Buy me a coffee" href="https://buymeacoffee.com/kadisonm">
+    <img  src="https://img.shields.io/badge/Support-30363D?style=for-the-badge&logo=GitHub-Sponsors&logoColor=#white"></a>
+  <a title="GitHub License" href="/LICENSE">
+    <img src="https://img.shields.io/github/license/kadisonm/anki-kanji-splitter?style=for-the-badge&color=blue"></a>
+  
+  This add-on is **not** an official Obsidian add-on.
+</div>
+
+## Features:
 - Easy creation of tasks and subjects
 - Task due dates and linking to notes
 - Clean and easy to navigate UI
@@ -58,10 +73,7 @@ Upon creating a task, a due date can be added. Click the calendar icon to select
 
 Upon creating a task, a linked note can be added. Click on the task name to take you to the note.
 
-## Show your support
+## Contributing
+For more information on contributing, please see [development](./docs/development.md).
 
-If you want to support me you can do so [here](https://www.buymeacoffee.com/kadisonm), but please know that this is not an expectation and this plugin is completely free.
-
-[<img src="https://github.com/kadisonm/obsidian-reference-generator/assets/134670047/826ead37-1265-42b1-b171-928d1e17035f" width="200">](https://www.buymeacoffee.com/kadisonm)
-
-Thank you so much for using my plugin.
+To track the development, please visit the [project page](https://github.com/users/kadisonm/projects/3/views/1).
