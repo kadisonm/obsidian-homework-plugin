@@ -1,3 +1,19 @@
+.subject-box {
+  font-size: x-large !important;
+  padding-left: 0px !important;
+  background-color: tomato !important;
+  font-weight: 600 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.hidden-textbox {
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 .homework-manager h1 {
   font-size: xx-large;
   margin-top: 0;
@@ -16,6 +32,18 @@
 .homework-manager .clickable-icon {
   width: 32px;
   height: 32px;
+}
+.homework-manager #remove-subject {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: var(--interactive-hover);
+}
+.homework-manager #remove-subject:hover {
+  background-color: red;
 }
 .homework-manager #header {
   display: flex;
@@ -41,7 +69,7 @@
 .homework-manager #body #title {
   display: flex;
   align-items: center;
-  justify-content: left;
+  justify-content: flex-start;
 }
 .homework-manager #body #task {
   display: flex;
@@ -64,23 +92,6 @@
   opacity: var(--icon-opacity);
   transition: opacity 0.15s ease-in-out;
 }
-
-.subject-box {
-	font-size: x-large !important;
-	padding-left: 0px !important;
-	background-color: tomato !important;
-	font-weight: 600 !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-}
-
-.hidden-textbox {
-	background-color: transparent !important;
-	border: none !important;
-	outline: none !important;
-	box-shadow: none !important;
-}
-
 .homework-manager #body #task #check:hover {
   opacity: var(--icon-opacity-hover);
   border-color: var(--icon-color-hover);

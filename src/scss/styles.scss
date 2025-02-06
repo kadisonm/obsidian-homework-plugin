@@ -1,3 +1,19 @@
+.subject-box {
+    font-size: x-large !important;
+    padding-left: 0px !important;
+    background-color: tomato !important;
+    font-weight: 600 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.hidden-textbox {
+    background-color: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 .homework-manager {
     // Header title
     h1 {
@@ -23,6 +39,22 @@
     .clickable-icon {
         width: 32px;
         height: 32px;
+    }
+
+    #remove-subject {
+        display:flex;
+        align-items:center;
+        justify-content:center;
+
+        width: 25px;
+        height: 25px;
+
+        border-radius: 50%;
+        background-color:var(--interactive-hover);
+
+        &:hover {
+            background-color:red;
+        }
     }
 
     #header {
@@ -54,7 +86,7 @@
         #title {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-start;
         }
 
         #task {

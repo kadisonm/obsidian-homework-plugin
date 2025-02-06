@@ -10,6 +10,8 @@ It is also recommended that you install [Hot Reload](https://github.com/pjeby/ho
 ## Debugging
 Run `npm run dev` to begin development and rebuild whenever code changes are made.
 
+To see SCSS changes run `npm run sass` in a seperate terminal.
+
 ## Release
 The following is for maintainers.
 

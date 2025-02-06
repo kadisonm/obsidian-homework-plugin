@@ -258,10 +258,22 @@ export default class HomeworkModal extends Modal {
 
         // Create subjects and tasks
         subjects.forEach((subject: any, subjectIndex: number) => {
-            // Create subject title
             const subjectDiv =  this.divBody.createEl("div", {attr: {"id": "subject"}});
-            
             const titleDiv = subjectDiv.createEl("div", {attr: {"id": "title"}});
+
+            // Create remove subject button
+            let removeSubjectButton = titleDiv.createEl("div", {attr: {"id": "remove-subject"}});
+            setIcon(removeSubjectButton, "minus");
+
+            removeSubjectButton.addEventListener("click", async (click) => {
+                await this.plugin.dataEditor.removeSubject(viewIndex, subjectIndex)
+                
+                await this.plugin.writeData();
+
+                subjectDiv.empty();
+            });
+
+            // Create subject title
             let title = titleDiv.createEl("input", {cls: "hidden-textbox subject-box", type: "text", value: subject.name});
 
             title.addEventListener("change", async (change) => {
@@ -274,6 +286,7 @@ export default class HomeworkModal extends Modal {
             tasks.forEach(async (task: any, taskIndex: number) => {
                 this.createEditTask(subjectDiv, task, taskIndex, viewIndex, subjectIndex);
             });
+
         });
     }
 
