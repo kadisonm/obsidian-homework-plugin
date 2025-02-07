@@ -27,6 +27,7 @@ Homework Manager
 
 ## Features:
 - Easy creation of tasks and subjects
+- Creating separate views for work and school.
 - Task due dates and linking to notes
 - Clean and easy to navigate UI
 
@@ -34,44 +35,43 @@ Homework Manager
 - Install through [Obsidian's Community Plugins](https://obsidian.md/plugins) and add directly to your vault.
 
 ## Usage
-<h3><img src="https://github.com/kadisonm/obsidian-homework-plugin/assets/134670047/e648f705-b3d0-4da3-a9e9-835e2707ac57" width="15"/> Open & close</h3>
+Press the `🕮` icon on the ribbon bar or run `Homework Manager: Open homework` to open.
 
-- Press the book icon on the ribbon bar to open.
-- Press the X or click outside the UI to close.
+### Views
+<ul>
+Views contain a collection of subjects and tasks. They act as a folder and can be added or removed by clicking the `v` dropdown button and then opening the `view manager`.
+</ul>
 
----
+### Subjects
+<ul>
+  <p> Subjects can be added to your views. These are useful for sorting your tasks by categories. <p>
 
-### Adding & removing Subjects
-![Obsidian_CPWZ6Wf6u6](https://github.com/kadisonm/obsidian-homework-plugin/assets/134670047/cce6918e-7aa1-490c-af36-6a3656b5f845)
+**Create**
+- Create new subjects by clicking the `v` dropdown button and clicking `Add subject`
 
-Click the edit mode toggle in the top right to add new subjects or delete existing ones.
+**Remove**
+- Remove subjects by clicking the `✎` button and then the `-` button next to target subject.
 
-⚠ Removing a subject removes all tasks underneath it ⚠
+</ul>
 
----
+### Tasks
+<ul>
 
-### Adding & completing tasks
-![Obsidian_gsre59WtQJ](https://github.com/kadisonm/obsidian-homework-plugin/assets/134670047/e15db3f6-fbb6-49c9-807a-d2d652eb8c52)
+**Creation**
 
-Click the + button next to a subject to add a new task under it. To complete, click the check box on the left of it.
+- **Add to a view:** press the `v` dropdown button and click `Add task`.
+- **Add to a subject:** Click the `+` button next to the subject.
 
-⚠ Completing a task cannot be undone ⚠
+  *⚠ Completing a task cannot be undone ⚠*
 
----
+**Options**
 
-### Adding due dates
-![Obsidian_l8zkWSeczT](https://github.com/kadisonm/obsidian-homework-plugin/assets/134670047/3410485a-a21b-4f2c-b1fd-3c52aec79774)
+- **Due dates:** Due dates can be added to your tasks which will appear red when they are overdue.
+- **Linked files:** Tasks can be linked to notes within your vault. Click on the underlined task to be taken to the linked note.
 
-Upon creating a task, a due date can be added. Click the calendar icon to select a date. Due dates set before the current date will appear red.
-  
-⚠ It is advised to press the calendar icon as missing any elements (`day`, `month`, `year`) will result in creation failure. ⚠
-
----
-
-### Linking notes
-![Obsidian_ixDVJx2jga](https://github.com/kadisonm/obsidian-homework-plugin/assets/134670047/2ed7e89f-0b7f-4c41-b03f-1a99f7661aec)
-
-Upon creating a task, a linked note can be added. Click on the task name to take you to the note.
+**Editing**
+- Editing a task can be done by clicking the `✎` button.
+</ul>
 
 ## Contributing
 For more information on contributing, please see [development](./docs/development.md).
