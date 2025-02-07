@@ -2,6 +2,8 @@ import { Plugin } from 'obsidian';
 import { SettingsTab, defaultLogo } from "./settings";
 import { HomeworkManagerData } from './data-editor';
 import DataEditor from './data-editor';
+import isUpdated from './update';
+import UpdateModal from './modals/update-modal';
 
 import HomeworkModal from './modals/homework-modal'
 
@@ -30,6 +32,18 @@ export default class HomeworkManagerPlugin extends Plugin {
 				new HomeworkModal(this.app, this).open();
 			}
 		});
+
+		this.addCommand({
+			id: 'open-update-notes',
+			name: 'Open update notes',
+			callback: () => {
+				new UpdateModal(this.app, this).open();
+			}
+		});
+
+		if (await isUpdated(this.app)) {
+			new UpdateModal(this.app, this).open();
+		}
 	}
 
 	async onunload() {
