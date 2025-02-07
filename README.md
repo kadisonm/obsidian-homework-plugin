@@ -15,12 +15,12 @@ Homework Manager
   <a href="#usage">Usage</a> &nbsp;&bull;&nbsp;
   <a href="#contributing">Contributing</a>
 
- </b>
-
   <a title="Buy me a coffee" href="https://buymeacoffee.com/kadisonm">
     <img  src="https://img.shields.io/badge/Support-30363D?style=for-the-badge&logo=GitHub-Sponsors&logoColor=#white"></a>
   <a title="GitHub License" href="/LICENSE">
     <img src="https://img.shields.io/github/license/kadisonm/anki-kanji-splitter?style=for-the-badge&color=blue"></a>
+  
+  </br>
   
   This add-on is **not** an official Obsidian add-on.
 </div>
