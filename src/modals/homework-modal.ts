@@ -267,8 +267,6 @@ export default class HomeworkModal extends Modal {
 
             removeSubjectButton.addEventListener("click", async (click) => {
                 await this.plugin.dataEditor.removeSubject(viewIndex, subjectIndex)
-                
-                await this.plugin.writeData();
 
                 subjectDiv.empty();
             });
