@@ -1,10 +1,13 @@
 import HomeworkManagerPlugin from './main';
 
+const currentVersion = "1.1.1"
+
 export interface HomeworkManagerData {
     settings: {
         deleteFinishedTasks: boolean;
         showTooltips: boolean;
 		autoSortForTaskQuantity: boolean;
+        version: string;
     }
     views: Array<View>
 }
@@ -13,7 +16,8 @@ export const DEFAULT_DATA: HomeworkManagerData = {
     settings: {
         deleteFinishedTasks: true,
         showTooltips: true,
-		autoSortForTaskQuantity: true
+		autoSortForTaskQuantity: true,
+        version: currentVersion
     },
     views: new Array<View>()
 }
@@ -45,8 +49,10 @@ export default class DataEditor {
     // Make sure new updates are reflected
     formatData(data: any) {
         const newData = Object.assign({}, DEFAULT_DATA);
-        newData.settings = data.settings;
+        newData.settings = { ...DEFAULT_DATA.settings, ...data.settings}
         newData.views = new Array<View>();
+
+        console.log(newData.settings)
 
         const assign = (assignTo: View | Task | Subject, object: any) => {
             let filteredObject: any = {};
@@ -122,6 +128,21 @@ export default class DataEditor {
 		console.log("Found data is legacy, converting now.\n\nLegacy", data, "\n\nConverted", newData)
 
         return newData;
+    }
+
+    async checkPluginUpdated() {
+        const lastVersion = this.plugin.data.settings.version.split('.').slice(0, 2).join('.');
+        const current = currentVersion.split('.').slice(0, 2).join('.');
+
+        if (lastVersion == current) {
+            return false
+        }
+
+        this.plugin.data.settings.version = currentVersion
+
+        await this.plugin.writeData();
+
+        return true
     }
 
     async addSubject(viewIndex: number, subjectName: string) {

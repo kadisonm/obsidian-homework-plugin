@@ -2,7 +2,6 @@ import { Plugin } from 'obsidian';
 import { SettingsTab, defaultLogo } from "./settings";
 import { HomeworkManagerData } from './data-editor';
 import DataEditor from './data-editor';
-import isUpdated from './update';
 import UpdateModal from './modals/update-modal';
 
 import HomeworkModal from './modals/homework-modal'
@@ -41,7 +40,7 @@ export default class HomeworkManagerPlugin extends Plugin {
 			}
 		});
 
-		if (await isUpdated(this.app)) {
+		if (await this.dataEditor.checkPluginUpdated()) {
 			new UpdateModal(this.app, this).open();
 		}
 	}
