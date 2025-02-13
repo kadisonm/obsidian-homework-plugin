@@ -85,6 +85,7 @@
   background-color: transparent;
   width: 25px;
   height: 25px;
+  flex-shrink: 0;
   border-style: solid;
   border-width: 2px;
   border-radius: 50%;
