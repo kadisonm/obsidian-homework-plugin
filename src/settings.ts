@@ -17,17 +17,17 @@ export class SettingsTab extends PluginSettingTab {
 		containerEl.empty();
 
         // Delete finished tasks
-        new Setting(containerEl)
-            .setName('Delete finished tasks')
-            .setDesc('Deletes finished tasks instead of marking them complete.')
-            .addToggle((toggle) => {
-                toggle
-                .setValue(this.plugin.data.settings.deleteFinishedTasks)
-                .onChange(async (val) => {
-                    this.plugin.data.settings.deleteFinishedTasks = val;
-                    await this.plugin.writeData();
-                })
-            })
+        // new Setting(containerEl)
+        //     .setName('Delete finished tasks')
+        //     .setDesc('Deletes finished tasks instead of marking them complete.')
+        //     .addToggle((toggle) => {
+        //         toggle
+        //         .setValue(this.plugin.data.settings.deleteFinishedTasks)
+        //         .onChange(async (val) => {
+        //             this.plugin.data.settings.deleteFinishedTasks = val;
+        //             await this.plugin.writeData();
+        //         })
+        //     })
 			
         new Setting(containerEl)
             .setName('Auto sort for task quantity')
