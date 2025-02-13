@@ -75,5 +75,3 @@ Views contain a collection of subjects and tasks. They act as a folder and can b
 
 ## Contributing
 For more information on contributing, please see [development](./docs/development.md).
-
-To track the development, please visit the [project page](https://github.com/users/kadisonm/projects/3/views/1).
