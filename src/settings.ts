@@ -31,7 +31,7 @@ export class SettingsTab extends PluginSettingTab {
 			
         new Setting(containerEl)
             .setName('Auto sort for task quantity')
-            .setDesc('Automatically sort tasks by quantity.')
+            .setDesc('Automatically sort subjects by the quantity of tasks.')
             .addToggle((toggle) => {
                 toggle
                 .setValue(this.plugin.data.settings.autoSortForTaskQuantity)
