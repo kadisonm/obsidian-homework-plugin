@@ -52,8 +52,6 @@ export default class DataEditor {
         newData.settings = { ...DEFAULT_DATA.settings, ...data.settings}
         newData.views = new Array<View>();
 
-        console.log(newData.settings)
-
         const assign = (assignTo: View | Task | Subject, object: any) => {
             let filteredObject: any = {};
             
