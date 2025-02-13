@@ -15,7 +15,13 @@ To see SCSS changes run `npm run sass` in a seperate terminal.
 ## Release
 The following is for maintainers.
 
-Make sure to commit and push all changes first. After creating an pushing to a tag, go to GitHub.com and edit the draft version.
+Make sure to commit and push all changes first. After creating and pushing to a tag, go to GitHub.com and edit the draft version.
+
+### Updating Versions
+1. Update [manifest.json](../manifest.json) version 
+2. Update both versions in [package-lock.json](../package-lock.json)
+3. Update currentVersion in [src/data-editor](../src/data-editor)
+4. Add version option to [.github/ISSUE_TEMPLATE/bug_report.yaml](../.github/ISSUE_TEMPLATE/bug_report.yaml)
 
 ### Create new tag
  ```bash
