@@ -10,10 +10,7 @@ Homework Manager
   </picture>
 
 
-  <a href="#features">Features</a> &nbsp;&bull;&nbsp;
-  <a href="#installation">Installation</a> &nbsp;&bull;&nbsp;
-  <a href="#usage">Usage</a> &nbsp;&bull;&nbsp;
-  <a href="#contributing">Contributing</a>
+  <a href="#features">Features</a> &nbsp;&bull;&nbsp; <a href="#installation">Installation</a> &nbsp;&bull;&nbsp; <a href="#usage">Usage</a> &nbsp;&bull;&nbsp; <a href="#contributing">Contributing</a>
 
   <a title="Buy me a coffee" href="https://buymeacoffee.com/kadisonm">
     <img  src="https://img.shields.io/badge/Support-30363D?style=for-the-badge&logo=GitHub-Sponsors&logoColor=#white"></a>
