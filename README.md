@@ -19,7 +19,7 @@ Homework Manager
   
   </br>
   
-  This add-on is *not* an official Obsidian add-on.
+  This add-on is <i>not</i> an official Obsidian add-on.
 </div>
 
 ## Features:
