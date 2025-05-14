@@ -22,7 +22,7 @@ Homework Manager
   
   </br>
   
-  This add-on is **not** an official Obsidian add-on.
+  This add-on is *not* an official Obsidian add-on.
 </div>
 
 ## Features:
@@ -39,6 +39,7 @@ Press the `🕮` icon on the ribbon bar or run `Homework Manager: Open homework`
 
 ### Views
 <ul>
+	
 Views contain a collection of subjects and tasks. They act as a folder and can be added or removed by clicking the `v` dropdown button and then opening the `view manager`.
 </ul>
 
