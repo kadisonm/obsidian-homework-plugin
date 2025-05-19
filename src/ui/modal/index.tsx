@@ -2,6 +2,7 @@ import { createContext } from "preact";
 import HomeworkModal from "src/homework-modal";
 
 import Header from "./header";
+import Body from "./body";
 
 interface Props {
     modal: HomeworkModal
@@ -14,6 +15,7 @@ export default function ModalComponent(props: Props) {
         <div className={"homework-modal"}>
             <PluginContext.Provider value={props}>
                 <Header />
+                <Body />
                 
             </PluginContext.Provider>
         </div>
