@@ -1,12 +1,13 @@
-import HomeworkManagerPlugin from './main';
+import TickawayPlugin from './main';
 import { App, Modal } from 'obsidian';
 import { render } from "preact";
 import ModalComponent from "src/ui/modal";
 
-export default class HomeworkModal extends Modal {
-	plugin: HomeworkManagerPlugin;
 
-	constructor(app: App, plugin: HomeworkManagerPlugin) {
+export default class MainModal extends Modal {
+	plugin: TickawayPlugin
+
+	constructor(app: App, plugin: TickawayPlugin) {
 		super(app);
 		this.plugin = plugin;
 	}

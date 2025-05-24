@@ -1,6 +1,6 @@
 <h1 align="center"> Homework Manager </h1>
 
-<h4 align="center">An <a href="https://obsidian.md/">Obsidian</a> plugin that makes keeping track of homework easy.</h4>
+<h4 align="center">An <a href="https://obsidian.md/">Obsidian</a> plugin that adds a simple task modal so you can tick away your to-dos with ease.</h4>
 
 <br>
 

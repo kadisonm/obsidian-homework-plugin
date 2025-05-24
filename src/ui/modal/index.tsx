@@ -1,5 +1,5 @@
 import { createContext } from "preact";
-import HomeworkModal from "src/homework-modal";
+import HomeworkModal from "src/main-modal";
 
 import Header from "./header";
 import Body from "./body";

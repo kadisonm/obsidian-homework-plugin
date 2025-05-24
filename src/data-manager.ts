@@ -1,39 +1,46 @@
-import HomeworkManagerPlugin from './main';
+import TickawayPlugin from './main';
 import { v1 as uuidv1 } from 'uuid';
 
 interface Item {
     name?: string;
     id: string;
+}
+
+export interface Project extends Item {
+    readonly type: "Project";
+}
+
+export interface Section extends Item {
+    readonly type: "Section";
     children: string[];
     parent: string;
-}
-
-export interface View extends Item {
-    readonly type: "View";
-}
-
-export interface Subject extends Item {
-    readonly type: "Subject";
+    sort: string;
 }
 
 export interface Task extends Item {
     readonly type: "Task";
+    children: string[];
+    parent: string;
     date?: Date;
     page?: string;
+    description?: string;
+}
+
+export interface SubTask extends Item {
+    readonly type: "SubTask";
+    parent: string;
+    date?: Date;
+    description?: string;
 }
 
 interface PluginData {
-    deleteFinishedTasks: boolean;
-    homework: {
-        id: string;
-        children: string[];
-        items: Array<View | Subject | Task>;  
-    }
+    version: string;
+    items: Array<Project | Section | Task>;  
     legacy?: {}
 }
 
 const DEFAULT_DATA: PluginData = {
-    deleteFinishedTasks: true,
+    version: "2.0.0",
     homework: {
         id: "root",
         children: [],
@@ -42,10 +49,10 @@ const DEFAULT_DATA: PluginData = {
 }
 
 export class DataManager {
-    plugin: HomeworkManagerPlugin
+    plugin: TickawayPlugin
     data: PluginData;
 
-    constructor(plugin: HomeworkManagerPlugin) {
+    constructor(plugin: TickawayPlugin) {
         this.plugin = plugin;
 
         this.load();

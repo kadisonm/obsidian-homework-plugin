@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-homework-manager",
-	"version": "1.1.0",
-	"description": "Keeps track of homework through a to-do list.",
+	"name": "tickaway",
+	"version": "2.0.0",
+	"description": "Adds a simple task modal so you can tick away your to-dos with ease.",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",

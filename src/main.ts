@@ -1,9 +1,9 @@
 import { Plugin } from 'obsidian';
 import { SettingsTab, defaultLogo } from "./settings";
 import { DataManager } from './data-manager';
-import HomeworkModal from './homework-modal'
+import MainModal from './main-modal'
 
-export default class HomeworkManagerPlugin extends Plugin {
+export default class TickawayPlugin extends Plugin {
 	data: DataManager;
 
 	async onload() {
@@ -13,7 +13,7 @@ export default class HomeworkManagerPlugin extends Plugin {
 		
 		// Open modal ribbon button
 		this.addRibbonIcon(defaultLogo, 'Open homework', (evt: MouseEvent) => {
-			new HomeworkModal(this.app, this).open();
+			new MainModal(this.app, this).open();
 		});
 
 		// Open modal
@@ -21,7 +21,7 @@ export default class HomeworkManagerPlugin extends Plugin {
 			id: 'open-homework',
 			name: 'Open homework',
 			callback: () => {
-				new HomeworkModal(this.app, this).open();
+				new MainModal(this.app, this).open();
 			}
 		});
 	}
