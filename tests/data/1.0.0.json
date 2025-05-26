@@ -1,23 +1,23 @@
 {
-  "English": {
-    "Read Book": {
+  "Lorem ipsum": {
+    "Lorem ipsum": {
       "page": "test.md",
       "date": ""
     },
-    "Write summary": {
+    "Lorem 1": {
       "page": "",
       "date": ""
     }
   },
-  "Japanese": {},
-  "Math Methods C": {
-    "Test": {
+  "Lorem ipsum 2": {},
+  "Lorem ipsum 3": {
+    "Lorem ipsum": {
       "page": "",
       "date": "2024-04-12"
     }
   },
-  "Technologies": {
-    "Write app": {
+  "Lorem ipsum 4": {
+    "Lorem ipsum": {
       "page": "",
       "date": "2024-06-01"
     }

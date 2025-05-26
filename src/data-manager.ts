@@ -34,18 +34,23 @@ export interface SubTask extends Item {
 }
 
 interface PluginData {
-    version: string;
+    settings: {
+        hideFinishedTasks: boolean,
+        showTooltips: boolean,
+        version: string
+    },
     items: Array<Project | Section | Task>;  
     legacy?: {}
 }
 
 const DEFAULT_DATA: PluginData = {
-    version: "2.0.0",
-    homework: {
-        id: "root",
-        children: [],
-        items: []
-    }
+    settings: {
+        hideFinishedTasks: true,
+        showTooltips: true,
+        version: "2.0.0"
+    },
+    items: [],
+    legacy: {}
 }
 
 export class DataManager {
@@ -60,6 +65,12 @@ export class DataManager {
 
     async load() {
 		const foundData = Object.assign({}, await this.plugin.loadData());
+
+        // Check for legacy data
+        if (!foundData.version) {
+            // Is either v1.0 or v1.1
+            if (foundData.settings.version)
+        }
 
         // Migrate legacy data
         if (foundData.homework === undefined) {
