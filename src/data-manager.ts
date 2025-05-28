@@ -2,24 +2,25 @@ import TickawayPlugin from './main';
 import { v1 as uuidv1 } from 'uuid';
 
 interface Item {
+    readonly type: string;
     name?: string;
     id: string;
 }
 
 export interface Project extends Item {
-    readonly type: "Project";
+    type: "Project";
     children: string[];
 }
 
 export interface Section extends Item {
-    readonly type: "Section";
+    type: "Section";
     children: string[];
     parent: string;
     sort: string;
 }
 
 export interface Task extends Item {
-    readonly type: "Task";
+    type: "Task";
     children: string[];
     parent: string;
     date?: Date;
@@ -28,11 +29,14 @@ export interface Task extends Item {
 }
 
 export interface SubTask extends Item {
-    readonly type: "SubTask";
+    type: "SubTask";
     parent: string;
     date?: Date;
     description?: string;
 }
+
+type AllTypes = Project | Section | Task | SubTask;
+type StringType = "Project" | "Section" | "Task" | "SubTask"
 
 interface PluginData {
     settings: {
@@ -40,7 +44,8 @@ interface PluginData {
         showTooltips: boolean,
         version: string
     },
-    items: Array<Project | Section | Task | SubTask>;  
+    defaultProject?: string,
+    items: AllTypes[];  
     legacy?: {}
 }
 
@@ -50,6 +55,7 @@ const DEFAULT_DATA: PluginData = {
         showTooltips: true,
         version: "2.0.0"
     },
+    defaultProject: undefined,
     items: [],
     legacy: {}
 }
@@ -71,12 +77,35 @@ export class DataManager {
 
         this.data = Object.assign({}, DEFAULT_DATA, foundData);
 
+        this.getDefaultProject();
+
 		await this.save();
 	}
 
 	async save() {
 		await this.plugin.saveData(this.data);
 	}
+
+    getDefaultProject(): Project {
+        if (this.data.defaultProject === undefined) {
+            const project = this.getItemsOfType("Project")[0] as Project
+
+            if (project) {
+                this.data.defaultProject = project.id;
+                return project
+            } else {
+                const projectId = this.createItem<Project>({
+                    name: "New Project",
+                });
+
+                this.data.defaultProject = projectId;
+
+                return this.getItem(projectId) as Project;
+            }
+        } else {
+            return this.getItem(this.data.defaultProject) as Project;
+        }
+    }
 
     hasChildren(item: Item): Boolean{
         return "children" in item;
@@ -92,7 +121,19 @@ export class DataManager {
         return index !== -1 ? index : undefined;
     }
 
-    createItem<Type extends Project | Section | Task | SubTask>(args: Partial<Type> = {}) {
+    getItemsOfType(type: StringType) {
+        const found: AllTypes[] = []
+
+        for (const item of this.data.items) {
+            if (item.type === type) {
+                found.push(item)
+            }
+        }
+
+        return found
+    }
+
+    createItem<Type extends AllTypes>(args: Partial<Type> = {}) {
         const item = {...args} as Type;
 
         item.id = uuidv1();
