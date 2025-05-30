@@ -15,22 +15,24 @@ interface Props {
 
 export const ModalContext = createContext<MainModal | null>(null);
 export const DataContext = createContext<DataManager | null>(null);
-export const ProjectContext = createContext<string | null>(null);
+export const ProjectContext = createContext<any>(null);
 
 const pipe = (value: any, ...fns: Function[]) => {
     return fns.reduce((acc, fn) => fn(acc), value);
 };
 
 export default function ModalComponent({modal, data, currentProject}: Props) {
+    const [project, setProject] = useState("Test")
+
     const providers = (children: any) => pipe(
         children,
         (c: ContainerNode) => <ModalContext.Provider value={modal}>{c}</ModalContext.Provider>,
         (c: ContainerNode) => <DataContext.Provider value={data}>{c}</DataContext.Provider>,
-        (c: ContainerNode) => <ProjectContext.Provider value = {currentProject}>{c}</ProjectContext.Provider>
+        (c: ContainerNode) => <ProjectContext.Provider value={{ project, setProject }}>{c}</ProjectContext.Provider>
     );
 
     return providers(
-        <div className={"homework-modal"}>
+        <div className={"tickaway-modal"}>
             <Header />
             <Body />
         </div>

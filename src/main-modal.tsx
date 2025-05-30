@@ -14,7 +14,7 @@ export default class MainModal extends Modal {
 	}
 
     async onOpen() {
-		this.containerEl.addClass("homework-manager");
+		this.containerEl.addClass("tickaway");
 		render(<ModalComponent modal={this} data={this.plugin.data} currentProject={this.plugin.data.getDefaultProject().id} />, this.contentEl);
 	}
 
