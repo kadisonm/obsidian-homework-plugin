@@ -18,6 +18,6 @@ export function IconButton({ icon, onClick, attributeMessage, attributePosition 
     });
 
     return (   
-        <span ref = {element} onClick={onClick} class = "clickable-icon" aria-label={attributeMessage} data-tooltip-position={attributePosition}/>
+        <button ref={element} onClick={onClick} class="clickable-icon" aria-label={attributeMessage} data-tooltip-position={attributePosition}/>
     );
 }

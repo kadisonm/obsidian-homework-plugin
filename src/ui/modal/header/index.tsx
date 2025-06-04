@@ -1,9 +1,10 @@
-import { Icon } from "src/ui/components/icon";
+import { IconButton } from "src/ui/components/icon-button";
 import { useState } from 'preact/hooks';
 import { MenuItem } from "src/ui/components/menu-item";
 import { useContext } from 'preact/hooks';
 import { Project } from "src/data-manager";
 import { DataContext, ProjectContext } from "src/ui/modal";
+import { ProjectSwitcher } from "src/ui/components/project-switcher";
 
 export default function Header() {
     const data = useContext(DataContext);
@@ -44,19 +45,17 @@ export default function Header() {
             setProject(projectId);
     }
 
+    const onToggleCompletedTasks = () => {
+
+    }
+
     const getProject = () => data.getItem(currentProject);
-
-    //chevrons-up-down
-
+ 
     return (
         <>
-            <div id="header"> 
-                <div id= "left-column">
-                    {<Icon icon='chevron-up-down'/> }
-                    
-                    <h1>{getProject()?.name ?? "Unnamed View"}</h1>    
-                </div>
-
+            <div class="header"> 
+                <ProjectSwitcher text={getProject()?.name ?? "Unnamed View"} attributeMessage="Switch projects" attributePosition="left" onClick={onDropdownClick}/> 
+                <IconButton icon='eye' attributeMessage="Show/hide completed tasks" attributePosition="top" onClick={onToggleCompletedTasks}/>
             </div>
             <div>
                 {showDropdownMenu && 
