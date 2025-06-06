@@ -1,8 +1,4 @@
 .tickaway .tickaway-modal {
-    /* & h1 {
-        color: red;
-    } */
-
     .icon-button {
         width: 12px;
         height: 12px;
@@ -28,7 +24,20 @@
 
         &:hover {
             color: var(--vault-profile-color-hover);
-            background-color: var(--background-modifier-hover)
+            background-color: var(--background-modifier-hover);
+
+            .project-switcher-icon {
+                color: var(--text-muted);
+            }
+        }
+
+        &.is-active {
+            color: var(--vault-profile-color-hover);
+            background-color: var(--background-modifier-hover);
+            
+            .project-switcher-icon {
+                color: var(--text-muted);
+            }
         }
 
         .project-switcher-icon {
@@ -41,8 +50,8 @@
         }
 
         .project-switcher-name {
-            font-size: var(--font-ui-large);
-            font-weight: var(--vault-profile-font-weight);
+            font-size: 26px;
+            font-weight: var(--font-bold);
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;

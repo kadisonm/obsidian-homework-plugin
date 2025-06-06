@@ -1,5 +1,6 @@
 import { setIcon } from 'obsidian';
 import { useRef, useLayoutEffect } from 'preact/hooks';
+import { useState } from 'preact/hooks';
 
 interface Props {
     text: string;
@@ -9,18 +10,24 @@ interface Props {
 };
 
 export function ProjectSwitcher({ text, onClick, attributeMessage, attributePosition }: Props) {
-    const element = useRef(null);
+    const iconEl = useRef(null);
+    const projectEl = useRef(null);
+    const [clicked, setClicked] = useState(false);
 
     useLayoutEffect(() => {
-        console.log(element)
-        if (element.current) {
-            setIcon(element.current, "chevrons-up-down");
+        if (iconEl.current) {
+            setIcon(iconEl.current, "chevrons-up-down");
         } 
     });
 
+    const projectClicked = () => {
+        onClick();
+        setClicked(!clicked);
+    };
+
     return (   
-        <div onClick={onClick} class="project-switcher" aria-label={attributeMessage} data-tooltip-position={attributePosition}>
-            <div ref={element} class="project-switcher-icon"/>
+        <div ref={projectEl} onClick={projectClicked} class={clicked ? "project-switcher is-active" : "project-switcher"} aria-label={attributeMessage} data-tooltip-position={attributePosition}>
+            <div ref={iconEl} class="project-switcher-icon"/>
             <div class="project-switcher-name">{text}</div>
         </div>
     );
