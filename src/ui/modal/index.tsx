@@ -32,7 +32,7 @@ export default function ModalComponent({modal, data, currentProject}: Props) {
     );
 
     return providers(
-        <div className={"tickaway-modal"}>
+        <div class={"tickaway-modal"}>
             <Header />
             <Body />
         </div>

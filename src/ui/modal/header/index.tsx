@@ -20,21 +20,17 @@ export default function Header() {
     }
 
     const projects = data.getItemsOfType("Project");
-    const defaultProject = data.getDefaultProject();
+
+    let lastProject = data.getLastProject();
 
     const [showDropdownMenu, setDropdownMenu] = useState(false);
-    const [lastProject, setLastProject] = useState<string>();
-
-    if (defaultProject && !currentProject) {
-        setProject(defaultProject.id);
-    }
 
     // Disable dropdown menu on view change or editing
-    if (currentProject !== lastProject) {
-        setDropdownMenu(false);
+    if (currentProject !== lastProject.id) {
+        //setDropdownMenu(false);
+        data.setLastProject(currentProject);
+        lastProject = data.getLastProject();
     }
-
-    setLastProject(currentProject)
 
     const onDropdownClick = () => {
         setDropdownMenu(!showDropdownMenu);
@@ -48,27 +44,31 @@ export default function Header() {
     const onToggleCompletedTasks = () => {
 
     }
-
-    const getProject = () => data.getItem(currentProject);
  
     return (
         <>
             <div class="header"> 
-                <ProjectSwitcher text={getProject()?.name ?? "Unnamed View"} attributeMessage="Switch projects" attributePosition="left" onClick={onDropdownClick}/> 
+                <ProjectSwitcher text={lastProject.name} attributeMessage="Switch projects" attributePosition="left" onClick={onDropdownClick}/> 
                 <IconButton icon='eye' toggledIcon="eye-off" attributeMessage="Show/hide completed tasks" attributePosition="top" onClick={onToggleCompletedTasks}/>
             </div>
             <div>
                 {showDropdownMenu && 
-                    <div className="menu mod-tab-list" id="menu">
+                    <div class="menu mod-tab-list" id="menu"> 
                         { 
-                            projects.map((project: Project)  => (
-                                project.id !== currentProject && 
+                            projects.map((project: Project) => (
                                 <MenuItem 
                                     onClick={() => {onMenuClick(project.id)}} 
-                                    title={project.name ?? "Unnamed View"} icon='layers' 
-                                    attributeMessage="Switch to view" attributePosition="right"/>
+                                    title={project.name} icon='layers' 
+                                    checked={project.id === currentProject}
+                                    attributeMessage="Switch to project" attributePosition="right"/>
                             ))
                         }
+
+                        <div class="menu-separator"/>
+            
+                        <MenuItem 
+                            onClick = {() => {onMenuClick('manage-views')}}
+                            title="Manage projects..." icon='folders' attributeMessage="Add, delete, sort, or rename your projects" attributePosition="right"/>
                     </div>
                 }
             </div>

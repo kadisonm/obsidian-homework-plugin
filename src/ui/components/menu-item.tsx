@@ -5,11 +5,13 @@ interface Props {
     title: string;
     icon?: string;
     onClick?: any;
+    checked?: boolean;
     attributeMessage?: string,
     attributePosition?: string
 };
 
-export function MenuItem({ title, icon, onClick, attributeMessage, attributePosition }: Props) {
+export function MenuItem({ title, icon, onClick, checked, attributeMessage, attributePosition }: Props) {
+    console.log(checked)
     const element = useRef(null);
 
     useLayoutEffect(() => {
@@ -19,9 +21,9 @@ export function MenuItem({ title, icon, onClick, attributeMessage, attributePosi
     });
 
     return (   
-        <div onClick={onClick} className="menu-item" aria-label={attributeMessage} data-tooltip-position={attributePosition}>
-            <div ref = {element} className="menu-item-icon"/>
-            <div className="menu-item-title"> {title} </div>
+        <div onClick={onClick} class={checked ? "menu-item tappable mod-checked" : "menu-item tappable"} aria-label={attributeMessage} data-tooltip-position={attributePosition}>
+            <div ref = {element} class="menu-item-icon"/>
+            <div class="menu-item-title"> {title} </div>
         </div>
     );
 }

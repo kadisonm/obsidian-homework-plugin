@@ -3,7 +3,7 @@ import { v1 as uuidv1 } from 'uuid';
 
 interface Item {
     readonly type: string;
-    name?: string;
+    name: string;
     id: string;
 }
 
@@ -44,7 +44,7 @@ interface PluginData {
         showTooltips: boolean,
         version: string
     },
-    defaultProject?: string,
+    lastProject?: string,
     items: AllTypes[];  
     legacy?: {}
 }
@@ -55,7 +55,7 @@ const DEFAULT_DATA: PluginData = {
         showTooltips: true,
         version: "2.0.0"
     },
-    defaultProject: undefined,
+    lastProject: undefined,
     items: [],
     legacy: {}
 }
@@ -77,7 +77,7 @@ export class DataManager {
 
         this.data = Object.assign({}, DEFAULT_DATA, foundData);
 
-        this.getDefaultProject();
+        this.getLastProject();
 
 		await this.save();
 	}
@@ -86,25 +86,29 @@ export class DataManager {
 		await this.plugin.saveData(this.data);
 	}
 
-    getDefaultProject(): Project {
-        if (this.data.defaultProject === undefined) {
+    getLastProject(): Project {
+        if (this.data.lastProject === undefined) {
             const project = this.getItemsOfType("Project")[0] as Project
 
             if (project) {
-                this.data.defaultProject = project.id;
+                this.data.lastProject = project.id;
                 return project
             } else {
                 const projectId = this.createItem<Project>({
                     name: "New Project",
                 });
 
-                this.data.defaultProject = projectId;
+                this.data.lastProject = projectId;
 
                 return this.getItem(projectId) as Project;
             }
         } else {
-            return this.getItem(this.data.defaultProject) as Project;
+            return this.getItem(this.data.lastProject) as Project;
         }
+    }
+
+    setLastProject(id: string) {
+        this.data.lastProject = id;
     }
 
     hasChildren(item: Item): Boolean{
