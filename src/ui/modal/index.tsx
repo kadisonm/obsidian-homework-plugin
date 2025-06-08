@@ -3,6 +3,7 @@ import HomeworkModal from "src/main-modal";
 
 import Header from "./header";
 import Body from "./body";
+import Footer from "./footer";
 import { DataManager } from "src/data-manager";
 import { useState, StateUpdater } from "preact/hooks";
 import MainModal from "src/main-modal";
@@ -35,6 +36,7 @@ export default function ModalComponent({modal, data, currentProject}: Props) {
         <div class={"tickaway-modal"}>
             <Header />
             <Body />
+            <Footer />
         </div>
     );
 }

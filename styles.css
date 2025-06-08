@@ -11,6 +11,72 @@
         align-items: center;
         gap: 20px;
     }
+    
+    .footer {
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+        align-items: center;
+        gap: 10px;
+
+        border-top: var(--divider-width) solid var(--divider-color);
+
+        padding: var(--size-4-4) 0 0 0;
+    }
+
+    .action-button {
+        width: fit-content;
+        height: fit-content;
+
+        border-radius: var(--button-radius);
+        border-style: solid;
+        border-width: 1px;
+        border-color: var(--background-modifier-border-hover);
+        background-color: var(--background-secondary);
+        box-shadow: none;
+        font-size: var(--font-ui-small);
+        justify-content: flex-end;
+        min-height: 18px;
+        padding: var(--size-4-1) var(--size-4-2) var(--size-4-1) var(--size-4-2);
+        user-select: none;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+        cursor: var(--cursor);
+        margin: none;
+        gap: var(--size-4-2);
+
+        & * {
+            color: var(--icon-color);
+            transition: opacity 0.15s ease-in-out;
+            opacity: var(--icon-opacity);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &:hover &:hover {
+            background-color: var(--background-modifier-hover);  
+        }
+
+
+        &:hover * {
+            color: var(--icon-color-hover);
+            opacity: var(--icon-opacity-hover);
+        }
+
+        &:active * {
+            opacity: var(--icon-opacity-hover);
+            color: var(--icon-color-focused);
+        }
+
+        .action-button-icon {
+            stroke: var(--icon-m-stroke-width);
+        }
+    }
 
     .project-switcher {
         color: var(--vault-profile-color);
@@ -27,7 +93,8 @@
             background-color: var(--background-modifier-hover);
 
             .project-switcher-icon {
-                color: var(--text-muted);
+                color: var(--icon-color-hover);
+                opacity: var(--icon-opacity-hover);
             }
         }
 
@@ -46,7 +113,10 @@
             stroke: var(--icon-m-stroke-width);
             display: flex;
             align-items: center;
-            color: var(--text-faint);
+            justify-content: center;
+            color: var(--icon-color);
+            transition: opacity 0.15s ease-in-out;
+            opacity: var(--icon-opacity);
         }
 
         .project-switcher-name {

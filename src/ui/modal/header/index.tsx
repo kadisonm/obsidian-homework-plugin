@@ -49,7 +49,7 @@ export default function Header() {
         <>
             <div class="header"> 
                 <ProjectSwitcher text={lastProject.name} attributeMessage="Switch projects" attributePosition="left" onClick={onDropdownClick}/> 
-                <IconButton icon='eye' toggledIcon="eye-off" attributeMessage="Show/hide completed tasks" attributePosition="top" onClick={onToggleCompletedTasks}/>
+                <IconButton icon="eye" toggledIcon="eye-off" attributeMessage="Show/hide completed tasks" attributePosition="top" onClick={onToggleCompletedTasks}/>
             </div>
             <div>
                 {showDropdownMenu && 
