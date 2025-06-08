@@ -1,182 +1,153 @@
-.tickaway .tickaway-modal {
-    .icon-button {
-        width: 12px;
-        height: 12px;
-    }
-
-    .header {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 20px;
-    }
-
-    .section {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 20px;
-
-        .section-dropdown {
-            background-color: none;
-            border-radius: var(--radius-s);
-
-            padding: var(--size-4-1) var(--size-4-2);
-            overflow: hidden;
-
-            display: flex;
-            flex-grow: 1;
-            justify-content: left;
-            align-items: center;
-            gap: 10px;
-            
-            .section-name {
-                font-size: var(--h3-size);
-                font-weight: var(--font-normal);
-                text-overflow: ellipsis;
-                overflow: hidden;
-                white-space: nowrap;
-                color: var(--text-normal);
-            }
-
-            .section-icon {
-                color: var(--icon-color);
-                opacity: var(--icon-opacity);
-            }
-
-            & * {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-
-            &:hover {
-                .section-name {
-                    color: var(--text-normal);
-                }
-
-                background-color: var(--background-modifier-hover);
-                opacity: 100;
-            }
-        }
-    }
-    
-    .footer {
-        display: flex;
-        flex-direction: row;
-        justify-content: left;
-        align-items: center;
-        gap: 10px;
-
-        border-top: var(--divider-width) solid var(--divider-color);
-
-        padding: var(--size-4-4) 0 0 0;
-    }
-
-    .action-button {
-        width: fit-content;
-        height: fit-content;
-
-        border-radius: var(--button-radius);
-        border-style: solid;
-        border-width: 1px;
-        border-color: var(--background-modifier-border-hover);
-        background-color: var(--background-secondary);
-        box-shadow: none;
-        font-size: var(--font-ui-small);
-        justify-content: flex-end;
-        min-height: 18px;
-        padding: var(--size-4-1) var(--size-4-2) var(--size-4-1) var(--size-4-2);
-        user-select: none;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: row;
-        cursor: var(--cursor);
-        margin: none;
-        gap: var(--size-4-2);
-
-        & * {
-            color: var(--icon-color);
-            transition: opacity 0.15s ease-in-out;
-            opacity: var(--icon-opacity);
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        &:hover &:hover {
-            background-color: var(--background-modifier-hover);  
-        }
-
-
-        &:hover * {
-            color: var(--icon-color-hover);
-            opacity: var(--icon-opacity-hover);
-        }
-
-        &:active * {
-            opacity: var(--icon-opacity-hover);
-            color: var(--icon-color-focused);
-        }
-
-        .action-button-icon {
-            stroke: var(--icon-m-stroke-width);
-        }
-    }
-
-    .project-switcher {
-        color: var(--vault-profile-color);
-        border-radius: var(--radius-s);
-        display: flex;
-        flex-grow: 1;
-        align-items: center;
-        gap: var(--size-4-2);
-        overflow: hidden;
-        padding: var(--size-4-1) var(--size-4-2);
-
-        &:hover {
-            color: var(--vault-profile-color-hover);
-            background-color: var(--background-modifier-hover);
-
-            .project-switcher-icon {
-                color: var(--icon-color-hover);
-                opacity: var(--icon-opacity-hover);
-            }
-        }
-
-        &.is-active {
-            color: var(--vault-profile-color-hover);
-            background-color: var(--background-modifier-hover);
-            
-            .project-switcher-icon {
-                color: var(--text-muted);
-            }
-        }
-
-        .project-switcher-icon {
-            height: var(--icon-m);
-            width: var(--icon-m);
-            stroke: var(--icon-m-stroke-width);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--icon-color);
-            transition: opacity 0.15s ease-in-out;
-            opacity: var(--icon-opacity);
-        }
-
-        .project-switcher-name {
-            font-size: var(--inline-title-size);;
-            font-weight: var(--font-bold);
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-    }
+.subject-box {
+  font-size: x-large !important;
+  padding-left: 0px !important;
+  background-color: tomato !important;
+  font-weight: 600 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 
+.hidden-textbox {
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.homework-manager h1 {
+  font-size: xx-large;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.homework-manager h2 {
+  font-size: x-large;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.homework-manager h3 {
+  font-size: large;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.homework-manager .clickable-icon {
+  width: 32px;
+  height: 32px;
+}
+.homework-manager #remove-subject {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: var(--interactive-hover);
+}
+.homework-manager #remove-subject:hover {
+  background-color: red;
+}
+.homework-manager #header {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 20px;
+}
+.homework-manager #header #left-column {
+  display: flex;
+  align-items: center;
+}
+.homework-manager #header *:not(svg) {
+  margin-right: 10px;
+}
+.homework-manager #body {
+  margin-top: 30px;
+}
+.homework-manager #body *:not(svg) {
+  margin-right: 10px;
+}
+.homework-manager #body #subject {
+  margin-bottom: 30px;
+}
+.homework-manager #body #title {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.homework-manager #body #task {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+}
+.homework-manager #body #task div {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+.homework-manager #body #task #check {
+  background-color: transparent;
+  width: 25px;
+  height: 25px;
+  flex-shrink: 0;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 50%;
+  border-color: var(--icon-color);
+  opacity: var(--icon-opacity);
+  transition: opacity 0.15s ease-in-out;
+}
+.homework-manager #body #task #check:hover {
+  opacity: var(--icon-opacity-hover);
+  border-color: var(--icon-color-hover);
+}
+.homework-manager #body #task #check:active {
+  opacity: var(--icon-opacity-hover);
+  border-color: var(--icon-color-focused);
+}
+.homework-manager #body #task p {
+  font-size: large;
+  margin: 0;
+}
+.homework-manager #body #task #date {
+  color: var(--text-muted);
+  font-size: small;
+}
+.homework-manager #menu {
+  display: flex;
+  flex-direction: column;
+}
+.homework-manager #menu .menu-item:hover {
+  background-color: var(--background-modifier-hover);
+}
+.homework-manager #subject-prompt {
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+  gap: 10px;
+}
+.homework-manager #subject-prompt input {
+  width: 50%;
+}
+.homework-manager #task-prompt {
+  margin-top: 15px;
+}
+.homework-manager #task-prompt #top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.homework-manager #task-prompt #top input {
+  width: 50%;
+}
+.homework-manager #task-prompt #bottom {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.homework-manager-hidden {
+  display: none !important;
+}
+.homework-manager-link:hover {
+  cursor: var(--cursor-link);
+  text-decoration-line: var(--link-decoration-hover);
+}
+
+/*# sourceMappingURL=styles.css.map */

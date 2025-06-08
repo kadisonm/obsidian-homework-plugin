@@ -2,7 +2,7 @@ import TickawayPlugin from './main';
 import { v1 as uuidv1 } from 'uuid';
 
 type AllTypes = Project | Section | Task | SubTask;
-type StringTypes = "Item" | "Project" | "Section" | "Task" | "SubTask"
+export type StringTypes = "Project" | "Section" | "Task" | "SubTask"
 
 abstract class Item {
     id: string;
@@ -14,7 +14,7 @@ abstract class Item {
     }
 }
 
-class Project extends Item {
+export class Project extends Item {
     type: "Project" = "Project";
     children: string[] = [];
 
@@ -23,19 +23,19 @@ class Project extends Item {
     }
 }
 
-class Section extends Item {
+export class Section extends Item {
     type: "Section" = "Section";
     children: string[] = [];
     constructor(
         name: string,
         public parent: string,
-        public sort: string
+        public sort?: string
     ) {
         super(name);
     }
 }
 
-class Task extends Item {
+export class Task extends Item {
     type: "Task" = "Task";
     children: string[] = [];
     constructor(
@@ -49,7 +49,7 @@ class Task extends Item {
     }
 }
 
-class SubTask extends Item {
+export class SubTask extends Item {
     type: "SubTask" = "SubTask";
     constructor(
         id: string,
@@ -162,6 +162,14 @@ export class DataManager {
 
     addItem(item: AllTypes) {
         this.data.items.push(item);
+
+        if (item.type !== "Project")  {
+            const parent = this.getItem(item.parent);
+            
+            if (parent && parent.type !== "SubTask") {
+                parent.children.push(item.id);
+            }
+        }
 
         return item.id;
     }

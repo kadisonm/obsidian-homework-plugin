@@ -1,4 +1,4 @@
-import { useContext } from 'preact/hooks';
+import { useContext, useLayoutEffect } from 'preact/hooks';
 import { Project } from 'src/data-manager';
 
 import { DataContext, ProjectContext } from "src/ui/modal";
@@ -14,8 +14,6 @@ export default function Body() {
 
     const project = data.getItem(projectId) as Project;
 
-    console.log(project);
-
     if (!project)
         return (<></>) 
 
@@ -29,9 +27,12 @@ export default function Body() {
 
     }
 
+    useLayoutEffect(() => {
+        console.log("refreshed")
+    });
+
     return (
-        <div class={"body"}>
-            <Section text="Test Section" onDropdownClick={onDropdownClick} onNewTaskClick={onNewTaskClick}/>
+        <div class={"body"}> 
             {
                 sections.map((sectionId: string) => (
                     <Section 

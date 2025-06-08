@@ -11,7 +11,6 @@ interface Props {
 };
 
 export function MenuItem({ title, icon, onClick, checked, attributeMessage, attributePosition }: Props) {
-    console.log(checked)
     const element = useRef(null);
 
     useLayoutEffect(() => {
@@ -21,7 +20,7 @@ export function MenuItem({ title, icon, onClick, checked, attributeMessage, attr
     });
 
     return (   
-        <div onClick={onClick} class={checked ? "menu-item tappable mod-checked" : "menu-item tappable"} aria-label={attributeMessage} data-tooltip-position={attributePosition}>
+        <div onClick={onClick} class={checked === true ? "menu-item tappable mod-checked" : "menu-item tappable"} aria-label={attributeMessage} data-tooltip-position={attributePosition}>
             <div ref = {element} class="menu-item-icon"/>
             <div class="menu-item-title"> {title} </div>
         </div>

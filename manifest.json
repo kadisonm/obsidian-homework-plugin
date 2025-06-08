@@ -1,9 +1,9 @@
 {
-	"id": "tickaway",
-	"name": "Tickaway",
-	"version": "2.0.0",
+	"id": "homework-manager",
+	"name": "Homework Manager",
+	"version": "1.1.1",
 	"minAppVersion": "0.15.0",
-	"description": "Adds a simple task modal so you can tick away your to-dos with ease.",
+	"description": "Keeps track of homework through a to-do list.",
 	"author": "Kadison McLellan",
 	"authorUrl": "https://github.com/KadisonM",
 	"fundingUrl": "https://www.buymeacoffee.com/kadisonm",
