@@ -8,16 +8,10 @@ import { ProjectSwitcher } from "src/ui/components/project-switcher";
 
 export default function Header() {
     const data = useContext(DataContext);
-    const { currentProject, setProject } = useContext(ProjectContext);
+    const { projectId, setProjectId } = useContext(ProjectContext);
 
-    // To do: Turn this into a global component that can be used whenever no data could be found
-    if (!data) {
-        return (
-            <>
-                Error could not find user data or default project
-            </>
-        )
-    }
+    if (!data) 
+        return (<></>) // Replace later
 
     const projects = data.getItemsOfType("Project");
 
@@ -26,9 +20,9 @@ export default function Header() {
     const [showDropdownMenu, setDropdownMenu] = useState(false);
 
     // Disable dropdown menu on view change or editing
-    if (currentProject !== lastProject.id) {
+    if (projectId !== lastProject.id) {
         //setDropdownMenu(false);
-        data.setLastProject(currentProject);
+        data.setLastProject(projectId);
         lastProject = data.getLastProject();
     }
 
@@ -36,9 +30,9 @@ export default function Header() {
         setDropdownMenu(!showDropdownMenu);
     }
 
-    const onMenuClick = (projectId: string) => {
-        if (data.getItem(projectId) !== undefined)
-            setProject(projectId);
+    const onMenuClick = (id: string) => {
+        if (data.getItem(id) !== undefined)
+            setProjectId(id);
     }
 
     const onToggleCompletedTasks = () => {
@@ -55,11 +49,11 @@ export default function Header() {
                 {showDropdownMenu && 
                     <div class="menu mod-tab-list" id="menu"> 
                         { 
-                            projects.map((project: Project) => (
+                            projects.map((prj: Project) => (
                                 <MenuItem 
-                                    onClick={() => {onMenuClick(project.id)}} 
-                                    title={project.name} icon='layers' 
-                                    checked={project.id === currentProject}
+                                    onClick={() => {onMenuClick(prj.id)}} 
+                                    title={prj.name} icon='layers' 
+                                    checked={prj.id === projectId}
                                     attributeMessage="Switch to project" attributePosition="right"/>
                             ))
                         }

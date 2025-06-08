@@ -1,42 +1,43 @@
-import { createContext, PreactContext, ContainerNode  } from "preact";
+import { createContext } from "preact";
 import HomeworkModal from "src/main-modal";
 
 import Header from "./header";
 import Body from "./body";
 import Footer from "./footer";
 import { DataManager } from "src/data-manager";
-import { useState, StateUpdater } from "preact/hooks";
 import MainModal from "src/main-modal";
+import { useState } from 'preact/hooks';
 
 interface Props {
     modal: HomeworkModal;
     data: DataManager;
-    currentProject: string;
+    project: string;
 }
 
 export const ModalContext = createContext<MainModal | null>(null);
 export const DataContext = createContext<DataManager | null>(null);
 export const ProjectContext = createContext<any>(null);
 
-const pipe = (value: any, ...fns: Function[]) => {
-    return fns.reduce((acc, fn) => fn(acc), value);
-};
+function Providers(data: Props, children: any) {
+    const [projectId, setProjectId] = useState(data.project);
 
-export default function ModalComponent({modal, data, currentProject}: Props) {
-    const [project, setProject] = useState("Test")
+    return (
+        <ModalContext.Provider value={data.modal}>
+            <DataContext.Provider value={data.data}>
+                <ProjectContext.Provider value={{projectId, setProjectId}}>
+                    {children}
+                </ProjectContext.Provider>
+            </DataContext.Provider>
+        </ModalContext.Provider>
+    )
+}
 
-    const providers = (children: any) => pipe(
-        children,
-        (c: ContainerNode) => <ModalContext.Provider value={modal}>{c}</ModalContext.Provider>,
-        (c: ContainerNode) => <DataContext.Provider value={data}>{c}</DataContext.Provider>,
-        (c: ContainerNode) => <ProjectContext.Provider value={{ project, setProject }}>{c}</ProjectContext.Provider>
-    );
-
-    return providers(
+export default function ModalComponent(data: Props) {
+    return Providers(data, (
         <div class={"tickaway-modal"}>
-            <Header />
-            <Body />
-            <Footer />
+            <Header/>
+            <Body/>
+            <Footer/>
         </div>
-    );
+    ));
 }

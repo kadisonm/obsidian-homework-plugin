@@ -1,42 +1,66 @@
 import TickawayPlugin from './main';
 import { v1 as uuidv1 } from 'uuid';
 
-interface Item {
-    readonly type: string;
-    name: string;
-    id: string;
-}
-
-export interface Project extends Item {
-    type: "Project";
-    children: string[];
-}
-
-export interface Section extends Item {
-    type: "Section";
-    children: string[];
-    parent: string;
-    sort: string;
-}
-
-export interface Task extends Item {
-    type: "Task";
-    children: string[];
-    parent: string;
-    date?: Date;
-    page?: string;
-    description?: string;
-}
-
-export interface SubTask extends Item {
-    type: "SubTask";
-    parent: string;
-    date?: Date;
-    description?: string;
-}
-
 type AllTypes = Project | Section | Task | SubTask;
-type StringType = "Project" | "Section" | "Task" | "SubTask"
+type StringTypes = "Item" | "Project" | "Section" | "Task" | "SubTask"
+
+abstract class Item {
+    id: string;
+    name: string;
+
+    constructor(name: string) {
+        this.id = uuidv1();
+        this.name = name;
+    }
+}
+
+class Project extends Item {
+    type: "Project" = "Project";
+    children: string[] = [];
+
+    constructor(name: string) {
+        super(name);
+    }
+}
+
+class Section extends Item {
+    type: "Section" = "Section";
+    children: string[] = [];
+    constructor(
+        name: string,
+        public parent: string,
+        public sort: string
+    ) {
+        super(name);
+    }
+}
+
+class Task extends Item {
+    type: "Task" = "Task";
+    children: string[] = [];
+    constructor(
+        name: string,
+        public parent: string,
+        public date?: Date,
+        public page?: string,
+        public description?: string
+    ) {
+        super(name);
+    }
+}
+
+class SubTask extends Item {
+    type: "SubTask" = "SubTask";
+    constructor(
+        id: string,
+        name: string,
+        public parent: string,
+        public date?: Date,
+        public description?: string
+    ) {
+        super(name);
+    }
+}
 
 interface PluginData {
     settings: {
@@ -94,11 +118,10 @@ export class DataManager {
                 this.data.lastProject = project.id;
                 return project
             } else {
-                const projectId = this.createItem<Project>({
-                    name: "New Project",
-                });
-
+                const projectId = this.addItem(new Project("New Project"))
                 this.data.lastProject = projectId;
+
+                //console.log(this.getItem(projectId) as Project)
 
                 return this.getItem(projectId) as Project;
             }
@@ -125,7 +148,7 @@ export class DataManager {
         return index !== -1 ? index : undefined;
     }
 
-    getItemsOfType(type: StringType) {
+    getItemsOfType(type: StringTypes) {
         const found: AllTypes[] = []
 
         for (const item of this.data.items) {
@@ -137,19 +160,7 @@ export class DataManager {
         return found
     }
 
-    createItem<Type extends AllTypes>(args: Partial<Type> = {}) {
-        const item = {...args} as Type;
-
-        item.id = uuidv1();
-        
-        if (item.type === "Section" || item.type === "Task") {
-            item.parent = item.parent === undefined ? "root" : item.parent; 
-            item.children = [];
-
-            const parent = this.data.items.find(({ id }) => id === item.parent) as Project | Section | Task;
-            parent?.children.push(item.id);
-        }
-
+    addItem(item: AllTypes) {
         this.data.items.push(item);
 
         return item.id;
